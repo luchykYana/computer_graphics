@@ -1,25 +1,24 @@
-import logo from './logo.svg';
+import React, {Component} from 'react';
+import {Route, Routes} from "react-router";
+
+import {ColorModelsPage, FigureMovementPage, FirstPage, FractalPage} from "./pages";
+import {Content} from "./components";
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+    render() {
+        return (
+            <Routes>
+                <Route path={'/'} element={<FirstPage/>}/>
+                <Route path={'content'} element={<Content/>}>
+                    <Route path={'fractal'} element={<FractalPage/>}/>
+                    <Route path={'color-models'} element={<ColorModelsPage/>}/>
+                    <Route path={'move-figure'} element={<FigureMovementPage/>}/>
+                </Route>
+            </Routes>
+        );
+    }
 }
 
 export default App;
