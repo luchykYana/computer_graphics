@@ -26,8 +26,8 @@ const Footer = () => {
 
     return (
         <div className={css.flex}>
-            <div onClick={back}><img src={arrows.arrow_left} alt="left"/></div>
-            <div onClick={forward}><img src={arrows.arrow_right} alt="right"/></div>
+            <div onClick={back} className={`${css.left_arrow}`}><img src={arrows.arrow_left} alt="left"/></div>
+            <div onClick={forward} className={`${css.right_arrow}`}><img src={arrows.arrow_right} alt="right"/></div>
         </div>
     );
 };
