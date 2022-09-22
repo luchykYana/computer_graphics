@@ -1,6 +1,6 @@
 import React from 'react';
-import {Title} from "../Title/Title";
-import {icons} from "../../constants";
+import {Title} from '../Title/Title';
+import {icons} from '../../constants';
 
 import './DisplayFractal.css'
 
@@ -8,19 +8,31 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description}
     const buildFractal = (e) => {
         const canvas = document.getElementById('fractal_canvas');
         const ctx = canvas.getContext('2d');
+        const depth = e.target.value;
+        ctx.fillStyle = 'rgb(255,0,0)';
 
-        // outlined square X: 50, Y: 35, width/height 50
-        ctx.beginPath()
-        ctx.strokeRect(50, 35, 50, 50)
+        function draw(x1 , y1 , x2 , y2 , dep){
+            if(dep === 0){
+                ctx.fillRect(x1 , y1 , 1 , 1);
+                ctx.fillRect(x2 , y2 , 1 , 1);
+                return;
+            }
 
-        // filled square X: 125, Y: 35, width/height 50
-        ctx.beginPath()
-        ctx.fillRect(125, 35, 50, 50)
+            let dx = (x2 - x1)/2;
+            let dy = (y2 - y1)/2;
+            //смещение по х и у
+            let	x_tmp = x1 + dx - dy ;
+            let y_tmp = y1 + dy + dx;
+
+
+            draw(x1 , y1 , x_tmp , y_tmp , dep - 1);
+            draw(x2 , y2 , x_tmp , y_tmp , dep - 1);
+
+        }
+        draw(250 - 128 , 130 , 250 + 128 , 130 , depth);
     };
 
     const download_img = () => {
-        // alert('button SAVE was clicked');
-
         const canvas = document.getElementById("fractal_canvas");
         const a = document.getElementById("a");
         a.href = canvas.toDataURL("image/png");
@@ -66,7 +78,7 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description}
                 </div>
                 <div>
                     <div>
-                        <canvas id="fractal_canvas" width="340" height="340"> </canvas>
+                        <canvas id="fractal_canvas" width="500" height="340"> </canvas>
                     </div>
                     <a id={'a'} download={fractal_header_name +='.png'}/>
                     <button className={'save_button'} onClick={download_img}>Зберегти</button>
