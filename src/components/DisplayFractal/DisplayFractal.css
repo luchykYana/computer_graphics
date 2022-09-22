@@ -1,0 +1,56 @@
+button {
+    color: var(--white);
+    background: var(--dark-blue);
+    border: var(--dark-blue) 3px solid;
+    font-size: 20px;
+    border-radius: 10px;
+    transition: background 300ms linear;
+}
+
+button:hover {
+    background: var(--light-blue);
+    color: var(--black);
+}
+
+button.save_button {
+    width: 140px;
+    height: 51px;
+    margin: -20px 0 0 20px;
+}
+
+#left_side {
+    width: 773px;
+}
+
+.grid {
+    grid-column-gap: 100px;
+}
+
+label {
+    font-size: 20px;
+}
+
+select {
+    height: 30px;
+    width: 80px;
+    border-radius: 10px;
+}
+
+.mt-40 {
+    margin-top: 40px;
+}
+.mt-60 {
+    margin-top: 60px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.text-hint p {
+    font-size: 17px;
+}
+
+#fractal_canvas {
+    border: black 3px solid;
+}
