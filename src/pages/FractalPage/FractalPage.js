@@ -1,4 +1,4 @@
-import {FractalTheory} from "../../components/FractalTheory/FractalTheory";
+import {FractalTheory} from '../../components/FractalTheory/FractalTheory';
 
 const FractalPage = () => {
     return (

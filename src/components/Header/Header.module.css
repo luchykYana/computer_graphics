@@ -1,0 +1,59 @@
+header {
+    background-color: var(--light-blue);
+}
+
+.mainText {
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.links a {
+    font-size: 32px;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--black);
+    transition: 300ms color;
+    cursor: pointer;
+}
+
+.links a:hover {
+    color: var(--white);
+}
+
+.display {
+    height: 85px;
+    display: flex;
+    align-items: center;
+    margin: 0 80px;
+    grid-column-gap: 210px;
+}
+
+.whiteLineBig {
+    height: 10px;
+    background-color: var(--white);
+    margin-bottom: 10px;
+}
+
+.whiteLineSmall {
+    margin-top: 10px;
+    width: 530px;
+    height: 10px;
+    background-color: var(--white);
+}
+
+.logo {
+    display: flex;
+    grid-column-gap: 50px;
+    align-items: center;
+}
+
+.links {
+    width: 1000px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.links [class="active"] {
+    color: var(--white);
+}

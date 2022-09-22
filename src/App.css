@@ -1,11 +1,13 @@
 :root {
     --white: #F5F5F5;
+    --black: #000000;
     --light-blue: #90CCF4;
     --dark-blue: #5DA5D2;
     --light-yellow: #F3D250;
     --dark-yellow: #FFA142;
     --light-red: #F78888;
     --dark-red: #E05252;
+    --main-icon: "http://drive.google.com/uc?export=view&id=1lz5b16c2S14kCPf7cCg2mpKnFYNwRA0_";
 }
 
 * {
