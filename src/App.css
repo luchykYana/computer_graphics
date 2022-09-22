@@ -9,6 +9,10 @@
     --dark-red: #E05252;
 }
 
+.bg_light_blue {
+    background-color: var(--light-blue);
+}
+
 * {
     margin: 0;
     padding: 0;

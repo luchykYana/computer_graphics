@@ -23,7 +23,7 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description}
 
         const canvas = document.getElementById("fractal_canvas");
         const a = document.getElementById("a");
-        a.href = canvas.toDataURL("image/jpg");
+        a.href = canvas.toDataURL("image/png");
         a.click();
     };
 
