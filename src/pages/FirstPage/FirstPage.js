@@ -11,6 +11,7 @@ const FirstPage = () => {
         <div className={css.bgColor}>
             FirstPage
             <button onClick={start}>Заінтригували? Що ж, давайте розпочинати!</button>
+
         </div>
     );
 };
