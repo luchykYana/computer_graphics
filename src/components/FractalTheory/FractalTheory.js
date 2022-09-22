@@ -8,7 +8,7 @@ const FractalTheory = () => {
         <div className={'content'}>
             <Title icon_name={icons.book} caption={'Що таке фрактал?'}/>
 
-            <div className={'flex margin-top-20'} >
+            <div className={'flex margin-top-20'}>
                 <div className={'fractal-theory-text'}>
                     <p>Слово фрактал утворено від латинського fractus і в перекладі означає той, що складається з фрагментів (подрібнений).</p>
                     <br/>
