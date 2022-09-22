@@ -1,13 +1,13 @@
 .fractal-theory-text {
     width: 773px;
-    height: 537px;
     text-align: justify;
 }
 
-.margin-left-20 {
-    margin-left: 20px;
+.grid {
+    grid-column-gap: 100px;
 }
 
-.margin-top-20 {
-    margin-top: 20px;
+#fractal_theory {
+    width: 500px;
+    height: 380px;
 }
