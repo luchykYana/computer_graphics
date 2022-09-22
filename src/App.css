@@ -17,11 +17,33 @@
     font-family: 'Inter', sans-serif;
 }
 
+p {
+    font-size: 30px;
+    line-height: 140%;
+}
+
+h1 {
+    font-weight: 700;
+    font-size: 60px;
+    line-height: 32px;
+}
+
+.content {
+    margin-left: 50px;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    vertical-align: center;
+}
+
+
 .book {
     background-image: url("http://drive.google.com/uc?export=view&id=1XG8lV9UqhRvL7NcHktlgv2cTBwUHduRE");
     /* background-repeat: no-repeat; */
-    width: 78px;
-    height: 78px;
+    width: 93px;
+    height: 92px;
 }
 
 .brush {
@@ -150,4 +172,10 @@
     background-image: url("http://drive.google.com/uc?export=view&id=14ZwxLzX6VIGBZZCqSnVMu6w3ryKutVzj");
     width: 78px;
     height: 78px;
+}
+
+.fractal-theory {
+    background-image: url("http://drive.google.com/uc?export=view&id=1cUeQ2Bp9DaTOH_s9847EaZVJN8NTIwbc");
+    width: 547px;
+    height: 426px;
 }

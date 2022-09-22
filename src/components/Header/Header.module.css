@@ -8,7 +8,7 @@ header {
 }
 
 .links a {
-    font-size: 32px;
+    font-size: 30px;
     font-weight: bold;
     text-decoration: none;
     color: var(--black);
@@ -56,4 +56,5 @@ header {
 
 .links [class="active"] {
     color: var(--white);
+    font-size: 40px;
 }
