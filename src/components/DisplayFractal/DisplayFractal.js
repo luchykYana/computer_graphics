@@ -41,8 +41,51 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
         console.log('buildCesaroFractal\nvalue: ' + d)
     }
     const buildGilbertFractal = (d) => {
-        console.log('buildGilbertFractal\nvalue: ' + d)
+        function Drawing(dx, dy)//функція формування лінії
+        {
+            ctx.beginPath();
+            ctx.moveTo(LastX, LastY);
+            ctx.lineTo(LastX + dx, LastY + dy);
+            ctx.closePath();
+            ctx.stroke();
+            LastX += dx;
+            LastY += dy;
+        }
+
+        function Hilbert(dep, dx, dy)//функція, яка викликає формування ліній в потрібному порядку
+        {
+            if (dep > 1) Hilbert(dep - 1, dy, dx);
+            Drawing(dx, dy);
+            if (dep > 1) Hilbert(dep - 1, dx, dy);
+            Drawing(dy, dx);
+            if (dep > 1) Hilbert(dep - 1, dx, dy);
+            Drawing(-dx, -dy);
+            if (dep > 1) Hilbert(dep - 1, -dy, -dx);
+        }
+
+        // console.log('buildGilbertFractal\nvalue: ' + d)
+
+        const canvas = document.getElementById('fractal_canvas');
+        const ctx = canvas.getContext('2d');
+        const h = canvas.height;
+        const w = canvas.width;
+
+
+        let total_length;
+
+        if (h < w) { total_length = 0.9 * h; }
+        else { total_length = 0.9 * w; }
+
+        let start_x = (w - total_length) / 2;
+        let start_y = (h - total_length) / 2;
+
+        let start_length = total_length / (Math.pow(2, d) - 1);
+
+        let LastX = start_x;
+        let LastY = start_y;
+        Hilbert(d, start_length, 0);	//виклик рекурсивної функції Hilbert
     }
+
     const buildFractal = (e) => {
         const canvas = document.getElementById('fractal_canvas');
         const ctx = canvas.getContext('2d');
