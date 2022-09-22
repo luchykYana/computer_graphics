@@ -1,7 +1,9 @@
 import React from 'react';
-import {Title} from "../Title/Title";
+import {Title} from '../Title/Title';
+
+import {icons, images} from '../../constants';
+
 import './FractalTheory.css';
-import {icons, images} from "../../constants";
 
 const FractalTheory = () => {
     return (

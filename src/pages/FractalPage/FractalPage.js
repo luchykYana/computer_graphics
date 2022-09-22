@@ -1,9 +1,11 @@
-import {FractalTheory} from '../../components/FractalTheory/FractalTheory';
+import {Outlet} from "react-router";
+import {Footer} from "../../components";
 
 const FractalPage = () => {
     return (
         <div>
-            <FractalTheory/>
+            <Outlet/>
+            <Footer/>
         </div>
     );
 };

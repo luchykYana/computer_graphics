@@ -1,0 +1,6 @@
+.flex {
+    margin: 50px 80px;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
