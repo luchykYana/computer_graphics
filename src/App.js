@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import {Route, Routes} from 'react-router';
 
-import {ColorModelsPage, FigureMovementPage, FirstPage, FractalPage, FractalPracticePage} from "./pages";
-import {Content} from "./components";
+import {ColorModelsPage, FigureMovementPage, FirstPage, FractalPage, FractalPracticePage} from './pages';
+import {Content, FractalTheory} from './components';
 
 import './App.css';
-import {FractalTheory} from "./components/FractalTheory/FractalTheory";
 
 class App extends Component {
     render() {

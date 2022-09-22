@@ -1,13 +1,28 @@
-import {arrows} from "../../constants";
+import {useLocation, useNavigate} from 'react-router';
+import {useEffect, useState} from 'react';
+
+import {arrows, userPath, userPath2} from '../../constants';
 
 import css from './Footer.module.css';
-import {useNavigate} from "react-router";
 
 const Footer = () => {
+    const [path, setPath] = useState(0);
     const navigate = useNavigate();
+    const {pathname} = useLocation();
 
-    const forward = () => navigate(1);
-    const back = () => navigate(-1);
+    useEffect(() => {
+        let currentPath = pathname;
+        if (pathname.endsWith('/')) {
+            currentPath = pathname.slice(0, pathname.length - 1);
+        }
+
+        const num = userPath.findIndex(el => el === currentPath);
+
+        setPath(num);
+    }, [pathname])
+
+    const forward = () => navigate(userPath[path + 1], {replace: true});
+    const back = () => navigate(userPath2[path - 1], {replace: true});
 
     return (
         <div className={css.flex}>

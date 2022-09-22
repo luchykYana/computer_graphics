@@ -1,7 +1,7 @@
 import React from 'react';
-import {Title} from '../Title/Title';
 
 import {icons, images} from '../../constants';
+import {Title} from '../Title/Title';
 
 import './FractalTheory.css';
 
