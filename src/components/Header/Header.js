@@ -1,6 +1,8 @@
 import {NavLink} from 'react-router-dom';
 
+
 import css from './Header.module.css';
+import {icons} from "../../constants/icons";
 
 const Header = () => {
     return (
@@ -10,8 +12,8 @@ const Header = () => {
 
                 <div className={css.logo}>
                     <div>
-                        <img src="http://drive.google.com/uc?export=view&id=1lz5b16c2S14kCPf7cCg2mpKnFYNwRA0_"
-                             alt="main-icon"/>
+                        <img src={`${icons.main_icon}`}
+                             alt="main-icon" width="70px"/>
                     </div>
                     <div className={css.mainText}>ProFractal</div>
                 </div>

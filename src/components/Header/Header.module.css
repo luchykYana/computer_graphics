@@ -3,7 +3,7 @@ header {
 }
 
 .mainText {
-    font-size: 50px;
+    font-size: 45px;
     font-weight: bold;
 }
 
@@ -56,5 +56,5 @@ header {
 
 .links [class="active"] {
     color: var(--white);
-    font-size: 40px;
+    font-size: 35px;
 }
