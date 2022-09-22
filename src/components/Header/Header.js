@@ -1,8 +1,7 @@
-import {NavLink} from 'react-router-dom';
-
+import {Link, NavLink} from 'react-router-dom';
 
 import css from './Header.module.css';
-import {icons} from "../../constants/icons";
+import {icons} from '../../constants/icons';
 
 const Header = () => {
     return (
@@ -13,9 +12,9 @@ const Header = () => {
                 <div className={css.logo}>
                     <div>
                         <img src={`${icons.main_icon}`}
-                             alt="main-icon" width="70px"/>
+                             alt='main-icon' width='70px'/>
                     </div>
-                    <div className={css.mainText}>ProFractal</div>
+                    <div className={css.mainText}><Link to={'/'}>ProFractal</Link></div>
                 </div>
 
                 <div className={css.links}>

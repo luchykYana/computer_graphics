@@ -7,6 +7,11 @@ header {
     font-weight: bold;
 }
 
+.mainText a {
+    text-decoration: none;
+    color: var(--black);
+}
+
 .links a {
     font-size: 30px;
     font-weight: bold;
