@@ -15,19 +15,39 @@ const FractalNavigate = () => {
         <div>
             {isFractalDragonEnabled && <DisplayFractal fractal_header_name={'Фрактал Хартера — Хейтуея'}
                                                        fractal_name={'Крива дракона'}
-                                                       fractal_description={fractal_description.fractal_dragon}/> }
+                                                       fractal_description={fractal_description.fractal_dragon}
+                                                       dragon={isFractalDragonEnabled}
+                                                       barnsley={isFractalBarnsleyEnabled}
+                                                       cesaro={isFractalCesaroEnabled}
+                                                       gilbert={isFractalGilbertEnabled}
+            />   }
 
             {isFractalBarnsleyEnabled && <DisplayFractal fractal_header_name={'Фрактал Барнслі'}
                                                          fractal_name={'Папороть Барнслі'}
-                                                         fractal_description={fractal_description.fractal_barnsley}/> }
+                                                         fractal_description={fractal_description.fractal_barnsley}
+                                                         dragon={isFractalDragonEnabled}
+                                                         barnsley={isFractalBarnsleyEnabled}
+                                                         cesaro={isFractalCesaroEnabled}
+                                                         gilbert={isFractalGilbertEnabled}
+            /> }
 
             {isFractalCesaroEnabled && <DisplayFractal fractal_header_name={'Фрактал Чезаро'}
                                                        fractal_name={'Лінія Чезаро'}
-                                                       fractal_description={fractal_description.fractal_cesaro}/> }
+                                                       fractal_description={fractal_description.fractal_cesaro}
+                                                       dragon={isFractalDragonEnabled}
+                                                       barnsley={isFractalBarnsleyEnabled}
+                                                       cesaro={isFractalCesaroEnabled}
+                                                       gilbert={isFractalGilbertEnabled}
+            /> }
 
             {isFractalGilbertEnabled && <DisplayFractal fractal_header_name={'Фрактал Гільберта-Пеано'}
                                                         fractal_name={'Крива Гільберта'}
-                                                        fractal_description={fractal_description.fractal_gilbert_peano}/> }
+                                                        fractal_description={fractal_description.fractal_gilbert_peano}
+                                                        dragon={isFractalDragonEnabled}
+                                                        barnsley={isFractalBarnsleyEnabled}
+                                                        cesaro={isFractalCesaroEnabled}
+                                                        gilbert={isFractalGilbertEnabled}
+            /> }
 
             <div className={'flex grid absolute'}>
                 <button disabled={isFractalDragonEnabled} onClick={() => {
