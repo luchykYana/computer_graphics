@@ -47,6 +47,7 @@ const FractalNavigate = () => {
                                                         barnsley={isFractalBarnsleyEnabled}
                                                         cesaro={isFractalCesaroEnabled}
                                                         gilbert={isFractalGilbertEnabled}
+                                                        count={7}
             /> }
 
             <div className={'flex grid absolute'}>

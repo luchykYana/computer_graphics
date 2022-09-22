@@ -4,7 +4,13 @@ import {icons} from '../../constants';
 
 import './DisplayFractal.css'
 
-const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description, dragon, barnsley, cesaro, gilbert}) => {
+const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description, dragon, barnsley, cesaro, gilbert, count= 20}) => {
+
+    let selectItems = [];
+
+    for (let i = 1; i <= count; i++) {
+        selectItems.push(<option value={i}>{i}</option>);
+    }
 
     const buildDragonFractal = (d) => {
         const canvas = document.getElementById('fractal_canvas');
@@ -70,7 +76,6 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
         const h = canvas.height;
         const w = canvas.width;
 
-
         let total_length;
 
         if (h < w) { total_length = 0.9 * h; }
@@ -115,26 +120,7 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
                     <div className={'flex grid mt-60'}>
                         <label htmlFor='iterations'>Кількість ітерацій:</label>
                         <select id='iterations' name='iterations' onChange={buildFractal} >
-                            <option value='1'>1</option>
-                            <option value='2'>2</option>
-                            <option value='3'>3</option>
-                            <option value='4'>4</option>
-                            <option value='5'>5</option>
-                            <option value='6'>6</option>
-                            <option value='7'>7</option>
-                            <option value='8'>8</option>
-                            <option value='9'>9</option>
-                            <option value='10'>10</option>
-                            <option value='11'>11</option>
-                            <option value='12'>12</option>
-                            <option value='13'>13</option>
-                            <option value='14'>14</option>
-                            <option value='15'>15</option>
-                            <option value='16'>16</option>
-                            <option value='17'>17</option>
-                            <option value='18'>18</option>
-                            <option value='19'>19</option>
-                            <option value='20'>20</option>
+                            {selectItems}
                         </select>
                     </div>
                     <div className={'mt-20 text-hint'}>
