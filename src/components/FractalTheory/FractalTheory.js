@@ -1,11 +1,12 @@
 import React from 'react';
 import {Title} from "../Title/Title";
 import './FractalTheory.css';
+import {icons, images} from "../../constants";
 
 const FractalTheory = () => {
     return (
         <div className={'content'}>
-            <Title imageClassName={'book'} caption={'Що таке фрактал?'}/>
+            <Title icon_name={icons.book} caption={'Що таке фрактал?'}/>
 
             <div className={'flex margin-top-20'} >
                 <div className={'fractal-theory-text'}>
@@ -15,7 +16,7 @@ const FractalTheory = () => {
                     <br/>
                     <p>В основі цього явища лежить дуже проста ідея: нескінчену по красі і різноманітності множину фігур можна отримати з відносно простих конструкцій за допомогою всього двох операцій - копіювання і масштабування.</p>
                 </div>
-                <div className={'margin-left-20 fractal-theory'}></div>
+                <img className={'margin-left-20'} src={`${images.fractal_theory}`} alt="fractal" />
             </div>
         </div>
     );

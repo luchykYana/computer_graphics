@@ -1,7 +1,7 @@
 import {Link, NavLink} from 'react-router-dom';
 
 import css from './Header.module.css';
-import {icons} from '../../constants/icons';
+import {icons} from '../../constants';
 
 const Header = () => {
     return (
