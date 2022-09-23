@@ -1,5 +1,5 @@
 .flex {
-    margin: 40px 80px;
+    margin: 40px 80px 0;
     width: 90%;
     display: flex;
     justify-content: space-between;

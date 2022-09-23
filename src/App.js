@@ -1,7 +1,14 @@
 import React, {Component} from 'react';
 import {Route, Routes} from 'react-router';
 
-import {ColorModelsPage, FigureMovementPage, FirstPage, FractalPage, FractalPracticePage} from './pages';
+import {
+    ColorModelsPage,
+    FigureMovementPage,
+    FirstPage,
+    FractalPage,
+    FractalPracticePage,
+    FractalTestPage
+} from './pages';
 import {Content, FractalTheory} from './components';
 
 import './App.css';
@@ -17,6 +24,7 @@ class App extends Component {
                     <Route path={'fractal'} element={<FractalPage/>}>
                         <Route index element={<FractalTheory/>}/>
                         <Route path={'practice'} element={<FractalPracticePage/>}/>
+                        <Route path={'test'} element={<FractalTestPage/>}/>
                     </Route>
 
                     <Route path={'color-models'} element={<ColorModelsPage/>}/>

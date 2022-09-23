@@ -1,1 +1,1 @@
-export const userPath2 = ['/', '../', '/content/fractal/practice', './'];
+export const userPath2 = ['/', './', '/content/fractal/practice',  '/content/fractal/test','./'];

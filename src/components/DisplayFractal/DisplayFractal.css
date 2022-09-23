@@ -47,10 +47,6 @@ a:hover {
     color: var(--black);
 }
 
-select:first-child {
-    display: none;
-}
-
 .mt-40 {
     margin-top: 40px;
 }
