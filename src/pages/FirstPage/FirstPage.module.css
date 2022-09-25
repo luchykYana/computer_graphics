@@ -1,4 +1,130 @@
-.bgColor{
+.bgColor {
     background-color: var(--white);
     height: 100vh;
+    position: relative;
+    overflow: hidden;
 }
+
+.d_flex {
+    display: flex;
+}
+
+.title {
+    align-items: center;
+    font-size: 50px;
+    font-weight: bold;
+    grid-column-gap: 270px;
+    margin: 40px 70px 40px;
+}
+
+.title img {
+    width: 90px;
+    height: 90px;
+}
+
+.second_title {
+    font-weight: bold;
+    font-size: 35px;
+    text-align: center;
+    margin: 30px;
+}
+
+.square_110 {
+    width: 110px;
+    height: 110px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.points {
+    font-size: 25px;
+    align-items: center;
+    margin: 35px 20px 35px 100px;
+}
+
+.point_img {
+    position: relative;
+    right: 35px;
+    top: 10px;
+}
+
+.square {
+    width: 55px;
+    height: 55px;
+    border-radius: 5px;
+}
+
+.yellow_square {
+    background-color: var(--light-yellow);
+}
+
+.red_square {
+    background-color: var(--light-red);
+}
+
+.blue_square {
+    background-color: var(--light-blue);
+}
+
+.background_squares {
+    position: absolute;
+}
+
+div.background_squares > div:nth-child(1) {
+    left: 1426px;
+    bottom: 255px;
+}
+
+div.background_squares > div:nth-child(2) {
+    left: 1336px;
+    bottom: 280px;
+}
+
+div.background_squares > div:nth-child(3) {
+    left: 1456px;
+    bottom: 235px;
+}
+
+div.background_squares > div:nth-child(4) {
+    left: 1490px;
+    bottom: 180px;
+}
+
+div.background_squares > div:nth-child(5) {
+    left: 1380px;
+    bottom: 130px;
+    z-index: 1;
+}
+
+div.background_squares > div:nth-child(6) {
+    left: 1426px;
+    bottom: 194px;
+}
+
+.first_page_button {
+    justify-content: center;
+}
+
+#first_page_button {
+    background-color: var(--white);
+    color: var(--black);
+    font-weight: bold;
+    width: auto;
+    font-size: 25px;
+    margin: 30px;
+    border: black 3px dashed;
+    padding: 0 50px;
+    cursor: pointer;
+    transition: border-color 300ms, color 300ms;
+}
+
+#first_page_button:hover {
+    background-image: linear-gradient(45deg, var(--light-red), var(--light-blue), var(--light-yellow), var(--light-red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border-top: var(--light-blue) 5px dashed;
+    border-left: var(--light-red) 5px dashed;
+    border-right: var(--light-red) 5px dashed;
+    border-bottom: var(--light-yellow) 5px dashed;
+}
+
