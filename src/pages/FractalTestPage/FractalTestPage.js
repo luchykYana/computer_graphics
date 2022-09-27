@@ -1,4 +1,4 @@
-import {icons, images} from '../../constants';
+import {icons} from '../../constants';
 import {Test, Title} from '../../components';
 
 import css from './FractalTestPage.module.css';

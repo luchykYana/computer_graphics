@@ -115,7 +115,7 @@ div.background_squares > div:nth-child(6) {
     border: black 3px dashed;
     padding: 0 50px;
     cursor: pointer;
-    transition: border-color 300ms, color 300ms;
+    transition: border-color 1000ms, color 1000ms, border 150ms;
 }
 
 #first_page_button:hover {

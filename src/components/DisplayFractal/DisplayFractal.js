@@ -100,10 +100,7 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
         draw();
     }
     const buildCesaroFractal = (d) => {
-        console.log('buildCesaroFractal\nvalue: ' + d);
-
-
-
+        console.log('buildCesaroFractal\nvalue: ' + d)
     }
     const buildGilbertFractal = (d) => {
         function Drawing(dx, dy)//функція формування лінії
@@ -150,13 +147,115 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
         Hilbert(d, start_length, 0);	//виклик рекурсивної функції Hilbert
     }
 
+    const OleksandrTestDragonFunction = (d) => {
+        const canvas = document.getElementById('fractal_canvas');
+        const ctx = canvas.getContext('2d');
+
+        ctx.strokeStyle = 'rgb(255,0,0)';
+
+        let length = 600;
+
+        /*
+        The dragon curve drawn using an L-system.
+        variables : X Y
+        constants : F + −
+        start  : FX
+        rules  : (X → X+YF+), (Y → -FX−Y)
+        angle  : 90°
+        Here, F means "draw forward", − means "turn left 90°", and + means "turn right 90°".
+        X and Y do not correspond to any drawing action and are only used to control the evolution of the curve.
+        */
+
+        const dragonCurve = function(depth){
+            //base case
+            if(depth <= 1){return 'FX';}
+            // if(depth < 1) return
+
+            let turtle = dragonCurve(depth - 1);
+            let newTurtle = '';
+            for(let i = 0; i < turtle.length; i++){
+
+                if(turtle.charAt(i) === 'X'){
+                    newTurtle += 'X+YF+';
+                }
+                else if (turtle.charAt(i) === 'Y'){
+                    newTurtle += '-FX-Y';
+                }
+                else {
+                    newTurtle += turtle.charAt(i);
+                }
+            }
+            return newTurtle;
+        };
+
+        const turtleDraw = function(text, startx, starty, length){
+            let direction = 0;
+            let x = startx;
+            let y = starty;
+
+            ctx.beginPath();
+
+            for(let i = 0; i < text.length; i++){
+
+                if(text.charAt(i) === 'F'){
+                    //'F', draw forward length in direction
+                    let endx = x + length * Math.cos(direction * 0.017453292519);
+                    let endy = y + length * Math.sin(direction * 0.017453292519);
+
+                    // let red = x/400 * 255;
+                    // let blue = y/400 * 255;
+                    // let green = (x + y + 300)/400 * 255;
+                    // stroke(red, green, blue);
+
+                    // line(x,y,endx,endy);
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(endx, endy);
+                    ctx.stroke();
+
+                    x = endx;
+                    y = endy;
+                }
+                else if(text.charAt(i) === '-'){
+                    //'-' add 90 degrees to direction
+                    direction += 90;
+                }
+                else if(text.charAt(i) === '+'){
+                    //'+' subtract 90 degrees from direction
+                    direction -= 90;
+                }
+            }
+        };
+
+        // fill(0, 0, 0);
+        // rect(0,0,width,height);
+        // stroke(255, 0, 0);
+
+        //strokeWeight(3);
+        //line(0,0,400,400);
+
+        const dragon = dragonCurve(d);
+        // alert(canvas.width/2)
+        // alert(canvas.height/2)
+        length /= Math.pow(2, d);
+        turtleDraw(dragon, canvas.width/2 - 100,canvas.height/2 + 50, length);
+
+        /*High definition... runs kinda slow
+        var dragon = dragonCurve(16);
+        turtleDraw(dragon,90,150,1);
+        //*/
+    }
+
     const buildFractal = (e) => {
         const canvas = document.getElementById('fractal_canvas');
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
         const depth = e.target.value;
 
-        if (dragon) { buildDragonFractal(depth); }
+        if (dragon) {
+            // buildDragonFractal(depth);       // not to delete code
+            OleksandrTestDragonFunction(depth); // to be renamed later
+        }
         else if (gilbert) {buildGilbertFractal(depth);}
         else if (barnsley) {buildBarnsleyFractal(depth);}
         else if (cesaro) {buildCesaroFractal(depth);}

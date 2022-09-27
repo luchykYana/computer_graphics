@@ -38,6 +38,7 @@ const FractalNavigate = () => {
                                                        barnsley={isFractalBarnsleyEnabled}
                                                        cesaro={isFractalCesaroEnabled}
                                                        gilbert={isFractalGilbertEnabled}
+                                                       count={50}
             /> }
 
             {isFractalGilbertEnabled && <DisplayFractal fractal_header_name={'Фрактал Гільберта-Пеано'}
