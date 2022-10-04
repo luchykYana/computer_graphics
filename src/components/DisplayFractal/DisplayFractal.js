@@ -4,7 +4,16 @@ import {icons} from '../../constants';
 
 import './DisplayFractal.css'
 
-const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description, dragon, barnsley, cesaro, gilbert, count= 20}) => {
+const DisplayFractal = ({
+                            fractal_header_name,
+                            fractal_name,
+                            fractal_description,
+                            dragon,
+                            barnsley,
+                            cesaro,
+                            gilbert,
+                            count = 20
+                        }) => {
 
     let selectItems = [];
 
@@ -38,7 +47,7 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
 
         }
 
-        draw(250 - 128 , 130 , 250 + 128 , 130 , d);
+        draw(250 - 128, 130, 250 + 128, 130, d);
     }
     const buildBarnsleyFractal = (d) => {
         console.log('buildBarnsleyFractal\nvalue: ' + d)
@@ -47,20 +56,16 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
 
         let x = 0, y = 0;
 
-        function draw () {
+        function draw (d) {
             canvas = document.getElementById("fractal_canvas");
             canvasContext = canvas.getContext('2d');
 
             canvasContext.fillStyle = "white";
             canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 
-            setInterval(() => {
-                // Update 20 times every frame
-                for (let i = 0; i < 20; i++)
+                for (let i = 0; i < d * 500; i++)
                     update();
-
-            }, 1000/250); // 250 frames per second
-        };
+        }
 
         function update() {
 
@@ -97,7 +102,7 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
             canvasContext.fill();
         };
 
-        draw();
+        draw(d);
     }
     const buildCesaroFractal = (d) => {
         console.log('buildCesaroFractal\nvalue: ' + d)
@@ -134,8 +139,11 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
 
         let total_length;
 
-        if (h < w) { total_length = 0.9 * h; }
-        else { total_length = 0.9 * w; }
+        if (h < w) {
+            total_length = 0.9 * h;
+        } else {
+            total_length = 0.9 * w;
+        }
 
         let start_x = (w - total_length) / 2;
         let start_y = (h - total_length) / 2;
@@ -166,38 +174,38 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
         X and Y do not correspond to any drawing action and are only used to control the evolution of the curve.
         */
 
-        const dragonCurve = function(depth){
+        const dragonCurve = function (depth) {
             //base case
-            if(depth <= 1){return 'FX';}
+            if (depth <= 1) {
+                return 'FX';
+            }
             // if(depth < 1) return
 
             let turtle = dragonCurve(depth - 1);
             let newTurtle = '';
-            for(let i = 0; i < turtle.length; i++){
+            for (let i = 0; i < turtle.length; i++) {
 
-                if(turtle.charAt(i) === 'X'){
+                if (turtle.charAt(i) === 'X') {
                     newTurtle += 'X+YF+';
-                }
-                else if (turtle.charAt(i) === 'Y'){
+                } else if (turtle.charAt(i) === 'Y') {
                     newTurtle += '-FX-Y';
-                }
-                else {
+                } else {
                     newTurtle += turtle.charAt(i);
                 }
             }
             return newTurtle;
         };
 
-        const turtleDraw = function(text, startx, starty, length){
+        const turtleDraw = function (text, startx, starty, length) {
             let direction = 0;
             let x = startx;
             let y = starty;
 
             ctx.beginPath();
 
-            for(let i = 0; i < text.length; i++){
+            for (let i = 0; i < text.length; i++) {
 
-                if(text.charAt(i) === 'F'){
+                if (text.charAt(i) === 'F') {
                     //'F', draw forward length in direction
                     let endx = x + length * Math.cos(direction * 0.017453292519);
                     let endy = y + length * Math.sin(direction * 0.017453292519);
@@ -214,12 +222,10 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
 
                     x = endx;
                     y = endy;
-                }
-                else if(text.charAt(i) === '-'){
+                } else if (text.charAt(i) === '-') {
                     //'-' add 90 degrees to direction
                     direction += 90;
-                }
-                else if(text.charAt(i) === '+'){
+                } else if (text.charAt(i) === '+') {
                     //'+' subtract 90 degrees from direction
                     direction -= 90;
                 }
@@ -237,7 +243,7 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
         // alert(canvas.width/2)
         // alert(canvas.height/2)
         length /= Math.pow(2, d);
-        turtleDraw(dragon, canvas.width/2 - 100,canvas.height/2 + 50, length);
+        turtleDraw(dragon, canvas.width / 2 - 100, canvas.height / 2 + 50, length);
 
         /*High definition... runs kinda slow
         var dragon = dragonCurve(16);
@@ -255,10 +261,13 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
         if (dragon) {
             // buildDragonFractal(depth);       // not to delete code
             OleksandrTestDragonFunction(depth); // to be renamed later
+        } else if (gilbert) {
+            buildGilbertFractal(depth);
+        } else if (barnsley) {
+            buildBarnsleyFractal(depth);
+        } else if (cesaro) {
+            buildCesaroFractal(depth);
         }
-        else if (gilbert) {buildGilbertFractal(depth);}
-        else if (barnsley) {buildBarnsleyFractal(depth);}
-        else if (cesaro) {buildCesaroFractal(depth);}
     };
 
     const download_img = () => {
@@ -277,7 +286,7 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
                     <div><p><b>{fractal_name} — </b>{fractal_description}</p></div>
                     <div className={'flex grid mt-60'}>
                         <label htmlFor='iterations'>Кількість ітерацій:</label>
-                        <select id='iterations' name='iterations' onChange={buildFractal} >
+                        <select id='iterations' name='iterations' onChange={buildFractal}>
                             {selectItems}
                         </select>
                     </div>
@@ -288,11 +297,10 @@ const DisplayFractal = ({fractal_header_name, fractal_name, fractal_description,
                 </div>
                 <div>
                     <div>
-                        <canvas id="fractal_canvas" width="500" height="340"> </canvas>
+                        <canvas id="fractal_canvas" width="500" height="340"></canvas>
                     </div>
-                    <a id={'a'} download={fractal_header_name +='.png'}/>
+                    <a id={'a'} download={fractal_header_name += '.png'}/>
                     <button className={'save_button'} onClick={download_img}>Зберегти</button>
-
                 </div>
             </div>
 
