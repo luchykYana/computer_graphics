@@ -1,4 +1,4 @@
-import React, {useLayoutEffect} from 'react';
+import React from 'react';
 import {Title} from '../Title/Title';
 import {icons} from '../../constants';
 
@@ -18,39 +18,10 @@ const DisplayFractal = ({
     let selectItems = [];
 
     for (let i = 1; i <= count; i++) {
-        selectItems.push(<option value={i}>{i}</option>);
+        selectItems.push(<option key={i} value={i}>{i}</option>);
     }
 
-    const buildDragonFractal = (d) => {
-        const canvas = document.getElementById('fractal_canvas');
-        const ctx = canvas.getContext('2d');
-
-        ctx.fillStyle = 'rgb(255,0,0)';
-
-        // async function draw(x1, y1, x2, y2, dep) {
-        function draw(x1, y1, x2, y2, dep) {
-            if (dep === 0) {
-                ctx.fillRect(x1, y1, 1, 1);
-                ctx.fillRect(x2, y2, 1, 1);
-                return;
-            }
-
-            let dx = (x2 - x1) / 2;
-            let dy = (y2 - y1) / 2;
-            //смещение по х и у
-            let x_tmp = x1 + dx - dy;
-            let y_tmp = y1 + dy + dx;
-
-            // await new Promise(resolve => setTimeout(resolve, 1000));
-            draw(x1, y1, x_tmp, y_tmp, dep - 1);
-            draw(x2, y2, x_tmp, y_tmp, dep - 1);
-
-        }
-
-        draw(250 - 128, 130, 250 + 128, 130, d);
-    }
     const buildBarnsleyFractal = (d) => {
-        console.log('buildBarnsleyFractal\nvalue: ' + d)
         let canvas;
         let canvasContext;
 
@@ -63,7 +34,7 @@ const DisplayFractal = ({
             canvasContext.fillStyle = "white";
             canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 
-                for (let i = 0; i < d * 500; i++)
+                for (let i = 0; i < d * 500 ; i++)
                     update();
         }
 
@@ -130,8 +101,6 @@ const DisplayFractal = ({
             if (dep > 1) Hilbert(dep - 1, -dy, -dx);
         }
 
-        // console.log('buildGilbertFractal\nvalue: ' + d)
-
         const canvas = document.getElementById('fractal_canvas');
         const ctx = canvas.getContext('2d');
         const h = canvas.height;
@@ -155,102 +124,6 @@ const DisplayFractal = ({
         Hilbert(d, start_length, 0);	//виклик рекурсивної функції Hilbert
     }
 
-    const OleksandrTestDragonFunction = (d) => {
-        const canvas = document.getElementById('fractal_canvas');
-        const ctx = canvas.getContext('2d');
-
-        ctx.strokeStyle = 'rgb(255,0,0)';
-
-        let length = 600;
-
-        /*
-        The dragon curve drawn using an L-system.
-        variables : X Y
-        constants : F + −
-        start  : FX
-        rules  : (X → X+YF+), (Y → -FX−Y)
-        angle  : 90°
-        Here, F means "draw forward", − means "turn left 90°", and + means "turn right 90°".
-        X and Y do not correspond to any drawing action and are only used to control the evolution of the curve.
-        */
-
-        const dragonCurve = function (depth) {
-            //base case
-            if (depth <= 1) {
-                return 'FX';
-            }
-            // if(depth < 1) return
-
-            let turtle = dragonCurve(depth - 1);
-            let newTurtle = '';
-            for (let i = 0; i < turtle.length; i++) {
-
-                if (turtle.charAt(i) === 'X') {
-                    newTurtle += 'X+YF+';
-                } else if (turtle.charAt(i) === 'Y') {
-                    newTurtle += '-FX-Y';
-                } else {
-                    newTurtle += turtle.charAt(i);
-                }
-            }
-            return newTurtle;
-        };
-
-        const turtleDraw = function (text, startx, starty, length) {
-            let direction = 0;
-            let x = startx;
-            let y = starty;
-
-            ctx.beginPath();
-
-            for (let i = 0; i < text.length; i++) {
-
-                if (text.charAt(i) === 'F') {
-                    //'F', draw forward length in direction
-                    let endx = x + length * Math.cos(direction * 0.017453292519);
-                    let endy = y + length * Math.sin(direction * 0.017453292519);
-
-                    // let red = x/400 * 255;
-                    // let blue = y/400 * 255;
-                    // let green = (x + y + 300)/400 * 255;
-                    // stroke(red, green, blue);
-
-                    // line(x,y,endx,endy);
-                    ctx.moveTo(x, y);
-                    ctx.lineTo(endx, endy);
-                    ctx.stroke();
-
-                    x = endx;
-                    y = endy;
-                } else if (text.charAt(i) === '-') {
-                    //'-' add 90 degrees to direction
-                    direction += 90;
-                } else if (text.charAt(i) === '+') {
-                    //'+' subtract 90 degrees from direction
-                    direction -= 90;
-                }
-            }
-        };
-
-        // fill(0, 0, 0);
-        // rect(0,0,width,height);
-        // stroke(255, 0, 0);
-
-        //strokeWeight(3);
-        //line(0,0,400,400);
-
-        const dragon = dragonCurve(d);
-        // alert(canvas.width/2)
-        // alert(canvas.height/2)
-        length /= Math.pow(2, d);
-        turtleDraw(dragon, canvas.width / 2 - 100, canvas.height / 2 + 50, length);
-
-        /*High definition... runs kinda slow
-        var dragon = dragonCurve(16);
-        turtleDraw(dragon,90,150,1);
-        //*/
-    }
-
     const buildFractal = (e) => {
         const canvas = document.getElementById('fractal_canvas');
         const ctx = canvas.getContext('2d');
@@ -259,8 +132,7 @@ const DisplayFractal = ({
         const depth = e.target.value;
 
         if (dragon) {
-            // buildDragonFractal(depth);       // not to delete code
-            OleksandrTestDragonFunction(depth); // to be renamed later
+            buildDragonFractal(depth);
         } else if (gilbert) {
             buildGilbertFractal(depth);
         } else if (barnsley) {
@@ -276,6 +148,68 @@ const DisplayFractal = ({
         a.href = canvas.toDataURL("image/png");
         a.click();
     };
+
+    const buildDragonFractal = (d) => {
+        // клас 2-д точки, допоміжний
+        const Point = function(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        // початкові налаштування
+        const canvas = document.getElementById('fractal_canvas');
+        const ctx = canvas.getContext('2d');
+
+        let points = [new Point(canvas.width * 2 / 7, canvas.height * 2 / 5),
+            new Point(canvas.width * 6 / 7, canvas.height * 2 / 5)];
+
+        // ітеративна побудова
+        for (let i = 0; i < d; i++) {
+            step(points);
+            drawCurve(points, ctx, canvas);
+        }
+
+        // повертає точку між двома існуючими точками в даному напрямку
+        function bend (p1, p2, direction) {
+            let xLength = p2.x - p1.x;
+            let yLength = p2.y - p1.y;
+
+            let angle = direction * Math.PI / 4;
+
+            let newX = (xLength * Math.cos(angle) - yLength * Math.sin(angle))
+                * 0.707106781 + p1.x;
+            let newY = (xLength * Math.sin(angle) + yLength * Math.cos(angle))
+                * 0.707106781 + p1.y;
+
+            return new Point(newX, newY);
+        }
+
+        // підвищуємо деталізацію, обраховуючи наступні точки
+        function step (points) {
+            for (let i = 1; i < points.length; i+=2) {
+                let newPoint = bend(points[i - 1], points[i],
+                    parseInt(i / 2) % 2 === 0 ? 1 : -1);
+                points.splice(i, 0, newPoint);
+            }
+        }
+
+        // рисує 1 сегмент фракталу
+        function drawSegment (p1, p2, context) {
+            context.strokeStyle = 'rgb(255, 0, 0)';
+            context.beginPath();
+            context.moveTo(p1.x, p1.y);
+            context.lineTo(p2.x, p2.y);
+            context.stroke();
+        }
+
+        // рисує фрактаьну криву
+        function drawCurve(points, context, canvas) {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 1; i < points.length; i++) {
+                drawSegment(points[i - 1], points[i], context);
+            }
+        }
+    }
 
     return (
         <div className={'content'}>
@@ -297,13 +231,13 @@ const DisplayFractal = ({
                 </div>
                 <div>
                     <div>
-                        <canvas id="fractal_canvas" width="500" height="340"></canvas>
+                        <canvas id="fractal_canvas" width="500" height="340"> </canvas>
                     </div>
-                    <a id={'a'} download={fractal_header_name += '.png'}/>
+                    <a id={'a'} download={fractal_header_name +='.png'}/>
                     <button className={'save_button'} onClick={download_img}>Зберегти</button>
+
                 </div>
             </div>
-
         </div>
     );
 };
