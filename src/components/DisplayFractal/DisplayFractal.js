@@ -76,126 +76,118 @@ const DisplayFractal = ({
         draw(d);
     }
     const buildCesaroFractal = (d) => {
-        console.log('buildCesaroFractal\nvalue: ' + d);
-
-        // >>>  number of iterations  <<<
-        let iteration = 4, time = 1;
-
-        /* ###  ###  ###  ###  ###  ### ###  ###  ### */
-
-        const canvas = document.getElementById("fractal_canvas");
+        // побудувати початковий трикутник
+        const canvas = document.getElementById('fractal_canvas');
         const ctx = canvas.getContext('2d');
+        // клас 2-д точки, допоміжний
+        const Point = function(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+        d = 0 // !!!!!!!!!!!!!!! test
 
-        class VonKochClass {
-            constructor() {
-                // canvas width: 600px, height: 400px
-                this.middle = 166;
-                this.length = 166;
-                this.init = 0;
-                this.start = 0;
-                this.end = 500;
-                this.degrees = [-60, 120, -60];
-            }
-            line(ctx) {
-                ctx.save();
+        let iterator = 0;
 
-                ctx.beginPath();
-                ctx.moveTo(this.start, this.middle);
-                ctx.lineTo(this.end, this.middle);
+        // add a default limit of three as we don't want an infinite loop
+        const cesaro = (a, b, c) => {
+            iterator++;
+            // знайти координати точок 4 і 5
+            let p4 = new Point(200, 300)
+            let p5 = new Point(300, 300)
 
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                ctx.closePath();
-                ctx.restore();
-            }
-            shape(ctx) { // we use the shape: __/\__ has patern
-                // note: -174 intersection point between 2 segments of 200px
-                ctx.beginPath();
+            // побудувати трикутники на знайдених точках
+            drawTriangle(c, a, p4)  // 3 1 4
+            drawTriangle(b, c, p5)  // 2 3 5
 
-                ctx.moveTo(this.start, this.init);
-                ctx.lineTo(this.length, this.init);
-                ctx.lineTo(this.length + (this.length/2), -174);
-                ctx.lineTo(this.length * 2, this.init);
-                ctx.lineTo(this.end, this.init);
+            // очистити проміжок 4 - 5
+            // ctx.beginPath()
+            // ctx.moveTo(p4.x, p4.y)
+            // ctx.lineTo(p5.x, p5.y)
+            // ctx.strokeStyle = 'rgb(245, 245, 245)';
+            // // R: 96.1, G: 96.1, B: 96.1
+            // // ctx.setStrokeColor(#F5F5F5);
+            // ctx.stroke();
 
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                ctx.closePath();
-            }
-            loopThree(ctx) {
-                for (let i = 0; i < 3; i++) {
-                    this.begin(ctx, 500, -166, this.degrees[i]);
-                    this.loopOne(ctx);
-                    this.loopTwo(ctx);
-                }
-            }
-            loopTwo(ctx) {
-                for (let i = 0; i < 3; i++) {
-                    this.begin(ctx, 500, -166, this.degrees[i]);
-                    this.loopOne(ctx);
-                }
-            }
-            loopOne(ctx) {
-                for (let i = 0; i < 3; i++) {
-                    this.begin(ctx, 500, -166, this.degrees[i]);
-                }
-            }
-            startup(ctx, iter) {
-                this.begin(ctx, 0, iter, 0);
-                this.loopOne(ctx);
-            }
-            begin(ctx, x, y, degrees) {
-                ctx.translate(x, (200 * Math.pow(3, y) ));
-                ctx.rotate((Math.PI/180)* degrees);
-                this.shape(ctx);
-            }
+            // ctx.clearRect(p4.x + 1, p4.y - 1 , p5.x - p4.x -2, 2);
+            ctx.clearRect(p4.x + 1, p5.y - 1 , p5.x - p4.x - 1, p4.y - p5.y  + 2);
+
+            // рекурсивні виклики для лівої і правої частини
+            // cesaro() // точки 3 1 4
+            // cesaro() // точки 2 3 5
+
+
+            // test
+            let p6 = new Point(95, 200)
+            let p7 = new Point(170, 114)
+
+            drawTriangle(a, p6, p4)
+            drawTriangle(p4, c, p7)
+
+            // ctx.clearRect(p6.x , p7.y  , p7.x - p6.x - 1, p6.y - p7.y );
+            ctx.clearRect(p6.x + 1, p7.y - 1 , p7.x - p6.x - 1, p6.y - p7.y + 2);
+            // ctx.clearRect(p4.x + 1, p5.y - 1 , p5.x - p4.x - 1, p4.y - p5.y  + 2);
+
+            // const
+
+
+            // let [dx, dy] = [b.x - a.x, b.y - a.y]
+            // let dist = Math.sqrt(dx * dx + dy * dy)
+            // let unit = dist / 3
+            // let angle = Math.atan2(dy, dx)
+            //
+            // //This will be the triangular shape that makes the 'points' on the snowflake
+            // let p1 = {
+            //     x: a.x + dx / 3,
+            //     y: a.y + dy / 3
+            // }
+            // let p3 = {
+            //     x: b.x - dx / 3,
+            //     y: b.y - dy / 3
+            // }
+            // let p2 = {
+            //     x: p1.x + Math.cos(angle - Math.PI / 3) * unit,
+            //     y: p1.y + Math.sin(angle - Math.PI / 3) * unit
+            // }
+
+            // if (d > 0) {
+            //     // Decrease limit each time it's called
+            //     // koch(a, p1, limit - 1)
+            //     // koch(p1, p2, limit - 1)
+            //     // koch(p2, p3, limit - 1)
+            //     // koch(p3, b, limit - 1)
+            // } else {
+            //     drawTriangle(a, b, c)
+            //
+            //     // context.beginPath()
+            //     // context.moveTo(a.x, a.y)
+            //     // context.lineTo(p1.x, p1.y)
+            //     // context.lineTo(p2.x, p2.y)
+            //     // context.lineTo(p3.x, p3.y)
+            //     // context.lineTo(b.x, b.y)
+            //     // context.stroke()
+            // }
         }
 
-        const VonKochCurve = new VonKochClass();
-
-        /* function handling :
-          - the method call,
-          - the screen refrech (need to not overlap every draw),
-          - the scale (to generate the fractal iteration principal)
-          and it's called every 2s to create an animation (depending of the iteration number)
-
-          note: the save, restore func are needed to reboot everytime the context (ctx)
-          context = initial parameters of the canvas
-                    (exemple: the ref point for rotation by default 0, 0 (top-left corner)) */
-
-        function fractal(iter, time) {
-            setTimeout(() => {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.save();
-                ctx.scale(1/ Math.pow(3, iter), 1/ Math.pow(3, iter));
-
-                if (iter == 0) VonKochCurve.begin(ctx, 0, iter, 0);
-
-                else if (iter == 1) {
-                    VonKochCurve.startup(ctx, iter);
-                }
-                else if (iter == 2) {
-                    VonKochCurve.startup(ctx, iter);
-                    VonKochCurve.loopTwo(ctx);
-                }
-                else if (iter == 3) {
-                    VonKochCurve.startup(ctx, iter);
-                    VonKochCurve.loopTwo(ctx);
-                    VonKochCurve.loopThree(ctx);
-                }
-
-                ctx.restore();
-            }, (time * 2000));
+        const drawTriangle= (a, b, c) => {
+            ctx.beginPath();
+            ctx.moveTo(c.x,c.y);
+            ctx.lineTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.lineTo(c.x, c.y);
+            ctx.strokeStyle = 'rgb(255, 0, 0)';
+            ctx.stroke();
         }
 
-// *** init ***
-        VonKochCurve.line(ctx);
+        let A =  new Point(10, 300);
+        let B =  new Point(490, 300);
+        let C =  new Point(250, 20);
 
-//loop to create the number of iteration wanted with time increase within
-        for (let i = 0; i < iteration; i++) {
-            fractal(i, time);
-            time +=1;
-        }
+       drawTriangle(A, B, C);
+       //
+       // C = new Point(350, 20);
+       // drawTriangle(A, B, C);
+       cesaro(A, B, C)
+
     }
     const buildGilbertFractal = (d) => {
         function Drawing(dx, dy)//функція формування лінії
