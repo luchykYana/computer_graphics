@@ -3,7 +3,6 @@ import {Title} from '../Title/Title';
 import {icons} from '../../constants';
 
 import './DisplayFractal.css'
-import {logDOM} from "@testing-library/react";
 
 const DisplayFractal = ({
                             fractal_header_name,
@@ -28,15 +27,15 @@ const DisplayFractal = ({
 
         let x = 0, y = 0;
 
-        function draw (d) {
+        function draw(d) {
             canvas = document.getElementById("fractal_canvas");
             canvasContext = canvas.getContext('2d');
 
             canvasContext.fillStyle = "white";
             canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 
-                for (let i = 0; i < d * 500 ; i++)
-                    update();
+            for (let i = 0; i < d * 500; i++)
+                update();
         }
 
         function update() {
@@ -44,17 +43,17 @@ const DisplayFractal = ({
             let nextX, nextY;
             let r = Math.random();
             if (r < 0.01) {
-                nextX =  0;
-                nextY =  0.16 * y;
+                nextX = 0;
+                nextY = 0.16 * y;
             } else if (r < 0.86) {
-                nextX =  0.85 * x + 0.04 * y;
+                nextX = 0.85 * x + 0.04 * y;
                 nextY = -0.04 * x + 0.85 * y + 1.6;
             } else if (r < 0.93) {
-                nextX =  0.20 * x - 0.26 * y;
-                nextY =  0.23 * x + 0.22 * y + 1.6;
+                nextX = 0.20 * x - 0.26 * y;
+                nextY = 0.23 * x + 0.22 * y + 1.6;
             } else {
                 nextX = -0.15 * x + 0.28 * y;
-                nextY =  0.26 * x + 0.24 * y + 0.44;
+                nextY = 0.26 * x + 0.24 * y + 0.44;
             }
 
             // Scaling and positioning
@@ -67,6 +66,7 @@ const DisplayFractal = ({
             y = nextY;
 
         }
+
         const drawFilledCircle = (centerX, centerY, radius, color) => {
             canvasContext.beginPath();
             canvasContext.fillStyle = color;
@@ -80,11 +80,13 @@ const DisplayFractal = ({
         // побудувати початковий трикутник
         const canvas = document.getElementById('fractal_canvas');
         const ctx = canvas.getContext('2d');
+
         // клас 2-д точки, допоміжний
-        const Point = function(x, y) {
+        const Point = function (x, y) {
             this.x = x;
             this.y = y;
         }
+
         console.log(d)
         const getDistance = (a, b) => {
             let [dx, dy] = [b.x - a.x, b.y - a.y]
@@ -95,73 +97,80 @@ const DisplayFractal = ({
         // add a default limit of three as we don't want an infinite loop
         const cesaro = (a, b, c, iter = 1) => {
             const getPoints = (a, b, c) => {
-                let t = a.x * a.x - c.x * c.x + a.y * a.y - c.y * c.y;
+                // let t = a.x * a.x - c.x * c.x + a.y * a.y - c.y * c.y;
+                //
+                // let y44 = (-(a.x * b.y - b.x * a.y) * (2 * c.x - 2 * a.x) - t * (b.y - a.y)) /
+                //     ((b.x - a.x) * (2 * c.x - 2 * a.x) + (b.y - a.y) * (2 * c.y - 2 * a.y));
 
-                let y44 = (-(a.x * b.y - b.x * a.y) * (2 * c.x - 2 * a.x) - t * (b.y - a.y)) /
-                    ((b.x - a.x) * (2 * c.x - 2 * a.x) + (b.y - a.y) * (2 * c.y - 2 * a.y));
-
+                console.info("--------------")
+                console.info("a.y:" + a.y)
+                console.info("b.y:" + b.y)
+                console.info("--------------")
                 let incrLeft;
-                if(a.y < b.y) {
+                if (a.y < b.y) {
                     incrLeft = 1;
+                } else {
+                    incrLeft = -1;
                 }
-                else incrLeft = -1;
 
-                console.log("get points")
+                console.info("get points")
 
                 let x4, y4, x5, y5;
                 let distance1, distance2, distance3, distance4;
-                    for (let x1 = (a.x + b.x )/2,  x2 = x1;
-                         x1 > Math.min(a.x, b.x) && x1 < Math.max(a.x, b.x),
-                         x2 < Math.max(a.x, b.x) && x2 > Math.min(a.x, b.y);
-                         x1 += incrLeft, x2 += -incrLeft) {
-                        let y1, y2;
-                        console.log("outer loop: ")
-                        if(a.y === b.y) {
-                            y1 = a.y;  y2 = y1;
-                            console.log("insule if")
 
-                            console.log("y1==y2")
-                        }
-                        else {
-                            console.log("inside else")
-                            for(y1 = (a.y + b.y) / 2, y2 = y1;
-                                y1 >= Math.min(a.y, c.y, b.y) && y1 <= Math.max(a.y, b.y, c.y),
-                                y2 >= Math.min(a.y, c.y, b.y) && y2 <= Math.max(a.y, b.y, c.y);
-                                y1 += incrLeft, y2 += -incrLeft) {
+                for (let x1 = (a.x + b.x) / 2, x2 = x1;
+                     x1 > Math.min(a.x, b.x) && x1 < Math.max(a.x, b.x),
+                     x2 < Math.max(a.x, b.x) && x2 > Math.min(a.x, b.x);
+                     x1 += incrLeft, x2 += -incrLeft) {
+                    let y1, y2;
 
-                                alert("are we inside the inner loop")
+                    console.info("--------------")
+                    console.info("inc:" + incrLeft)
+                    console.info("x1:" + x1, "x2:" + x2)
+                    console.info("--------------")
 
-                                distance1 = getDistance(c, new Point(x1, y1))
-                                distance2 = getDistance(a, new Point(x1, y1))
+                    console.info("outer loop: ")
+                    if (a.y === b.y) {
+                        y1 = a.y;
+                        y2 = y1;
 
-                                distance3 = getDistance(c, new Point(x2, y2))
-                                distance4 = getDistance(b, new Point(x2, y2))
+                        console.info("y1==y2")
+                    } else {
+                        for (y1 = (a.y + b.y) / 2, y2 = y1;
+                             y1 >= Math.min(a.y, c.y, b.y) && y1 <= Math.max(a.y, b.y, c.y),
+                             y2 >= Math.min(a.y, c.y, b.y) && y2 <= Math.max(a.y, b.y, c.y);
+                             y1 += -incrLeft, y2 += incrLeft) {
+                            console.info("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
+                            // alert("are we inside the inner loop")
 
-                                if(Math.abs(distance2 - distance1) < 1 && Math.abs(distance3-distance4) < 1){
-                                    x4 = x1;
-                                    x5 = x2;
-                                    y4 = y1;
-                                    y5 = y2;
-                                    // alert("here we are")
-                                    break;
-                                }
-                                console.log("inner loop")
+                            distance1 = getDistance(c, new Point(x1, y1))
+                            distance2 = getDistance(a, new Point(x1, y1))
+
+                            distance3 = getDistance(c, new Point(x2, y2))
+                            distance4 = getDistance(b, new Point(x2, y2))
+
+                            if (Math.abs(distance2 - distance1) < 1 && Math.abs(distance3 - distance4) < 1) {
+                                x4 = x1;
+                                x5 = x2;
+                                y4 = y1;
+                                y5 = y2;
+                                alert("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
+                                break;
                             }
-
                         }
 
-                        console.log("x1:" + x1 + " y1: " + y1)
-                        console.log("x2:" + x2 + " y2: " + y2)
+                    }
 
+                    if (a.y === b.y) {
                         distance1 = getDistance(c, new Point(x1, y1))
                         distance2 = getDistance(a, new Point(x1, y1))
 
                         distance3 = getDistance(c, new Point(x2, y2))
                         distance4 = getDistance(b, new Point(x2, y2))
 
-                        console.log("efter istance")
+                        console.info("after instance")
 
-                        if(Math.abs(distance2 - distance1) < 1 && Math.abs(distance3-distance4) < 1){
+                        if (Math.abs(distance2 - distance1) < 1 && Math.abs(distance3 - distance4) < 1) {
                             x4 = x1;
                             x5 = x2;
                             y4 = y1;
@@ -169,28 +178,17 @@ const DisplayFractal = ({
                             // alert("here we are")
                             break;
                         }
-
                     }
+                }
 
-                // let denominator = (b.y === a.y)  ? a.y : (b.y - a.y);
-                //
-                // let denominator;
-                // if(b.y === a.y) denominator = a.y;
-                // else denominator = b.y - a.y;
-                //
-                // let x4 = (y4 * (b.x - a.x) - b.x * a.y + a.x * b.y) / denominator;
-                // console.log(x4)
-                y4 = y44
-                y5 = y44;
                 return [new Point(x4, y4), new Point(x5, y5)];
             }
 
-            console.log(iter)
-            console.log(a)
-            console.log(b)
-            console.log(c)
-
-            if(iter < d) {
+            if (iter < d) {
+                console.error(iter)
+                console.error(a)
+                console.error(b)
+                console.error(c)
                 // знайти координати точок 4 і 5
                 let [p4, p5] = getPoints(a, b, c)
 
@@ -198,15 +196,15 @@ const DisplayFractal = ({
                 drawTriangle(c, a, p4)  // 3 1 4
                 drawTriangle(b, c, p5)  // 2 3 5
 
-                ctx.clearRect(p4.x + 1, p4.y - 1 , p5.x - p4.x -2, 2);
+                ctx.clearRect(p4.x + 1, p4.y - 1, p5.x - p4.x - 2, 2);
 
                 // +++++
                 // ctx.clearRect(p4.x + 1, p5.y - 1 , p5.x - p4.x - 1, p4.y - p5.y  + 2);
                 //+++++++++
 
                 // рекурсивні виклики для лівої і правої частини
-                cesaro(c, a, p4, ++iter) // точки 3 1 4
-                cesaro(b, c, p5, ++iter) // точки 2 3 5
+                cesaro(c, a, p4, iter+1) // точки 3 1 4
+                cesaro(b, c, p5, iter+1) // точки 2 3 5
 // //*************
 //
 //             // test
@@ -223,9 +221,9 @@ const DisplayFractal = ({
             }
         }
 
-        const drawTriangle= (a, b, c) => {
+        const drawTriangle = (a, b, c) => {
             ctx.beginPath();
-            ctx.moveTo(c.x,c.y);
+            ctx.moveTo(c.x, c.y);
             ctx.lineTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
             ctx.lineTo(c.x, c.y);
@@ -233,13 +231,14 @@ const DisplayFractal = ({
             ctx.stroke();
         }
 
-        let A =  new Point(10, 300);
-        let B =  new Point(490, 300);
-        let C =  new Point(250, 100);
+        let A = new Point(10, 300);
+        let B = new Point(490, 300);
+        let C = new Point(250, 100);
 
-       drawTriangle(A, B, C);
-       cesaro(A, B, C)
+        drawTriangle(A, B, C);
+        cesaro(A, B, C)
     }
+
     const buildGilbertFractal = (d) => {
         function Drawing(dx, dy)//функція формування лінії
         {
@@ -313,7 +312,7 @@ const DisplayFractal = ({
 
     const buildDragonFractal = (d) => {
         // клас 2-д точки, допоміжний
-        const Point = function(x, y) {
+        const Point = function (x, y) {
             this.x = x;
             this.y = y;
         }
@@ -332,7 +331,7 @@ const DisplayFractal = ({
         }
 
         // повертає точку між двома існуючими точками в даному напрямку
-        function bend (p1, p2, direction) {
+        function bend(p1, p2, direction) {
             let xLength = p2.x - p1.x;
             let yLength = p2.y - p1.y;
 
@@ -347,8 +346,8 @@ const DisplayFractal = ({
         }
 
         // підвищуємо деталізацію, обраховуючи наступні точки
-        function step (points) {
-            for (let i = 1; i < points.length; i+=2) {
+        function step(points) {
+            for (let i = 1; i < points.length; i += 2) {
                 let newPoint = bend(points[i - 1], points[i],
                     parseInt(i / 2) % 2 === 0 ? 1 : -1);
                 points.splice(i, 0, newPoint);
@@ -356,7 +355,7 @@ const DisplayFractal = ({
         }
 
         // рисує 1 сегмент фракталу
-        function drawSegment (p1, p2, context) {
+        function drawSegment(p1, p2, context) {
             context.strokeStyle = 'rgb(255, 0, 0)';
             context.beginPath();
             context.moveTo(p1.x, p1.y);
@@ -393,9 +392,9 @@ const DisplayFractal = ({
                 </div>
                 <div>
                     <div>
-                        <canvas id="fractal_canvas" width="500" height="340"> </canvas>
+                        <canvas id="fractal_canvas" width="500" height="340"></canvas>
                     </div>
-                    <a id={'a'} download={fractal_header_name +='.png'}/>
+                    <a id={'a'} download={fractal_header_name += '.png'}/>
                     <button className={'save_button'} onClick={download_img}>Зберегти</button>
 
                 </div>
