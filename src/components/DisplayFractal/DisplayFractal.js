@@ -102,41 +102,48 @@ const DisplayFractal = ({
                 // let y44 = (-(a.x * b.y - b.x * a.y) * (2 * c.x - 2 * a.x) - t * (b.y - a.y)) /
                 //     ((b.x - a.x) * (2 * c.x - 2 * a.x) + (b.y - a.y) * (2 * c.y - 2 * a.y));
 
-                console.info("--------------")
-                console.info("a.y:" + a.y)
-                console.info("b.y:" + b.y)
-                console.info("--------------")
+                // console.info("--------------")
+                // console.info("a.y:" + a.y)
+                // console.info("b.y:" + b.y)
+                // console.info("--------------")
                 let incrLeft;
                 let Xtmp = 0;
-                if(a.y === b.y) {Xtmp = -2}
+                if(a.y === b.y || ( (c.y > a.y && c.y < b.y)||(c.y < a.y && c.y > b.y))) {Xtmp = -2}
+                // if(a.y === b.y || ( (c.y > a.y && c.y < b.y))) {Xtmp = -2}
+                if(a.y === b.y ) {Xtmp = -2}
                 if (a.y < b.y) {
                     incrLeft = 1;
                 } else {
                     incrLeft = -1;
                 }
 
-                console.info("get points")
+                // console.info("get points")
 
                 let x4, y4, x5, y5;
+                // let x4 = 0, y4 = 0, x5 = 0, y5 = 0;
                 let distance1, distance2, distance3, distance4;
 
+                let flag = true;
+
                 for (let x1 = (a.x + b.x) / 2, x2 = x1;
-                     x1 > Math.min(a.x, b.x) && x1 < Math.max(a.x, b.x),
-                     x2 < Math.max(a.x, b.x) && x2 > Math.min(a.x, b.x);
+                // for (let x1 = Math.round((a.x + b.x) / 2), x2 = x1;
+                     (x1 > Math.min(a.x, b.x) && x1 < Math.max(a.x, b.x)) &&
+                     (x2 < Math.max(a.x, b.x) && x2 > Math.min(a.x, b.x)) && flag;
                      x1 += 1 + Xtmp, x2 += -1 - Xtmp) {
 
-                    console.info("--------------")
-                    console.info("inc:" + incrLeft)
-                    console.info("x1:" + x1, "x2:" + x2)
-                    console.info("--------------")
+                    // console.info("--------------")
+                    // console.info("inc:" + incrLeft)
+                    // console.info("x1:" + x1, "x2:" + x2)
+                    // console.info("--------------")
+                    //
+                    // console.info("outer loop: ")
 
-                    console.info("outer loop: ")
 
                     for (let y1 = (a.y + b.y) / 2, y2 = y1;
+                    // for (let y1 = Math.round((a.y + b.y) / 2), y2 = y1;
                          y1 >= Math.min(a.y, b.y) && y1 <= Math.max(a.y, b.y),
                          y2 >= Math.min(a.y, b.y) && y2 <= Math.max(a.y, b.y);
                          y1 += -incrLeft, y2 += incrLeft) {
-                        console.info("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
 
                         distance1 = getDistance(c, new Point(x1, y1))
                         distance2 = getDistance(a, new Point(x1, y1))
@@ -144,7 +151,13 @@ const DisplayFractal = ({
                         distance3 = getDistance(c, new Point(x2, y2))
                         distance4 = getDistance(b, new Point(x2, y2))
 
-                        if (Math.abs(distance2 - distance1) < 0.8 && Math.abs(distance3 - distance4) < 0.8) {
+                        if(iter === 4) {
+                            console.warn("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
+                            console.warn("d1: " + distance1 + " d2: " + distance2)
+                            console.warn("d3: " + distance3 + " d4: " + distance4)
+                        }
+
+                        if (Math.abs(distance2 - distance1) < 1 && Math.abs(distance3 - distance4) < 1) {
                             console.error("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
                             console.error("d1: " + distance1 + " d2: " + distance2)
                             console.error("d3: " + distance3 + " d4: " + distance4)
@@ -153,6 +166,7 @@ const DisplayFractal = ({
                             x5 = x2;
                             y4 = y1;
                             y5 = y2;
+                            flag = false;
                             break;
                         }
 
