@@ -87,67 +87,37 @@ const DisplayFractal = ({
             this.y = y;
         }
 
-        // console.log(d)
         const getDistance = (a, b) => {
             let [dx, dy] = [b.x - a.x, b.y - a.y]
             let distance = Math.sqrt(dx * dx + dy * dy);
             return distance;
         }
 
-        // add a default limit of three as we don't want an infinite loop
         const cesaro = (a, b, c, iter = 1) => {
             const getPoints = (a, b, c) => {
-                // let t = a.x * a.x - c.x * c.x + a.y * a.y - c.y * c.y;
-                //
-                // let y44 = (-(a.x * b.y - b.x * a.y) * (2 * c.x - 2 * a.x) - t * (b.y - a.y)) /
-                //     ((b.x - a.x) * (2 * c.x - 2 * a.x) + (b.y - a.y) * (2 * c.y - 2 * a.y));
-
-                // console.info("--------------")
-                // console.info("a.y:" + a.y)
-                // console.info("b.y:" + b.y)
-                // console.info("--------------")
                 let incrLeft;
                 let Xtmp = 0;
-                if(a.y === b.y ||
-                    ( (c.y > a.y && c.y < b.y)||(c.y < a.y && c.y > b.y)) ||
-                    (a.x < b.x )
-
-                ) {
+                if(a.y === b.y ||  ( (c.y > a.y && c.y < b.y)||(c.y < a.y && c.y > b.y)) ||
+                    (a.x < b.x ) ) {
                     Xtmp = -2
                 }
 
-                // if(a.y === b.y || ( (c.y > a.y && c.y < b.y))) {Xtmp = -2}
-                // if(a.y === b.y ) {Xtmp = -2}
                 if (a.y < b.y) {
                     incrLeft = 1;
                 } else {
                     incrLeft = -1;
                 }
 
-                // console.info("get points")
-
                 let x4, y4, x5, y5;
-                // let x4 = 0, y4 = 0, x5 = 0, y5 = 0;
                 let distance1, distance2, distance3, distance4;
-
                 let flag = true;
 
                 for (let x1 = (a.x + b.x) / 2, x2 = x1;
-                // for (let x1 = Math.round((a.x + b.x) / 2), x2 = x1;
                      (x1 > Math.min(a.x, b.x) && x1 < Math.max(a.x, b.x)) &&
                      (x2 < Math.max(a.x, b.x) && x2 > Math.min(a.x, b.x)) && flag;
                      x1 += 1 + Xtmp, x2 += -1 - Xtmp) {
 
-                    // console.info("--------------")
-                    // console.info("inc:" + incrLeft)
-                    // console.info("x1:" + x1, "x2:" + x2)
-                    // console.info("--------------")
-                    //
-                    // console.info("outer loop: ")
-
-
                     for (let y1 = (a.y + b.y) / 2, y2 = y1;
-                    // for (let y1 = Math.round((a.y + b.y) / 2), y2 = y1;
                          (y1 >= Math.min(a.y, b.y) && y1 <= Math.max(a.y, b.y)) &&
                          (y2 >= Math.min(a.y, b.y) && y2 <= Math.max(a.y, b.y));
                          y1 += -incrLeft, y2 += incrLeft) {
@@ -158,17 +128,7 @@ const DisplayFractal = ({
                         distance3 = getDistance(c, new Point(x2, y2))
                         distance4 = getDistance(b, new Point(x2, y2))
 
-                        // if(iter === 6) {
-                        //     console.warn("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
-                        //     console.warn("d1: " + distance1 + " d2: " + distance2)
-                        //     console.warn("d3: " + distance3 + " d4: " + distance4)
-                        // }
-
                         if (Math.abs(distance2 - distance1) < 1 && Math.abs(distance3 - distance4) < 1) {
-                            // console.error("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
-                            // console.error("d1: " + distance1 + " d2: " + distance2)
-                            // console.error("d3: " + distance3 + " d4: " + distance4)
-
                             x4 = x1;
                             x5 = x2;
                             y4 = y1;
@@ -176,10 +136,6 @@ const DisplayFractal = ({
                             flag = false;
                             break;
                         }
-
-                        // if (a.y === b.y) {
-                        //    break;
-                        // }
                     }
                 }
 
@@ -187,22 +143,14 @@ const DisplayFractal = ({
             }
 
             if (iter < d) {
-                // console.error(iter)
-                // console.error(a)
-                // console.error(b)
-                // console.error(c)
                 // знайти координати точок 4 і 5
                 let [p4, p5] = getPoints(a, b, c)
-
-                // console.warn(p4)
-                // console.warn(p5)
 
                 // побудувати трикутники на знайдених точках
                 drawTriangle(c, a, p4)  // 3 1 4
                 drawTriangle(b, c, p5)  // 2 3 5
 
-                // ctx.clearRect(p4.x + 1, p4.y - 1, p5.x - p4.x - 2, 2);
-                // ctx.clearRect(Math.min(p4.x, p5.x) , Math.min(p4.y, p5.y) - 1, Math.abs(p5.x - p4.x) + 1 , Math.abs(p4.y - p5.y) + 2);
+                // очистити зайві частини рисунку
                 ctx.beginPath();
                 ctx.moveTo(p4.x, p4.y);
                 ctx.lineTo(p5.x, p5.y);
@@ -211,28 +159,9 @@ const DisplayFractal = ({
                 ctx.stroke();
                 ctx.lineWidth = 1;
 
-                // +++++
-                // ctx.clearRect(p4.x + 1, p5.y - 1 , p5.x - p4.x - 1, p4.y - p5.y  + 2);
-                //+++++++++
-
                 // рекурсивні виклики для лівої і правої частини
                 cesaro(c, a, p4, iter + 1) // точки 3 1 4
-                // console.error("after left part")
                 cesaro(b, c, p5, iter + 1) // точки 2 3 5
-                // console.error("after right part")
-// //*************
-//
-//             // test
-//             let p6 = new Point(95, 200)
-//             let p7 = new Point(170, 114)
-//
-//             drawTriangle(a, p6, p4)
-//             drawTriangle(p4, c, p7)
-//
-//             ctx.clearRect(p6.x + 1, p7.y - 1 , p7.x - p6.x - 1, p6.y - p7.y + 2);
-//             //-----------
-                // ctx.clearRect(p6.x , p7.y  , p7.x - p6.x - 1, p6.y - p7.y );
-                // ctx.clearRect(p4.x + 1, p5.y - 1 , p5.x - p4.x - 1, p4.y - p5.y  + 2);
             }
         }
 
