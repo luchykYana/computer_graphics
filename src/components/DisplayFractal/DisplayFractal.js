@@ -201,7 +201,15 @@ const DisplayFractal = ({
                 drawTriangle(c, a, p4)  // 3 1 4
                 drawTriangle(b, c, p5)  // 2 3 5
 
-                ctx.clearRect(p4.x + 1, p4.y - 1, p5.x - p4.x - 2, 2);
+                // ctx.clearRect(p4.x + 1, p4.y - 1, p5.x - p4.x - 2, 2);
+                // ctx.clearRect(Math.min(p4.x, p5.x) , Math.min(p4.y, p5.y) - 1, Math.abs(p5.x - p4.x) + 1 , Math.abs(p4.y - p5.y) + 2);
+                ctx.beginPath();
+                ctx.moveTo(p4.x, p4.y);
+                ctx.lineTo(p5.x, p5.y);
+                ctx.strokeStyle = 'rgb(245, 245, 245)'
+                ctx.lineWidth = 4;
+                ctx.stroke();
+                ctx.lineWidth = 1;
 
                 // +++++
                 // ctx.clearRect(p4.x + 1, p5.y - 1 , p5.x - p4.x - 1, p4.y - p5.y  + 2);
