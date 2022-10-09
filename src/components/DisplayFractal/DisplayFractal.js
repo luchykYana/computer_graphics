@@ -122,7 +122,6 @@ const DisplayFractal = ({
                      x1 > Math.min(a.x, b.x) && x1 < Math.max(a.x, b.x),
                      x2 < Math.max(a.x, b.x) && x2 > Math.min(a.x, b.x);
                      x1 += incrLeft, x2 += -incrLeft) {
-                    let y1, y2;
 
                     console.info("--------------")
                     console.info("inc:" + incrLeft)
@@ -130,54 +129,34 @@ const DisplayFractal = ({
                     console.info("--------------")
 
                     console.info("outer loop: ")
-                    if (a.y === b.y) {
-                        y1 = a.y;
-                        y2 = y1;
 
-                        console.info("y1==y2")
-                    } else {
-                        for (y1 = (a.y + b.y) / 2, y2 = y1;
-                             y1 >= Math.min(a.y, c.y, b.y) && y1 <= Math.max(a.y, b.y, c.y),
-                             y2 >= Math.min(a.y, c.y, b.y) && y2 <= Math.max(a.y, b.y, c.y);
-                             y1 += -incrLeft, y2 += incrLeft) {
-                            console.info("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
-                            // alert("are we inside the inner loop")
+                    for (let y1 = (a.y + b.y) / 2, y2 = y1;
+                         y1 >= Math.min(a.y, b.y) && y1 <= Math.max(a.y, b.y),
+                         y2 >= Math.min(a.y, b.y) && y2 <= Math.max(a.y, b.y);
+                         y1 += -incrLeft, y2 += incrLeft) {
+                        console.info("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
 
-                            distance1 = getDistance(c, new Point(x1, y1))
-                            distance2 = getDistance(a, new Point(x1, y1))
-
-                            distance3 = getDistance(c, new Point(x2, y2))
-                            distance4 = getDistance(b, new Point(x2, y2))
-
-                            if (Math.abs(distance2 - distance1) < 1 && Math.abs(distance3 - distance4) < 1) {
-                                x4 = x1;
-                                x5 = x2;
-                                y4 = y1;
-                                y5 = y2;
-                                alert("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
-                                break;
-                            }
-                        }
-
-                    }
-
-                    if (a.y === b.y) {
                         distance1 = getDistance(c, new Point(x1, y1))
                         distance2 = getDistance(a, new Point(x1, y1))
 
                         distance3 = getDistance(c, new Point(x2, y2))
                         distance4 = getDistance(b, new Point(x2, y2))
 
-                        console.info("after instance")
+                        if (Math.abs(distance2 - distance1) < 0.8 && Math.abs(distance3 - distance4) < 0.8) {
+                            console.error("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
+                            console.error("d1: " + distance1 + " d2: " + distance2)
+                            console.error("d3: " + distance3 + " d4: " + distance4)
 
-                        if (Math.abs(distance2 - distance1) < 1 && Math.abs(distance3 - distance4) < 1) {
                             x4 = x1;
                             x5 = x2;
                             y4 = y1;
                             y5 = y2;
-                            // alert("here we are")
                             break;
                         }
+
+                        // if (a.y === b.y) {
+                        //    break;
+                        // }
                     }
                 }
 
@@ -192,6 +171,9 @@ const DisplayFractal = ({
                 // знайти координати точок 4 і 5
                 let [p4, p5] = getPoints(a, b, c)
 
+                console.warn(p4)
+                console.warn(p5)
+
                 // побудувати трикутники на знайдених точках
                 drawTriangle(c, a, p4)  // 3 1 4
                 drawTriangle(b, c, p5)  // 2 3 5
@@ -203,8 +185,10 @@ const DisplayFractal = ({
                 //+++++++++
 
                 // рекурсивні виклики для лівої і правої частини
-                cesaro(c, a, p4, iter+1) // точки 3 1 4
-                cesaro(b, c, p5, iter+1) // точки 2 3 5
+                cesaro(c, a, p4, iter + 1) // точки 3 1 4
+                console.error("after left part")
+                cesaro(b, c, p5, iter + 1) // точки 2 3 5
+                console.error("after right part")
 // //*************
 //
 //             // test
