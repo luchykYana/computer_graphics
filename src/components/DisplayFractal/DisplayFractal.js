@@ -87,7 +87,7 @@ const DisplayFractal = ({
             this.y = y;
         }
 
-        console.log(d)
+        // console.log(d)
         const getDistance = (a, b) => {
             let [dx, dy] = [b.x - a.x, b.y - a.y]
             let distance = Math.sqrt(dx * dx + dy * dy);
@@ -108,9 +108,16 @@ const DisplayFractal = ({
                 // console.info("--------------")
                 let incrLeft;
                 let Xtmp = 0;
-                if(a.y === b.y || ( (c.y > a.y && c.y < b.y)||(c.y < a.y && c.y > b.y))) {Xtmp = -2}
+                if(a.y === b.y ||
+                    ( (c.y > a.y && c.y < b.y)||(c.y < a.y && c.y > b.y)) ||
+                    (a.x < b.x )
+
+                ) {
+                    Xtmp = -2
+                }
+
                 // if(a.y === b.y || ( (c.y > a.y && c.y < b.y))) {Xtmp = -2}
-                if(a.y === b.y ) {Xtmp = -2}
+                // if(a.y === b.y ) {Xtmp = -2}
                 if (a.y < b.y) {
                     incrLeft = 1;
                 } else {
@@ -141,8 +148,8 @@ const DisplayFractal = ({
 
                     for (let y1 = (a.y + b.y) / 2, y2 = y1;
                     // for (let y1 = Math.round((a.y + b.y) / 2), y2 = y1;
-                         y1 >= Math.min(a.y, b.y) && y1 <= Math.max(a.y, b.y),
-                         y2 >= Math.min(a.y, b.y) && y2 <= Math.max(a.y, b.y);
+                         (y1 >= Math.min(a.y, b.y) && y1 <= Math.max(a.y, b.y)) &&
+                         (y2 >= Math.min(a.y, b.y) && y2 <= Math.max(a.y, b.y));
                          y1 += -incrLeft, y2 += incrLeft) {
 
                         distance1 = getDistance(c, new Point(x1, y1))
@@ -151,16 +158,16 @@ const DisplayFractal = ({
                         distance3 = getDistance(c, new Point(x2, y2))
                         distance4 = getDistance(b, new Point(x2, y2))
 
-                        if(iter === 4) {
-                            console.warn("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
-                            console.warn("d1: " + distance1 + " d2: " + distance2)
-                            console.warn("d3: " + distance3 + " d4: " + distance4)
-                        }
+                        // if(iter === 6) {
+                        //     console.warn("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
+                        //     console.warn("d1: " + distance1 + " d2: " + distance2)
+                        //     console.warn("d3: " + distance3 + " d4: " + distance4)
+                        // }
 
                         if (Math.abs(distance2 - distance1) < 1 && Math.abs(distance3 - distance4) < 1) {
-                            console.error("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
-                            console.error("d1: " + distance1 + " d2: " + distance2)
-                            console.error("d3: " + distance3 + " d4: " + distance4)
+                            // console.error("x1:" + x1 + " y1: " + y1 + " x2:" + x2 + " y2: " + y2)
+                            // console.error("d1: " + distance1 + " d2: " + distance2)
+                            // console.error("d3: " + distance3 + " d4: " + distance4)
 
                             x4 = x1;
                             x5 = x2;
@@ -180,15 +187,15 @@ const DisplayFractal = ({
             }
 
             if (iter < d) {
-                console.error(iter)
-                console.error(a)
-                console.error(b)
-                console.error(c)
+                // console.error(iter)
+                // console.error(a)
+                // console.error(b)
+                // console.error(c)
                 // знайти координати точок 4 і 5
                 let [p4, p5] = getPoints(a, b, c)
 
-                console.warn(p4)
-                console.warn(p5)
+                // console.warn(p4)
+                // console.warn(p5)
 
                 // побудувати трикутники на знайдених точках
                 drawTriangle(c, a, p4)  // 3 1 4
@@ -202,9 +209,9 @@ const DisplayFractal = ({
 
                 // рекурсивні виклики для лівої і правої частини
                 cesaro(c, a, p4, iter + 1) // точки 3 1 4
-                console.error("after left part")
+                // console.error("after left part")
                 cesaro(b, c, p5, iter + 1) // точки 2 3 5
-                console.error("after right part")
+                // console.error("after right part")
 // //*************
 //
 //             // test
