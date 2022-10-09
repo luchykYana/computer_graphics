@@ -107,6 +107,8 @@ const DisplayFractal = ({
                 console.info("b.y:" + b.y)
                 console.info("--------------")
                 let incrLeft;
+                let Xtmp = 0;
+                if(a.y === b.y) {Xtmp = -2}
                 if (a.y < b.y) {
                     incrLeft = 1;
                 } else {
@@ -121,7 +123,7 @@ const DisplayFractal = ({
                 for (let x1 = (a.x + b.x) / 2, x2 = x1;
                      x1 > Math.min(a.x, b.x) && x1 < Math.max(a.x, b.x),
                      x2 < Math.max(a.x, b.x) && x2 > Math.min(a.x, b.x);
-                     x1 += incrLeft, x2 += -incrLeft) {
+                     x1 += 1 + Xtmp, x2 += -1 - Xtmp) {
 
                     console.info("--------------")
                     console.info("inc:" + incrLeft)
