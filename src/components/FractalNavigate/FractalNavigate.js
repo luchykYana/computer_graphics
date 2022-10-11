@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 
-import {DisplayFractal} from "../DisplayFractal/DisplayFractal";
-import {fractal_description} from "../../constants";
+import {DisplayFractal} from '../DisplayFractal/DisplayFractal';
+import {fractal_description} from '../../constants';
 
 import './FractalNavigate.css'
 
