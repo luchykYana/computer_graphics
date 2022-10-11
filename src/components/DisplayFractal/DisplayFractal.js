@@ -138,7 +138,6 @@ const DisplayFractal = ({
     }
 
     const buildCesaroFractal = (d) => {
-        // побудувати початковий трикутник
         const canvas = document.getElementById('fractal_canvas');
         const ctx = canvas.getContext('2d');
 
@@ -148,14 +147,43 @@ const DisplayFractal = ({
             this.y = y;
         }
 
-        const getDistance = (a, b) => {
-            let [dx, dy] = [b.x - a.x, b.y - a.y]
-            let distance = Math.sqrt(dx * dx + dy * dy);
-            return distance;
-        }
+        // побудувати початковий трикутник
+        let A = new Point(10, 300);
+        let B = new Point(490, 300);
+        let C = new Point(250, 100);
 
-        const cesaro = (a, b, c, iter = 1) => {
-            const getPoints = (a, b, c) => {
+        drawTriangle(A, B, C);
+        cesaro(A, B, C);
+
+        function cesaro (a, b, c, iter = 1) {
+            if (iter < d) {
+                // знайти координати точок 4 і 5
+                let [p4, p5] = getPoints(a, b, c);
+
+                // побудувати трикутники на знайдених точках
+                drawTriangle(c, a, p4);  // 3 1 4
+                drawTriangle(b, c, p5);  // 2 3 5
+
+                // очистити зайві частини рисунку
+                clearLine(p4, p5);
+
+                // рекурсивні виклики для лівої і правої частини
+                cesaro(c, a, p4, iter + 1); // точки 3 1 4
+                cesaro(b, c, p5, iter + 1); // точки 2 3 5
+            }
+
+            // замальовує поверх лінії кольором фону
+            function clearLine(a, b) {
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.strokeStyle = 'rgb(245, 245, 245)'
+                ctx.lineWidth = 4;
+                ctx.stroke();
+                ctx.lineWidth = 1;
+            }
+
+            function getPoints (a, b, c) {
                 let incrLeft;
                 let Xtmp = 0;
                 if (a.y === b.y || ((c.y > a.y && c.y < b.y) || (c.y < a.y && c.y > b.y)) ||
@@ -183,17 +211,15 @@ const DisplayFractal = ({
                          (y2 >= Math.min(a.y, b.y) && y2 <= Math.max(a.y, b.y));
                          y1 += -incrLeft, y2 += incrLeft) {
 
-                        distance1 = getDistance(c, new Point(x1, y1))
-                        distance2 = getDistance(a, new Point(x1, y1))
+                        distance1 = getDistance(c, new Point(x1, y1));
+                        distance2 = getDistance(a, new Point(x1, y1));
 
-                        distance3 = getDistance(c, new Point(x2, y2))
-                        distance4 = getDistance(b, new Point(x2, y2))
+                        distance3 = getDistance(c, new Point(x2, y2));
+                        distance4 = getDistance(b, new Point(x2, y2));
 
                         if (Math.abs(distance2 - distance1) < 1 && Math.abs(distance3 - distance4) < 1) {
-                            x4 = x1;
-                            x5 = x2;
-                            y4 = y1;
-                            y5 = y2;
+                            x4 = x1;    y4 = y1;
+                            x5 = x2;    y5 = y2;
                             flag = false;
                             break;
                         }
@@ -202,31 +228,9 @@ const DisplayFractal = ({
 
                 return [new Point(x4, y4), new Point(x5, y5)];
             }
-
-            if (iter < d) {
-                // знайти координати точок 4 і 5
-                let [p4, p5] = getPoints(a, b, c)
-
-                // побудувати трикутники на знайдених точках
-                drawTriangle(c, a, p4)  // 3 1 4
-                drawTriangle(b, c, p5)  // 2 3 5
-
-                // очистити зайві частини рисунку
-                ctx.beginPath();
-                ctx.moveTo(p4.x, p4.y);
-                ctx.lineTo(p5.x, p5.y);
-                ctx.strokeStyle = 'rgb(245, 245, 245)'
-                ctx.lineWidth = 4;
-                ctx.stroke();
-                ctx.lineWidth = 1;
-
-                // рекурсивні виклики для лівої і правої частини
-                cesaro(c, a, p4, iter + 1) // точки 3 1 4
-                cesaro(b, c, p5, iter + 1) // точки 2 3 5
-            }
         }
 
-        const drawTriangle = (a, b, c) => {
+        function drawTriangle (a, b, c) {
             ctx.beginPath();
             ctx.moveTo(c.x, c.y);
             ctx.lineTo(a.x, a.y);
@@ -236,12 +240,10 @@ const DisplayFractal = ({
             ctx.stroke();
         }
 
-        let A = new Point(10, 300);
-        let B = new Point(490, 300);
-        let C = new Point(250, 100);
-
-        drawTriangle(A, B, C);
-        cesaro(A, B, C)
+        function getDistance (a, b) {
+            let [dx, dy] = [b.x - a.x, b.y - a.y];
+            return Math.sqrt(dx * dx + dy * dy);
+        }
     }
 
     const buildGilbertFractal = (d) => {
