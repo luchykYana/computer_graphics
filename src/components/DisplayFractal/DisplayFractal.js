@@ -1,4 +1,3 @@
-import React from 'react';
 import {Title} from '../Title/Title';
 import {icons} from '../../constants';
 
@@ -20,62 +19,124 @@ const DisplayFractal = ({
     for (let i = 1; i <= count; i++) {
         selectItems.push(<option key={i} value={i}>{i}</option>);
     }
+    const buildDragonFractal = (d) => {
+        // клас 2-д точки, допоміжний
+        const Point = function (x, y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        // початкові налаштування
+        const canvas = document.getElementById('fractal_canvas');
+        const ctx = canvas.getContext('2d');
+
+        //початкові точки
+        let points = [new Point(canvas.width * 2 / 7, canvas.height * 2 / 5),
+            new Point(canvas.width * 6 / 7, canvas.height * 2 / 5)];
+
+        // ітеративна побудова
+        for (let i = 0; i < d; i++) {
+            step(points);
+            drawCurve(points);
+        }
+
+        // повертає точку між двома існуючими точками в даному напрямку
+        function bend(p1, p2, direction) {
+            let xLength = p2.x - p1.x;
+            let yLength = p2.y - p1.y;
+
+            //поворот вправо або вліво
+            let angle = direction * Math.PI / 4;
+
+            let newX = (xLength * Math.cos(angle) - yLength * Math.sin(angle)) * (Math.sqrt(2) / 2) + p1.x;
+            let newY = (xLength * Math.sin(angle) + yLength * Math.cos(angle)) * (Math.sqrt(2) / 2) + p1.y;
+
+            // let newX = (xLength * Math.cos(angle) - yLength * Math.sin(angle)) * 1 + p1.x;
+            // let newY = (xLength * Math.sin(angle) + yLength * Math.cos(angle)) * 1 + p1.y;
+
+            return new Point(newX, newY);
+        }
+
+        // підвищуємо деталізацію, обраховуючи наступні точки
+        function step(points) {
+            for (let i = 1; i < points.length; i += 2) {
+                let newPoint = bend(points[i - 1], points[i], i % 4 === 3 ? -1 : 1);
+
+                // Крива Леві
+                // let newPoint = bend(points[i - 1], points[i], i % 2 === 0 ? 1 : -1);
+
+                points.splice(i, 0, newPoint);
+            }
+        }
+
+        // малює фрактальну криву
+        function drawCurve(points) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 1; i < points.length; i++) {
+                drawSegment(points[i - 1], points[i]);
+            }
+
+            // малює 1 сегмент фракталу
+            function drawSegment(p1, p2) {
+                ctx.strokeStyle = 'rgb(255, 0, 0)';
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+            }
+        }
+    }
 
     const buildBarnsleyFractal = (d) => {
-        let canvas;
-        let canvasContext;
-
+        let canvas = document.getElementById("fractal_canvas");
+        let ctx = canvas.getContext('2d');
         let x = 0, y = 0;
 
+        // очищає канвас та заново малює по кількості ітерацій
         function draw(d) {
-            canvas = document.getElementById("fractal_canvas");
-            canvasContext = canvas.getContext('2d');
-
-            canvasContext.fillStyle = "white";
-            canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             for (let i = 0; i < d * 500; i++)
                 update();
         }
 
         function update() {
-
-            let nextX, nextY;
-            let r = Math.random();
-            if (r < 0.01) {
+            let nextX, nextY, r = Math.random();
+            if (r < 0.01) {                                // стебло
                 nextX = 0;
                 nextY = 0.16 * y;
-            } else if (r < 0.86) {
+            } else if (r < 0.86) {                         // маленькі частини листочків
                 nextX = 0.85 * x + 0.04 * y;
                 nextY = -0.04 * x + 0.85 * y + 1.6;
-            } else if (r < 0.93) {
+            } else if (r < 0.93) {                         // ліві великі частини
                 nextX = 0.20 * x - 0.26 * y;
                 nextY = 0.23 * x + 0.22 * y + 1.6;
-            } else {
+            } else {                                       // праві великі частини
                 nextX = -0.15 * x + 0.28 * y;
                 nextY = 0.26 * x + 0.24 * y + 0.44;
             }
 
-            // Scaling and positioning
+            //
             let plotX = canvas.width * (x + 3) / 6;
             let plotY = canvas.height - canvas.height * ((y + 2) / 14);
 
-            drawFilledCircle(plotX, plotY, 1, "green");
+            drawFilledCircle(plotX, plotY, 1);
 
             x = nextX;
             y = nextY;
-
         }
 
-        const drawFilledCircle = (centerX, centerY, radius, color) => {
-            canvasContext.beginPath();
-            canvasContext.fillStyle = color;
-            canvasContext.arc(centerX, centerY, radius, 0, 2 * Math.PI, true);
-            canvasContext.fill();
+        // малює крапочку
+        const drawFilledCircle = (centerX, centerY, radius) => {
+            ctx.beginPath();
+            ctx.fillStyle = "green";
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, true);
+            ctx.fill();
         };
 
         draw(d);
     }
+
     const buildCesaroFractal = (d) => {
         // побудувати початковий трикутник
         const canvas = document.getElementById('fractal_canvas');
@@ -97,8 +158,8 @@ const DisplayFractal = ({
             const getPoints = (a, b, c) => {
                 let incrLeft;
                 let Xtmp = 0;
-                if(a.y === b.y ||  ( (c.y > a.y && c.y < b.y)||(c.y < a.y && c.y > b.y)) ||
-                    (a.x < b.x ) ) {
+                if (a.y === b.y || ((c.y > a.y && c.y < b.y) || (c.y < a.y && c.y > b.y)) ||
+                    (a.x < b.x)) {
                     Xtmp = -2
                 }
 
@@ -184,49 +245,40 @@ const DisplayFractal = ({
     }
 
     const buildGilbertFractal = (d) => {
-        function Drawing(dx, dy)//функція формування лінії
-        {
-            ctx.beginPath();
-            ctx.moveTo(LastX, LastY);
-            ctx.lineTo(LastX + dx, LastY + dy);
-            ctx.closePath();
-            ctx.stroke();
-            LastX += dx;
-            LastY += dy;
-        }
-
-        function Hilbert(dep, dx, dy)//функція, яка викликає формування ліній в потрібному порядку
-        {
-            if (dep > 1) Hilbert(dep - 1, dy, dx);
-            Drawing(dx, dy);
-            if (dep > 1) Hilbert(dep - 1, dx, dy);
-            Drawing(dy, dx);
-            if (dep > 1) Hilbert(dep - 1, dx, dy);
-            Drawing(-dx, -dy);
-            if (dep > 1) Hilbert(dep - 1, -dy, -dx);
-        }
-
         const canvas = document.getElementById('fractal_canvas');
         const ctx = canvas.getContext('2d');
-        const h = canvas.height;
-        const w = canvas.width;
 
-        let total_length;
+        const totalLength = canvas.height < canvas.width ? 0.9 * canvas.height : 0.9 * canvas.width;
 
-        if (h < w) {
-            total_length = 0.9 * h;
-        } else {
-            total_length = 0.9 * w;
+        //довжина одного відрізка залежно від ітерації
+        let start_length = totalLength / (Math.pow(2, d) - 1);
+
+        let currentX = (canvas.width - totalLength) / 2;
+        let currentY = (canvas.height - totalLength) / 2;
+
+        gilbert(d, start_length, 0);	//виклик рекурсивної функції Гільберта-Пеано
+
+        function gilbert(dep, dx, dy)       //функція, яка викликає формування ліній в потрібному порядку
+        {
+            if (dep > 1) gilbert(dep - 1, dy, dx);
+            draw(dx, dy);
+            if (dep > 1) gilbert(dep - 1, dx, dy);
+            draw(dy, dx);
+            if (dep > 1) gilbert(dep - 1, dx, dy);
+            draw(-dx, -dy);
+            if (dep > 1) gilbert(dep - 1, -dy, -dx);
+
+            //функція формування лінії
+            function draw(dx, dy) {
+                ctx.beginPath();
+                ctx.moveTo(currentX, currentY);
+                ctx.lineTo(currentX + dx, currentY + dy);
+                ctx.closePath();
+                ctx.stroke();
+                currentX += dx;
+                currentY += dy;
+            }
         }
-
-        let start_x = (w - total_length) / 2;
-        let start_y = (h - total_length) / 2;
-
-        let start_length = total_length / (Math.pow(2, d) - 1);
-
-        let LastX = start_x;
-        let LastY = start_y;
-        Hilbert(d, start_length, 0);	//виклик рекурсивної функції Hilbert
     }
 
     const buildFractal = (e) => {
@@ -253,68 +305,6 @@ const DisplayFractal = ({
         a.href = canvas.toDataURL("image/png");
         a.click();
     };
-
-    const buildDragonFractal = (d) => {
-        // клас 2-д точки, допоміжний
-        const Point = function (x, y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        // початкові налаштування
-        const canvas = document.getElementById('fractal_canvas');
-        const ctx = canvas.getContext('2d');
-
-        let points = [new Point(canvas.width * 2 / 7, canvas.height * 2 / 5),
-            new Point(canvas.width * 6 / 7, canvas.height * 2 / 5)];
-
-        // ітеративна побудова
-        for (let i = 0; i < d; i++) {
-            step(points);
-            drawCurve(points, ctx, canvas);
-        }
-
-        // повертає точку між двома існуючими точками в даному напрямку
-        function bend(p1, p2, direction) {
-            let xLength = p2.x - p1.x;
-            let yLength = p2.y - p1.y;
-
-            let angle = direction * Math.PI / 4;
-
-            let newX = (xLength * Math.cos(angle) - yLength * Math.sin(angle))
-                * 0.707106781 + p1.x;
-            let newY = (xLength * Math.sin(angle) + yLength * Math.cos(angle))
-                * 0.707106781 + p1.y;
-
-            return new Point(newX, newY);
-        }
-
-        // підвищуємо деталізацію, обраховуючи наступні точки
-        function step(points) {
-            for (let i = 1; i < points.length; i += 2) {
-                let newPoint = bend(points[i - 1], points[i],
-                    parseInt(i / 2) % 2 === 0 ? 1 : -1);
-                points.splice(i, 0, newPoint);
-            }
-        }
-
-        // рисує 1 сегмент фракталу
-        function drawSegment(p1, p2, context) {
-            context.strokeStyle = 'rgb(255, 0, 0)';
-            context.beginPath();
-            context.moveTo(p1.x, p1.y);
-            context.lineTo(p2.x, p2.y);
-            context.stroke();
-        }
-
-        // рисує фрактаьну криву
-        function drawCurve(points, context, canvas) {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 1; i < points.length; i++) {
-                drawSegment(points[i - 1], points[i], context);
-            }
-        }
-    }
 
     return (
         <div className={'content'}>
