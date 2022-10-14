@@ -5,7 +5,7 @@ const FractalPage = () => {
     return (
         <div>
             <Outlet/>
-            <Footer/>
+            <Footer color={"blue"}/>
         </div>
     );
 };

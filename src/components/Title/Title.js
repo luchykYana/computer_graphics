@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './Title.css';
+import '../../App.css'
 
 const Title = ({icon_name, caption}) => {
     return (

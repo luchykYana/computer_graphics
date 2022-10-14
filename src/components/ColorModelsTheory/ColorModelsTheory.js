@@ -2,6 +2,7 @@ import {Title} from '../Title/Title';
 import {icons, images} from '../../constants';
 
 import './ColorModelTheory.css'
+import '../../App.css'
 
 const ColorModelsTheory = () => {
     return (

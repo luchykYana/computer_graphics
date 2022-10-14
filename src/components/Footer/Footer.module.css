@@ -27,3 +27,35 @@
     border-top: 3px var(--dark-blue) solid;
     border-left: 3px var(--dark-blue) solid;
 }
+
+.right_arrow_yellow, .left_arrow_yellow {
+    border: 3px solid var(--light-yellow);
+}
+
+.right_arrow_yellow:hover {
+    border-bottom: 3px var(--dark-yellow) solid;
+    border-top: 3px var(--dark-yellow) solid;
+    border-right: 3px var(--dark-yellow) solid;
+}
+
+.left_arrow_yellow:hover {
+    border-bottom: 3px var(--dark-yellow) solid;
+    border-top: 3px var(--dark-yellow) solid;
+    border-left: 3px var(--dark-yellow) solid;
+}
+
+.right_arrow_red, .left_arrow_red {
+    border: 3px solid var(--light-red);
+}
+
+.right_arrow_red:hover {
+    border-bottom: 3px var(--dark-red) solid;
+    border-top: 3px var(--dark-red) solid;
+    border-right: 3px var(--dark-red) solid;
+}
+
+.left_arrow_red:hover {
+    border-bottom: 3px var(--dark-red) solid;
+    border-top: 3px var(--dark-red) solid;
+    border-left: 3px var(--dark-red) solid;
+}

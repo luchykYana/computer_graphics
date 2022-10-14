@@ -6,7 +6,7 @@ const ColorModelsPage = () => {
     return (
         <div>
             <Outlet/>
-            <Footer/>
+            <Footer color={"yellow"}/>
         </div>
     );
 };

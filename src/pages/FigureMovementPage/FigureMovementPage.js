@@ -5,7 +5,7 @@ const FigureMovementPage = () => {
     return (
         <div>
             <Outlet/>
-            <Footer/>
+            <Footer color={"red"}/>
         </div>
     );
 };

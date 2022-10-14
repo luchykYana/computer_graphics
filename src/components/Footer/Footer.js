@@ -2,13 +2,15 @@ import {useLocation, useNavigate} from 'react-router';
 import {useEffect, useState} from 'react';
 
 import {arrows, userPath, userPath2} from '../../constants';
-
-import css from './Footer.module.css';
+import css from './Footer.module.css'
 
 const Footer = ({color}) => {
     const [path, setPath] = useState(0);
     const navigate = useNavigate();
     const {pathname} = useLocation();
+
+    const [rightStyle, setRightStyle] = useState('right_arrow_'+ color);
+    const [leftStyle, setLeftStyle] = useState('left_arrow_' + color);
 
     useEffect(() => {
         let currentPath = pathname;
@@ -26,8 +28,8 @@ const Footer = ({color}) => {
 
     return (
         <div className={css.flex}>
-            <div onClick={back} className={css.left_arrow_blue}><img src={arrows.arrow_left} alt="left"/></div>
-            <div onClick={forward} className={css.right_arrow_blue}><img src={arrows.arrow_right} alt="right"/></div>
+            <div onClick={back} className={css[`${leftStyle}`]}><img src={arrows.arrow_left} alt="left"/></div>
+            <div onClick={forward} className={css[`${rightStyle}`]}><img src={arrows.arrow_right} alt="right"/></div>
         </div>
     );
 };
