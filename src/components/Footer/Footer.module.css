@@ -5,21 +5,24 @@
     justify-content: space-between;
 }
 
-.right_arrow, .left_arrow {
+.right_arrow_blue, .left_arrow_blue, .right_arrow_yellow, .left_arrow_yellow, .right_arrow_red, .left_arrow_red {
     width: 70px;
     height: 60px;
     transition: 300ms border-color;
     cursor: pointer;
+}
+
+.right_arrow_blue, .left_arrow_blue {
     border: 3px solid var(--light-blue);
 }
 
-.right_arrow:hover {
+.right_arrow_blue:hover {
     border-bottom: 3px var(--dark-blue) solid;
     border-top: 3px var(--dark-blue) solid;
     border-right: 3px var(--dark-blue) solid;
 }
 
-.left_arrow:hover {
+.left_arrow_blue:hover {
     border-bottom: 3px var(--dark-blue) solid;
     border-top: 3px var(--dark-blue) solid;
     border-left: 3px var(--dark-blue) solid;

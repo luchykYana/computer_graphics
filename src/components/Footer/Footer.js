@@ -5,7 +5,7 @@ import {arrows, userPath, userPath2} from '../../constants';
 
 import css from './Footer.module.css';
 
-const Footer = () => {
+const Footer = ({color}) => {
     const [path, setPath] = useState(0);
     const navigate = useNavigate();
     const {pathname} = useLocation();
@@ -26,8 +26,8 @@ const Footer = () => {
 
     return (
         <div className={css.flex}>
-            <div onClick={back} className={`${css.left_arrow}`}><img src={arrows.arrow_left} alt="left"/></div>
-            <div onClick={forward} className={`${css.right_arrow}`}><img src={arrows.arrow_right} alt="right"/></div>
+            <div onClick={back} className={css.left_arrow_blue}><img src={arrows.arrow_left} alt="left"/></div>
+            <div onClick={forward} className={css.right_arrow_blue}><img src={arrows.arrow_right} alt="right"/></div>
         </div>
     );
 };

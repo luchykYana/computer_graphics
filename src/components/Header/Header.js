@@ -1,9 +1,30 @@
 import {Link, NavLink} from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {useLocation} from 'react-router';
 
-import css from './Header.module.css';
 import {icons} from '../../constants';
 
+import css from './Header.module.css';
+
 const Header = () => {
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.pathname.includes('fractal')){
+            document.getElementById('body').style.backgroundColor = '#90CCF4';
+        }
+
+        if (location.pathname.includes('color')){
+            document.getElementById('body').style.backgroundColor = '#F3D250';
+        }
+
+        if (location.pathname.includes('move')){
+            document.getElementById('body').style.backgroundColor = '#F78888';
+        }
+    });
+
+
+
     return (
         <header>
             <div className={css.whiteLineBig}></div>
@@ -18,9 +39,9 @@ const Header = () => {
                 </div>
 
                 <div className={css.links}>
-                    <NavLink to={'fractal'}>Фрактали</NavLink>
-                    <NavLink to={'color-models'}>Колірні моделі</NavLink>
-                    <NavLink to={'move-figure'}>Рух фігури</NavLink>
+                    <NavLink to={'fractal'} defaultValue={'fractal'}>Фрактали</NavLink>
+                    <NavLink to={'color-models'} defaultValue={'color-models'}>Колірні моделі</NavLink>
+                    <NavLink to={'move-figure'} defaultValue={'move-figure'}>Рух фігури</NavLink>
                 </div>
 
             </div>
