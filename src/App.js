@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Route, Routes} from 'react-router';
 
 import {
-    ColorModelsPage,
+    ColorModelsPage, ColorPracticePage,
     FigureMovementPage,
     FirstPage,
     FractalPage,
@@ -29,6 +29,7 @@ class App extends Component {
 
                     <Route path={'color-models'} element={<ColorModelsPage/>}>
                         <Route index element={<ColorModelsTheory/>}/>
+                        <Route path={'practice'} element={<ColorPracticePage/>}/>
                     </Route>
                     <Route path={'move-figure'} element={<FigureMovementPage/>}/>
 
