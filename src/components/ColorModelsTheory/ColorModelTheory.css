@@ -1,0 +1,19 @@
+.img-theory {
+    width: 150px;
+    height: 150px;
+}
+
+.text-theory {
+    width: 1050px;
+    height: 203px;
+    text-align: justify;
+    vertical-align: center;
+}
+
+.grid {
+    grid-column-gap: 120px;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
