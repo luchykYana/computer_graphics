@@ -9,7 +9,7 @@ import {
     FractalPracticePage,
     FractalTestPage
 } from './pages';
-import {Content, FractalTheory} from './components';
+import {ColorModelsTheory, Content, FractalTheory} from './components';
 
 import './App.css';
 
@@ -27,7 +27,9 @@ class App extends Component {
                         <Route path={'test'} element={<FractalTestPage/>}/>
                     </Route>
 
-                    <Route path={'color-models'} element={<ColorModelsPage/>}/>
+                    <Route path={'color-models'} element={<ColorModelsPage/>}>
+                        <Route index element={<ColorModelsTheory/>}/>
+                    </Route>
                     <Route path={'move-figure'} element={<FigureMovementPage/>}/>
 
                 </Route>

@@ -1,3 +1,4 @@
+export * from './ColorModelsTheory/ColorModelsTheory';
 export * from './Content/Content';
 export * from './Header/Header';
 export * from './Title/Title';

@@ -1,9 +1,11 @@
-import {Footer} from "../../components";
+import {Outlet} from 'react-router';
+
+import {Footer} from '../../components';
 
 const ColorModelsPage = () => {
     return (
         <div>
-            ColorModelsPage
+            <Outlet/>
             <Footer/>
         </div>
     );

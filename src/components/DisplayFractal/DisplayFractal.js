@@ -105,7 +105,7 @@ const DisplayFractal = ({
             if (r < 0.01) {                                // стебло
                 nextX = 0;
                 nextY = 0.16 * y;
-            } else if (r < 0.86) {                         // маленькі частини листочків
+            } else if (r < 0.86) {                         // верхня частина папороті
                 nextX = 0.85 * x + 0.04 * y;
                 nextY = -0.04 * x + 0.85 * y + 1.6;
             } else if (r < 0.93) {                         // ліві великі частини
@@ -252,7 +252,7 @@ const DisplayFractal = ({
 
         const totalLength = canvas.height < canvas.width ? 0.9 * canvas.height : 0.9 * canvas.width;
 
-        //довжина одного відрізка залежно від ітерації
+        // довжина одного відрізка залежно від ітерації
         let start_length = totalLength / (Math.pow(2, d) - 1);
 
         let currentX = (canvas.width - totalLength) / 2;
@@ -270,7 +270,7 @@ const DisplayFractal = ({
             draw(-dx, -dy);
             if (dep > 1) gilbert(dep - 1, -dy, -dx);
 
-            //функція формування лінії
+            // функція малювання лінії
             function draw(dx, dy) {
                 ctx.beginPath();
                 ctx.moveTo(currentX, currentY);
