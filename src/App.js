@@ -3,13 +3,13 @@ import {Route, Routes} from 'react-router';
 
 import {
     ColorModelsPage, ColorPracticePage,
-    FigureMovementPage,
-    FirstPage,
+    MovePracticePage, FigureMovementPage,
+    FirstPage,LastPage,
     FractalPage,
     FractalPracticePage,
     FractalTestPage
 } from './pages';
-import {ColorModelsTheory, Content, FractalTheory} from './components';
+import {ColorModelsTheory, Content, FractalTheory, MoveFigureTheory} from './components';
 
 import './App.css';
 
@@ -31,9 +31,14 @@ class App extends Component {
                         <Route index element={<ColorModelsTheory/>}/>
                         <Route path={'practice'} element={<ColorPracticePage/>}/>
                     </Route>
-                    <Route path={'move-figure'} element={<FigureMovementPage/>}/>
+                    <Route path={'move-figure'} element={<FigureMovementPage/>}>
+                        <Route index element={<MoveFigureTheory/>}/>
+                        <Route path={'practice'} element={<MovePracticePage/>}/>
+                    </Route>
 
                 </Route>
+
+                <Route path={'finish'} element={<LastPage/>}/>
             </Routes>
         );
     }

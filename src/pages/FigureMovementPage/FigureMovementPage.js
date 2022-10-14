@@ -1,9 +1,10 @@
-import {Footer} from "../../components";
+import {Outlet} from 'react-router';
+import {Footer} from '../../components';
 
 const FigureMovementPage = () => {
     return (
         <div>
-            FigureMovementPage
+            <Outlet/>
             <Footer/>
         </div>
     );

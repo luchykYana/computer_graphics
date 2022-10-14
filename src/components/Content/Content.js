@@ -1,6 +1,6 @@
-import {Outlet} from "react-router";
+import {Outlet} from 'react-router';
 
-import {Header} from "../Header/Header";
+import {Header} from '../Header/Header';
 
 const Content = () => {
     return (

@@ -5,3 +5,5 @@ export * from './FirstPage/FirstPage';
 export * from './FractalPage/FractalPage';
 export * from './FractalPracticePage/FractalPracticePage';
 export * from './FractalTestPage/FractalTestPage';
+export * from './LastPage/LastPage';
+export * from './MovePracticePage/MovePracticePage';
