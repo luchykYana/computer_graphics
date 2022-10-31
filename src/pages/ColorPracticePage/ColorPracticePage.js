@@ -31,8 +31,9 @@ const ConvertRGBtoHSL = (r, g, b) => {
         s = (max - min) / (2 - (max + min));
     }
 
-    // return [Math.round(h), Number(s).toFixed(2), Number(l).toFixed(2)];
-    return [Math.round(h), 0, l];
+    return [Math.round(h), s, l];
+    // return [Math.round(h), 0, l];
+    // return [Math.round(h), s, 0];
 }
 
 const ConvertHSLtoRGB = (h, s, l) => {
@@ -72,7 +73,8 @@ const ConvertHSLtoRGB = (h, s, l) => {
     g = (g + m) * 255;
     b = (b + m) * 255;
     // console.log('r: ' + r + ' g: ' + g + ' b: ' + b);
-    return [Math.round(r), Math.round(g), Math.round(b)];
+    // return [Math.round(r), Math.round(g), Math.round(b)];
+    return [Math.round(r), Math.round(g), 5];
     // return [200, 200, 200];
 }
 
@@ -80,23 +82,22 @@ const ColorPracticePage = () => {
     const loadPhoto = () => {
         let canvas_rgb = document.getElementById('rgb_canvas');
         let context_rgb = canvas_rgb.getContext('2d')
+
         let imageData = context_rgb.getImageData(0, 0, canvas_rgb.width, canvas_rgb.height);
 
         editPixels(imageData.data);
         drawEditedImage(imageData);
 
         function editPixels(imgData) {
-            console.log(imageData.data);
             let mas1 = [0, 0, 0];
             let mas2 = [0, 0, 0];
             for (let i = 0; i < imgData.length; i += 4) {
                 mas1 = ConvertRGBtoHSL(imgData[i], imgData[i + 1], imgData[i + 2]);
                 mas2 = ConvertHSLtoRGB(mas1[0], mas1[1], mas1[2]);
-                imageData[i] = mas2[0];
-                imageData[i + 1] = mas2[1];
-                imageData[i + 2] = mas2[2];
+                imageData.data[i] = mas2[0];
+                imageData.data[i + 1] = mas2[1];
+                imageData.data[i + 2] = mas2[2];
             }
-            console.log(imageData);
         }
 
         function drawEditedImage(newData) {
@@ -118,7 +119,7 @@ const ColorPracticePage = () => {
             let image = new Image();
             image.onload = function () {
                 rgbCtx.drawImage(image, 0, 0, rgbCanvas.width, rgbCanvas.height);
-                // generateCMYK();
+                loadPhoto();
             }
             image.src = event.target.result;
         }
@@ -133,7 +134,6 @@ const ColorPracticePage = () => {
                 <canvas id={'rgb_canvas'} className={`${css.colorCanvas}`} width="300" height="180"></canvas>
                 <canvas id={'cmyk_canvas'} className={`${css.colorCanvas}`} width="300" height="180"></canvas>
                 <canvas id={'hsl_canvas'} className={`${css.colorCanvas}`} width="300" height="180"></canvas>
-                <button onClick={loadPhoto} id={'loadPhoto'}>Вибрати фото</button>
 
                 <input onChange={ImageChange} id={'myInput'} name={'fileName'} type="file"/>
             </div>
