@@ -3,6 +3,42 @@ import {icons} from '../../constants';
 
 import css from './ColorPractisePage.module.css';
 
+function getCMYKFromRGB(r, g, b){
+    r = r / 255;
+    g = g / 255;
+    b = b / 255;
+    let  c = 1 - r, m = 1 - g, y = 1 - b, k;
+    k = Math.min(c, m, y);
+    if (k === 1) {
+        c =	0;
+        m =	0;
+        y =	0;
+    }
+    else {
+        c = (c - k) / (1 - k);
+        m = (m - k) / (1 - k);
+        y = (y - k) / (1 - k);
+    }
+
+    return [c, m, y, k ];
+}
+
+function getRGBFromCMYK(c,m, y, k){
+    let	r, g, b;
+    if(k === 1) {
+        r =	0;
+        g =	0;
+        b =	0;
+    }
+    else {
+        r =	(1 - k - c * (1 - k) ) * 255;
+        g =	(1 - k - m * (1 - k) ) * 255;
+        b =	(1 - k - y * (1 - k) ) * 255;
+    }
+
+    return [r, g, b];
+}
+
 const ConvertRGBtoHSL = (r, g, b) => {
     [r, g, b] = [r / 255, g / 255, b / 255];
     let max = Math.max(r, g, b);
@@ -27,13 +63,11 @@ const ConvertRGBtoHSL = (r, g, b) => {
         s = 0;
     } else if (l > 0 && l < 0.5) {
         s = (max - min) / (2 * l);
-    } else if (l > 0.5 && l !== 1) {
+    } else if (l >= 0.5 && l !== 1) {
         s = (max - min) / (2 - (max + min));
     }
 
     return [Math.round(h), s, l];
-    // return [Math.round(h), 0, l];
-    // return [Math.round(h), s, 0];
 }
 
 const ConvertHSLtoRGB = (h, s, l) => {
@@ -63,7 +97,7 @@ const ConvertHSLtoRGB = (h, s, l) => {
         r = x;
         g = 0;
         b = c;
-    } else if (h >= 300 && h < 360) {
+    } else if (h >= 300 && h <= 360) {
         r = c;
         g = 0;
         b = x;
@@ -72,23 +106,26 @@ const ConvertHSLtoRGB = (h, s, l) => {
     r = (r + m) * 255;
     g = (g + m) * 255;
     b = (b + m) * 255;
-    // console.log('r: ' + r + ' g: ' + g + ' b: ' + b);
-    // return [Math.round(r), Math.round(g), Math.round(b)];
-    return [Math.round(r), Math.round(g), 5];
-    // return [200, 200, 200];
+
+    return [Math.round(r), Math.round(g), Math.round(b)];
 }
 
 const ColorPracticePage = () => {
-    const loadPhoto = () => {
+    const loadPhotos = () => {
         let canvas_rgb = document.getElementById('rgb_canvas');
         let context_rgb = canvas_rgb.getContext('2d')
 
         let imageData = context_rgb.getImageData(0, 0, canvas_rgb.width, canvas_rgb.height);
 
-        editPixels(imageData.data);
-        drawEditedImage(imageData);
+        editPixelsHSL(imageData.data);
+        drawEditedImage(imageData, 'hsl_canvas');
 
-        function editPixels(imgData) {
+        imageData = context_rgb.getImageData(0, 0, canvas_rgb.width, canvas_rgb.height);
+
+        editPixelsCMYK(imageData.data);
+        drawEditedImage(imageData, 'cmyk_canvas');
+
+        function editPixelsHSL(imgData) {
             let mas1 = [0, 0, 0];
             let mas2 = [0, 0, 0];
             for (let i = 0; i < imgData.length; i += 4) {
@@ -100,8 +137,20 @@ const ColorPracticePage = () => {
             }
         }
 
-        function drawEditedImage(newData) {
-            let canvasEdited = document.getElementById("hsl_canvas");
+        function editPixelsCMYK(imgData) {
+            let mas1 = [0, 0, 0, 0];
+            let mas2 = [0, 0, 0];
+            for (let i = 0; i < imgData.length; i += 4) {
+                mas1 = getCMYKFromRGB(imgData[i], imgData[i + 1], imgData[i + 2]);
+                mas2 = getRGBFromCMYK(mas1[0], mas1[1], mas1[2], mas1[3]);
+                imageData.data[i] = mas2[0];
+                imageData.data[i + 1] = mas2[1];
+                imageData.data[i + 2] = mas2[2];
+            }
+        }
+
+        function drawEditedImage(newData, canvasID) {
+            let canvasEdited = document.getElementById(canvasID);
             let ctxEdited = canvasEdited.getContext('2d');
             canvasEdited.width = 300;
             canvasEdited.height = 180;
@@ -119,7 +168,7 @@ const ColorPracticePage = () => {
             let image = new Image();
             image.onload = function () {
                 rgbCtx.drawImage(image, 0, 0, rgbCanvas.width, rgbCanvas.height);
-                loadPhoto();
+                loadPhotos();
             }
             image.src = event.target.result;
         }
