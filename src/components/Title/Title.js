@@ -1,13 +1,10 @@
-import React from 'react';
-
-import './Title.css';
-import '../../App.css'
+import css from './Title.module.css';
 
 const Title = ({icon_name, caption}) => {
     return (
-        <div className={'flex margin-title margin-top-20'}>
+        <div className={`${css.flex} ${css.marginTop20}`}>
             <img src={`${icon_name}`} alt="icon"/>
-            <div className={'margin-left'}><h1>{caption}</h1></div>
+            <div className={`${css.marginLeft}`}><h1>{caption}</h1></div>
         </div>
     );
 };

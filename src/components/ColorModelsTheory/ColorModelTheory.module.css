@@ -1,9 +1,9 @@
-.img-theory {
+.imgTheory {
     width: 150px;
     height: 150px;
 }
 
-.text-theory {
+.textTheory {
     width: 1050px;
     height: 203px;
     text-align: justify;
@@ -14,7 +14,17 @@
     grid-column-gap: 100px;
 }
 
-.mt-10 {
+.mt10 {
     margin-top: 10px;
+}
+
+.content {
+    margin-left: 80px;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    vertical-align: center;
 }
 
