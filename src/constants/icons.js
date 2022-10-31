@@ -18,5 +18,6 @@ export const icons = {
     upload: 'http://drive.google.com/uc?export=view&id=1LxbSyOwW-e1byaTQl4Hdr9O-l5fz8aHE',
     warning_1: 'http://drive.google.com/uc?export=view&id=1E6Tfz4uA0QpEBFl1G0m5RQWdBRjYtZ7h',
     warning_2: 'http://drive.google.com/uc?export=view&id=1dmUgbH7HANrpsWYVdTdgP8yAd6wcshFO',
-    zoom: 'http://drive.google.com/uc?export=view&id=14ZwxLzX6VIGBZZCqSnVMu6w3ryKutVzj'
+    zoom: 'http://drive.google.com/uc?export=view&id=14ZwxLzX6VIGBZZCqSnVMu6w3ryKutVzj',
+    img: 'https://i.pinimg.com/564x/ec/86/6d/ec866d15c11c69215b1844c5517667a6.jpg'
 }

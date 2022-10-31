@@ -1,3 +1,8 @@
 .content {
     margin-left: 80px;
 }
+
+.colorCanvas {
+    border: black 3px solid;
+    background-color: var(--white);
+}
