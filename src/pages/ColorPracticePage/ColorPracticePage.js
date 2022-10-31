@@ -2,6 +2,7 @@ import {Title} from '../../components';
 import {icons} from '../../constants';
 
 import css from './ColorPractisePage.module.css';
+import {useEffect} from "react";
 
 const ConvertRGBtoHSL = (r, g, b) => {
     [r, g, b] = [r / 255, g / 255, b / 255];
@@ -75,6 +76,9 @@ const ConvertHSLtoRGB = (h, s, l) => {
 }
 
 const ColorPracticePage = () => {
+    // const [imageLink, setImageLink] = useEffect();
+
+
     const loadPhoto = () => {
         let canvas_rgb = document.getElementById('rgb_canvas');
         // let canvas_hsl = document.getElementById('hsl_canvas');
@@ -87,11 +91,16 @@ const ColorPracticePage = () => {
 
         function make_image() {
             let base_image = new Image();
-            // base_image.crossOrigin = "anonymous";
+
             // base_image.src = icons.img + "?not-from-cache-please";
             base_image.src = icons.img;
-            base_image.width = 20;
-            context_rgb.drawImage(base_image, 0, 0, canvas_rgb.width, canvas_rgb.height);
+            // base_image.src = imageLink;
+            // base_image.width = 20;
+            base_image.onload = () => {
+                context_rgb.drawImage(base_image, 0, 0, canvas_rgb.width, canvas_rgb.height);
+            }
+            base_image.setAttribute('crossOrigin', '');
+
             // context_hsl.drawImage(base_image, 0, 0, canvas_hsl.width, canvas_hsl.height);
             // context_cmyk.drawImage(base_image, 0, 0, canvas_cmyk.width, canvas_cmyk.height);
         }
@@ -118,6 +127,23 @@ const ColorPracticePage = () => {
         }
     }
 
+    const ImageChange = (e) => {
+        let rgbCanvas = document.getElementById("rgb_canvas");
+        let rgbCtx = rgbCanvas.getContext('2d');
+        rgbCanvas.width = 300;
+        rgbCanvas.height = 180;
+        let reader = new FileReader();
+        reader.onload = function (event) {
+            let image = new Image();
+            image.onload = function () {
+                rgbCtx.drawImage(image, 0, 0, rgbCanvas.width, rgbCanvas.height);
+                // generateCMYK();
+            }
+            image.src = event.target.result;
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    }
+
     return (
         <div className={`${css.content}`}>
             <Title icon_name={icons.pencil} caption={'Перетворення моделей'}/>
@@ -127,6 +153,8 @@ const ColorPracticePage = () => {
                 <canvas id={'cmyk_canvas'} className={`${css.colorCanvas}`} width="300" height="180"></canvas>
                 <canvas id={'hsl_canvas'} className={`${css.colorCanvas}`} width="300" height="180"></canvas>
                 <button onClick={loadPhoto}>Вибрати фото</button>
+
+                <input onChange={ImageChange} id={'myInput'} name={'fileName'} type="file"/>
             </div>
         </div>
     );
