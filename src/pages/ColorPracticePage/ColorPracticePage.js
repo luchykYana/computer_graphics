@@ -201,6 +201,69 @@ const ColorPracticePage = () => {
         hslCtx.clearRect(0, 0, imageWidth, imageHeight);
     }
 
+    const onSaturationChange = (event) => {
+        document.getElementById('saturationValue').value = event.target.value;
+        const value = event.target.value;
+        console.log(value)
+        let minRange, maxRange;
+
+        if(document.getElementById('red').checked === true) {
+            minRange = 300; maxRange= 60;
+        } else if (document.getElementById('green').checked === true) {
+            minRange = 60; maxRange= 180;
+        } else if (document.getElementById('blue').checked === true) {
+            minRange = 180; maxRange= 300;
+        }
+
+        let canvas_cmyk = document.getElementById('cmyk_canvas');
+        let context_cmyk = canvas_cmyk.getContext('2d')
+
+        let imageData = context_cmyk.getImageData(0, 0, canvas_cmyk.width, canvas_cmyk.height);
+
+        editPixelsHSL(imageData.data);
+        drawEditedImage(imageData, 'hsl_canvas');
+
+
+        function editPixelsHSL(imgData) {
+            let mas1 = [0, 0, 0];
+            let mas2 = [0, 0, 0];
+            for (let i = 0; i < imgData.length; i += 4) {
+                // get hsl values
+                mas1 = ConvertRGBtoHSL(imgData[i], imgData[i + 1], imgData[i + 2]);
+                const h = mas1[0];
+                if(h >= minRange && h <= maxRange) {
+                    // console.log(`${mas1[0]} ${mas1[1]} ${mas1[2]}`)
+                    let s = mas1[1];
+                    // console.log(s)
+                    s += (value / 100);
+                    if(s > 1) s = 1;
+                    if(s < 0 ) s = 0;
+
+                    // console.log(s)
+
+                    mas2 = ConvertHSLtoRGB(mas1[0], s, mas1[2]);
+                    imageData.data[i] = mas2[0];
+                    imageData.data[i + 1] = mas2[1];
+                    imageData.data[i + 2] = mas2[2];
+
+                    // console.log(`${mas2[0]} ${mas2[1]} ${mas2[2]}`)
+
+                    // break;
+                }
+            }
+        }
+
+        function drawEditedImage(newData, canvasID) {
+            let canvasEdited = document.getElementById(canvasID);
+            let ctxEdited = canvasEdited.getContext('2d');
+            canvasEdited.width = imageWidth;
+            canvasEdited.height = imageHeight;
+            ctxEdited.putImageData(newData, 0, 0);
+        }
+
+
+    }
+
     return (
         <div className={`${css.content}`}>
             <Title icon_name={icons.brush} caption={'Перетворення моделей'}/>
@@ -291,6 +354,17 @@ const ColorPracticePage = () => {
                     event.target.value = null;
                 }} onChange={ImageChange} id={'myInput'} name={'fileName'} type="file"/>
             </div>
+            <input id={'red'} type="radio" name={'saturationRadio'} value={'red'} defaultChecked={true}/>
+            <label htmlFor='red'>red</label>
+            <input id={'green'} type="radio" name={'saturationRadio'} value={'green'} />
+            <label htmlFor='green'>green</label>
+            <input id={'blue'} type="radio" name={'saturationRadio'} value={'blue'} />
+            <label htmlFor='blue'>blue</label>
+
+
+            <input onChange={onSaturationChange} id={'saturation'} type="range" name='saturation' defaultValue={0} min={-100} max={100}/>
+            <input  defaultValue={0} type="text" id={'saturationValue'}/>
+
         </div>
     );
 };
