@@ -107,23 +107,23 @@ const ColorPracticePage = () => {
         let min, max;
 
         if (document.getElementById('red').checked === true) {
-            min = 0;
-            max = 60;
+            min = 330;
+            max = 30;
         } else if (document.getElementById('yellow').checked === true) {
-            min = 60;
-            max = 120;
+            min = 30;
+            max = 90;
         } else if (document.getElementById('green').checked === true) {
-            min = 120;
-            max = 180;
+            min = 90;
+            max = 150;
         } else if (document.getElementById('cyan').checked === true) {
-            min = 180;
-            max = 240;
+            min = 150;
+            max = 210;
         } else if (document.getElementById('blue').checked === true) {
-            min = 240;
-            max = 300;
+            min = 210;
+            max = 270;
         } else if (document.getElementById('magenta').checked === true) {
-            min = 300;
-            max = 360;
+            min = 270;
+            max = 330;
         }
         console.log([min, max])
         return [min, max]
@@ -145,7 +145,14 @@ const ColorPracticePage = () => {
             for (let i = 0; i < imgData.length; i += 4) {
                 mas1 = modelFunc.RGBtoHSL(imgData[i], imgData[i + 1], imgData[i + 2]);
                 const h = mas1[0];
-                if (h >= minRange && h <= maxRange) {
+                let isPixelNeeded = false;
+                if(minRange < maxRange) {
+                    isPixelNeeded = h >= minRange && h <= maxRange;
+                } else  {
+                    isPixelNeeded = h >= minRange || h <= maxRange;
+                }
+
+                if (isPixelNeeded) {
                     let s = mas1[1];
 
                     s += (value / 100);
