@@ -66,6 +66,7 @@ const ColorPracticePage = () => {
     }
 
     const ImageChange = (e) => {
+        resetValues();
         let cmykCanvas = document.getElementById("cmyk_canvas");
         let cmykCtx = cmykCanvas.getContext('2d');
         cmykCanvas.width = imageWidth;
@@ -97,6 +98,8 @@ const ColorPracticePage = () => {
 
         cmykCtx.clearRect(0, 0, imageWidth, imageHeight);
         hslCtx.clearRect(0, 0, imageWidth, imageHeight);
+
+        resetValues();
     }
 
     const getRangeOfValues = () => {
@@ -120,7 +123,6 @@ const ColorPracticePage = () => {
     }
 
     const onSaturationChange = (event) => {
-        console.log('saturation change')
         document.getElementById('saturationValue').value = event.target.value;
         const value = event.target.value;
 
@@ -153,7 +155,6 @@ const ColorPracticePage = () => {
     }
 
     const onLightnessChange = (event) => {
-        console.log('lightness change')
         document.getElementById('lightnessValue').value = event.target.value;
         const value = event.target.value;
 
@@ -199,6 +200,20 @@ const ColorPracticePage = () => {
         document.getElementById('saturation').dispatchEvent(ev2);
     }
 
+    const download_img_cmyk = () => {
+        const canvas = document.getElementById('cmyk_canvas');
+        const a = document.getElementById('cmyk_link');
+        a.href = canvas.toDataURL("image/png");
+        a.click();
+    };
+
+    const download_img_hsl = () => {
+        const canvas = document.getElementById('hsl_canvas');
+        const a = document.getElementById('hsl_link');
+        a.href = canvas.toDataURL("image/png");
+        a.click();
+    };
+
     return (
         <div className={`${css.content}`}>
             <Title icon_name={icons.brush} caption={'Перетворення моделей'}/>
@@ -236,47 +251,120 @@ const ColorPracticePage = () => {
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                    <div className={`${css.flex} ${css.colorLetters}`}>
 
-                        <div className={`${css.mainLetters} ${css.flex}`}>
-                            <div className={`${css.mbMain}`}><h2>HSL</h2></div>
-                            <div className={`${css.pixelInfo2}`}></div>
+                    <div>
+                        <div className={`${css.flex} ${css.colorLetters}`}>
+
+                            <div className={`${css.mainLetters} ${css.flex}`}>
+                                <div className={`${css.mbMain}`}><h2>HSL</h2></div>
+                                <div className={`${css.pixelInfo2}`}></div>
+                            </div>
+                            <div className={`${css.flex} ${css.letterGroupGap}`}>
+
+                                <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
+                                    <h3>(Hue) Відтінок</h3>
+                                    <div className={`${css.pixelInfo}`}></div>
+
+                                    <div className={`${css.radioButtonContainer}`}>
+                                        <div className={`${css.flex}`}>
+                                            <div className={`${css.radioItem}`}>
+                                                <input onChange={resetValues} id={'red'} type="radio" name={'saturationRadio'} value={'red'} defaultChecked={true}/>
+                                                <label htmlFor='red'>red</label>
+                                            </div>
+
+                                            <div className={`${css.radioItem}`}>
+                                                <input onChange={resetValues} id={'yellow'} type="radio" name={'saturationRadio'} value={'yellow'} />
+                                                <label htmlFor='yellow'>yellow</label>
+                                            </div>
+
+                                            <div className={`${css.radioItem}`}>
+                                                <input onChange={resetValues} id={'green'} type="radio" name={'saturationRadio'} value={'green'} />
+                                                <label htmlFor='green'>green</label>
+                                            </div>
+                                        </div>
+                                        <div className={`${css.flex}`}>
+                                            <div className={`${css.radioItem}`}>
+                                                <input onChange={resetValues} id={'cyan'} type="radio" name={'saturationRadio'} value={'cyan'} />
+                                                <label htmlFor='cyan'>cyan</label>
+                                            </div>
+
+                                            <div className={`${css.radioItem}`}>
+                                                <input onChange={resetValues} id={'blue'} type="radio" name={'saturationRadio'} value={'blue'} />
+                                                <label htmlFor='blue'>blue</label>
+                                            </div>
+
+                                            <div className={`${css.radioItem}`}>
+                                                <input onChange={resetValues} id={'magenta'} type="radio" name={'saturationRadio'} value={'magenta'} />
+                                                <label htmlFor='magenta'>magenta</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
+                                    <h3>(Saturation) Насиченість</h3>
+                                    <div className={`${css.pixelInfo}`}></div>
+
+                                    <div className={`${css.flex}`}>
+                                        <input onChange={onSaturationChange} id={'saturation'} type="range" name='saturation' defaultValue={0}
+                                               min={-100} max={100} step={1}/>
+                                        <input className={`${css.pixelInfo}`} defaultValue={0} type="text" id={'saturationValue'}/>
+                                    </div>
+
+                                </div>
+                                <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
+                                    <h3>(Lightness) Світлота</h3>
+                                    <div className={`${css.pixelInfo}`}></div>
+
+                                    <div>
+                                        <input onChange={onLightnessChange} id={'lightness'} type="range" name='lightness' defaultValue={0}
+                                               min={-100} max={100} step={1}/>
+                                        <input className={`${css.pixelInfo}`} defaultValue={0} type="text" id={'lightnessValue'}/>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
                         </div>
-                        <div className={`${css.flex} ${css.letterGroupGap}`}>
 
-                            <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
-                                <h3>(Hue) Відтінок</h3>
-                                <div className={`${css.pixelInfo}`}></div>
-                            </div>
-                            <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
-                                <h3>(Saturation) Насиченість</h3>
-                                <div className={`${css.pixelInfo}`}></div>
-                            </div>
-                            <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
-                                <h3>(Lightness) Світлота</h3>
-                                <div className={`${css.pixelInfo}`}></div>
-                            </div>
-
-                        </div>
-
+                        <button className={`${css.button} ${css.positionRight}`} onClick={resetValues}>Скинути</button>
                     </div>
+
+
                 </div>
 
+
                 <div>
-                    <div>
-                        <canvas id={'cmyk_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
-                                height={imageHeight}></canvas>
+                    <div className={`${css.flex}`}>
+                        <div>
+                            <canvas id={'cmyk_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
+                                    height={imageHeight}></canvas>
+
+                            <div>
+                                <a id={'cmyk_link'} download={'CMYK.png'}/>
+                                <button onClick={download_img_cmyk} className={`${css.button} ${css.positionLeft}`}>Зберегти</button>
+                            </div>
+                        </div>
+
+
                         {!isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload}
                                              alt="upload"/>}
                         {isImageSet &&
                             <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash}
                                  alt="delete"/>}
                     </div>
-                    <div>
-                        <canvas id={'hsl_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
-                                height={imageHeight}></canvas>
+                    <div className={`${css.flex}`}>
+                        <div>
+                            <canvas id={'hsl_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
+                                    height={imageHeight}></canvas>
+
+                            <div>
+                                <a id={'hsl_link'} download={'HSL.png'}/>
+                                <button onClick={download_img_hsl} className={`${css.button} ${css.positionLeft}`}>Зберегти</button>
+                            </div>
+                        </div>
                         {!isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload}
                                              alt="upload"/>}
                         {isImageSet &&
@@ -289,27 +377,8 @@ const ColorPracticePage = () => {
                     event.target.value = null;
                 }} onChange={ImageChange} id={'myInput'} name={'fileName'} type="file"/>
             </div>
-            <input onChange={resetValues} id={'red'} type="radio" name={'saturationRadio'} value={'red'} defaultChecked={true}/>
-            <label htmlFor='red'>red</label>
-            <input onChange={resetValues} id={'yellow'} type="radio" name={'saturationRadio'} value={'yellow'} />
-            <label htmlFor='yellow'>yellow</label>
-            <input onChange={resetValues} id={'green'} type="radio" name={'saturationRadio'} value={'green'} />
-            <label htmlFor='green'>green</label>
-            <input onChange={resetValues} id={'cyan'} type="radio" name={'saturationRadio'} value={'cyan'} />
-            <label htmlFor='cyan'>cyan</label>
-            <input onChange={resetValues} id={'blue'} type="radio" name={'saturationRadio'} value={'blue'} />
-            <label htmlFor='blue'>blue</label>
-            <input onChange={resetValues} id={'magenta'} type="radio" name={'saturationRadio'} value={'magenta'} />
-            <label htmlFor='magenta'>magenta</label>
 
-            <input onChange={onSaturationChange} id={'saturation'} type="range" name='saturation' defaultValue={0}
-                   min={-100} max={100}/>
-            <input defaultValue={0} type="text" id={'saturationValue'}/>
 
-            <input onChange={onLightnessChange} id={'lightness'} type="range" name='lightness' defaultValue={0} min={-100} max={100}/>
-            <input  defaultValue={0} type="text" id={'lightnessValue'}/>
-
-            <button onClick={resetValues} >Reset</button>
 
         </div>
     );
