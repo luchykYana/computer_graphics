@@ -190,8 +190,8 @@ input[type=range]::-moz-range-thumb {
 
 .positionLeft {
     float:left;
-    margin-left: 10px;
-    margin-top: -20px;
+    margin-left: -20px;
+    margin-top: -25px;
     z-index: 1;
     position: relative;
 }
@@ -215,7 +215,7 @@ input[type=range]::-moz-range-thumb {
     text-align: center;
     width: 180px;
     height: 23px;
-    border: 1px solid darkblue;
+    border: 1px solid var(--dark-yellow);
     border-radius: 10px;
     background-color: var(--white);
     margin-left: 50px;

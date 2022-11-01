@@ -7,7 +7,7 @@ import {modelFunc} from '../../helper';
 import css from './ColorPractisePage.module.css';
 
 const ColorPracticePage = () => {
-    const imageHeight = 200;
+    const imageHeight = 220;
     const imageWidth = 400;
 
     const [isImageSet, setIsImageSet] = useState(false);
