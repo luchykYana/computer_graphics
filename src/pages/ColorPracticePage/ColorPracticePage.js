@@ -2,6 +2,7 @@ import {Title} from '../../components';
 import {icons} from '../../constants';
 
 import css from './ColorPractisePage.module.css';
+import {useState} from "react";
 
 function getCMYKFromRGB(r, g, b){
     r = r / 255;
@@ -111,7 +112,14 @@ const ConvertHSLtoRGB = (h, s, l) => {
 }
 
 const ColorPracticePage = () => {
+    const imageHeight = 125;
+    const imageWidth = 250;
+
+    const [isImageSet, setIsImageSet] = useState(false);
+
+
     const loadPhotos = () => {
+        setIsImageSet(true);
         let canvas_rgb = document.getElementById('rgb_canvas');
         let context_rgb = canvas_rgb.getContext('2d')
 
@@ -152,8 +160,8 @@ const ColorPracticePage = () => {
         function drawEditedImage(newData, canvasID) {
             let canvasEdited = document.getElementById(canvasID);
             let ctxEdited = canvasEdited.getContext('2d');
-            canvasEdited.width = 300;
-            canvasEdited.height = 180;
+            canvasEdited.width = imageWidth;
+            canvasEdited.height = imageHeight;
             ctxEdited.putImageData(newData, 0, 0);
         }
     }
@@ -161,8 +169,8 @@ const ColorPracticePage = () => {
     const ImageChange = (e) => {
         let rgbCanvas = document.getElementById("rgb_canvas");
         let rgbCtx = rgbCanvas.getContext('2d');
-        rgbCanvas.width = 300;
-        rgbCanvas.height = 180;
+        rgbCanvas.width = imageWidth;
+        rgbCanvas.height = imageHeight;
         let reader = new FileReader();
         reader.onload = function (event) {
             let image = new Image();
@@ -175,14 +183,68 @@ const ColorPracticePage = () => {
         reader.readAsDataURL(e.target.files[0]);
     }
 
+    const buttonClick = () => {
+        document.getElementById('myInput').click();
+    }
+
+    const buttonDeleteClick = () => {
+        setIsImageSet(false);
+        let rgbCanvas = document.getElementById("rgb_canvas");
+        let cmykCanvas = document.getElementById("cmyk_canvas");
+        let hslCanvas = document.getElementById("hsl_canvas");
+
+        let rgbCtx = rgbCanvas.getContext('2d');
+        let cmykCtx = cmykCanvas.getContext('2d');
+        let hslCtx = hslCanvas.getContext('2d');
+
+        rgbCtx.clearRect(0, 0, imageWidth, imageHeight);
+        cmykCtx.clearRect(0, 0, imageWidth, imageHeight);
+        hslCtx.clearRect(0, 0, imageWidth, imageHeight);
+    }
+
     return (
         <div className={`${css.content}`}>
-            <Title icon_name={icons.pencil} caption={'Перетворення моделей'}/>
+            <Title icon_name={icons.brush} caption={'Перетворення моделей'}/>
 
             <div>
-                <canvas id={'rgb_canvas'} className={`${css.colorCanvas}`} width="300" height="180"></canvas>
-                <canvas id={'cmyk_canvas'} className={`${css.colorCanvas}`} width="300" height="180"></canvas>
-                <canvas id={'hsl_canvas'} className={`${css.colorCanvas}`} width="300" height="180"></canvas>
+                <div className={`${css.flex}`}>
+                    <div>
+                        <h2>RGB</h2>
+                        <div className={`${css.pixelInfo}`}></div>
+                    </div>
+                    <div className={`${css.pixelInfo}`}></div>
+                    <div className={`${css.pixelInfo}`}></div>
+                    <div className={`${css.pixelInfo}`}></div>
+                    <canvas id={'rgb_canvas'} className={`${css.colorCanvas}`} width={imageWidth} height={imageHeight}></canvas>
+                    { !isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload} alt="upload"/> }
+                    {isImageSet && <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash} alt="delete"/> }
+                </div>
+                <div className={`${css.flex}`}>
+                    <div>
+                        <h2>CMYK</h2>
+                        <div className={`${css.pixelInfo}`}></div>
+                    </div>
+                    <div className={`${css.pixelInfo}`}></div>
+                    <div className={`${css.pixelInfo}`}></div>
+                    <div className={`${css.pixelInfo}`}></div>
+                    <div className={`${css.pixelInfo}`}></div>
+                    <canvas id={'cmyk_canvas'} className={`${css.colorCanvas}`} width={imageWidth} height={imageHeight}></canvas>
+                    { !isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload} alt="upload"/> }
+                    {isImageSet && <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash} alt="delete"/> }
+                </div>
+                <div className={`${css.flex}`}>
+                    <div>
+                        <h2>HSL</h2>
+                        <div className={`${css.pixelInfo}`}></div>
+                    </div>
+                    <div className={`${css.pixelInfo}`}></div>
+                    <div className={`${css.pixelInfo}`}></div>
+                    <div className={`${css.pixelInfo}`}></div>
+                    <canvas id={'hsl_canvas'} className={`${css.colorCanvas}`} width={imageWidth} height={imageHeight}></canvas>
+                    { !isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload} alt="upload"/> }
+                    {isImageSet && <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash} alt="delete"/> }
+                </div>
+                {/*<button onClick={buttonClick} className={`${css.button}`}>Upload</button>*/}
 
                 <input onChange={ImageChange} id={'myInput'} name={'fileName'} type="file"/>
             </div>

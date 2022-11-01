@@ -3,6 +3,52 @@
 }
 
 .colorCanvas {
+    margin-top: 5px;
     border: black 3px solid;
     background-color: var(--white);
+}
+
+input[type=file] {
+    display: none;
+}
+
+.button {
+    color: var(--white);
+    background: var(--dark-yellow);
+    border: var(--dark-yellow) 3px solid;
+    font-size: 20px;
+    border-radius: 10px;
+    transition: background 300ms linear;
+}
+
+.button:hover {
+    background: var(--light-yellow);
+    color: var(--black);
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    vertical-align: center;
+}
+
+.uploadButton {
+    margin-left: -160px;
+    cursor: pointer;
+}
+
+.deleteButton {
+    margin-left: -15px;
+    margin-top: -125px;
+    cursor: pointer;
+    height: 35px;
+    width: 30px;
+}
+
+.pixelInfo {
+    width: 75px;
+    height: 30px;
+    background-color: var(--white);
+    border: 1px solid black;
+    border-radius: 10px;
 }
