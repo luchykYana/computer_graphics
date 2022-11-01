@@ -187,15 +187,16 @@ const ColorPracticePage = () => {
     }
 
     const resetValues = (e) => {
-        document.getElementById('lightness').value = 0;
-        document.getElementById('saturation').value = 0;
+        let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+        nativeInputValueSetter.call(document.getElementById('lightness'), 0);
 
-        let event = new Event('change');
-        // document.getElementById('lightness').dispatchEvent(event);
-        document.getElementById('saturation').dispatchEvent(event);
+        let ev1 = new Event('input', { bubbles: true});
+        document.getElementById('lightness').dispatchEvent(ev1);
 
-        document.getElementById('lightness').dispatchEvent(new window.Event('change', { bubbles: true }))
+        nativeInputValueSetter.call(document.getElementById('saturation'), 0);
 
+        let ev2 = new Event('input', { bubbles: true});
+        document.getElementById('saturation').dispatchEvent(ev2);
     }
 
     return (
@@ -288,17 +289,17 @@ const ColorPracticePage = () => {
                     event.target.value = null;
                 }} onChange={ImageChange} id={'myInput'} name={'fileName'} type="file"/>
             </div>
-            <input id={'red'} type="radio" name={'saturationRadio'} value={'red'} defaultChecked={true}/>
+            <input onChange={resetValues} id={'red'} type="radio" name={'saturationRadio'} value={'red'} defaultChecked={true}/>
             <label htmlFor='red'>red</label>
-            <input id={'yellow'} type="radio" name={'saturationRadio'} value={'yellow'} />
+            <input onChange={resetValues} id={'yellow'} type="radio" name={'saturationRadio'} value={'yellow'} />
             <label htmlFor='yellow'>yellow</label>
-            <input id={'green'} type="radio" name={'saturationRadio'} value={'green'} />
+            <input onChange={resetValues} id={'green'} type="radio" name={'saturationRadio'} value={'green'} />
             <label htmlFor='green'>green</label>
-            <input id={'cyan'} type="radio" name={'saturationRadio'} value={'cyan'} />
+            <input onChange={resetValues} id={'cyan'} type="radio" name={'saturationRadio'} value={'cyan'} />
             <label htmlFor='cyan'>cyan</label>
-            <input id={'blue'} type="radio" name={'saturationRadio'} value={'blue'} />
+            <input onChange={resetValues} id={'blue'} type="radio" name={'saturationRadio'} value={'blue'} />
             <label htmlFor='blue'>blue</label>
-            <input id={'magenta'} type="radio" name={'saturationRadio'} value={'magenta'} />
+            <input onChange={resetValues} id={'magenta'} type="radio" name={'saturationRadio'} value={'magenta'} />
             <label htmlFor='magenta'>magenta</label>
 
             <input onChange={onSaturationChange} id={'saturation'} type="range" name='saturation' defaultValue={0}
