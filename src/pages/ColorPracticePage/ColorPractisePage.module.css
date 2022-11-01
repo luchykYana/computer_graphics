@@ -66,6 +66,9 @@ input[type=file] {
     background-color: var(--white);
     border: 1px solid black;
     border-radius: 10px;
+    font-size: 20px;
+    text-align: center;
+    padding-top: 2px;
 }
 
 .height {
@@ -124,4 +127,32 @@ input[type=file] {
 
 .sLetters {
     margin-top: 20px;
+}
+
+.pipette {
+    position: absolute;
+    display: none;
+}
+
+.pipette_text {
+    text-align: center;
+    width: 180px;
+    height: 23px;
+    border: 1px solid darkblue;
+    border-radius: 10px;
+    background-color: var(--white);
+    margin-left: 50px;
+    position: relative;
+    top: 10px;
+    right: 170px;
+    z-index: 1;
+}
+
+.pipette_img_fill {
+    position: absolute;
+    bottom: 9px;
+    left: 28px;
+    width: 8px;
+    height: 55px;
+    transform: rotate(45deg);
 }
