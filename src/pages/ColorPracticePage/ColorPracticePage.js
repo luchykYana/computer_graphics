@@ -125,7 +125,7 @@ const ColorPracticePage = () => {
             min = 300;
             max = 360;
         }
-
+        console.log([min, max])
         return [min, max]
     }
 
@@ -205,6 +205,17 @@ const ColorPracticePage = () => {
 
         let ev2 = new Event('input', {bubbles: true});
         document.getElementById('saturation').dispatchEvent(ev2);
+
+        document.getElementById('CMYK').style.backgroundColor = `rgb(253, 253, 253)`;
+        document.getElementById('C').innerText = ``;
+        document.getElementById('M').innerText = ``;
+        document.getElementById('Y').innerText = ``;
+        document.getElementById('K').innerText = ``;
+
+        document.getElementById('HSL').style.backgroundColor = `rgb(253, 253, 253)`;
+        document.getElementById('H').innerText = ``;
+        document.getElementById('S').innerText = ``;
+        document.getElementById('L').innerText = ``;
     }
 
     const getMousePosition = (canvas, e) => {
@@ -395,7 +406,7 @@ const ColorPracticePage = () => {
                                     <div className={`${css.flex}`}>
                                         <input onChange={onSaturationChange} id={'saturation'} type="range" name='saturation' defaultValue={0}
                                                min={-100} max={100} step={1}/>
-                                        <input className={`${css.pixelInfo}`} defaultValue={0} type="text" id={'saturationValue'}/>
+                                        <input className={`${css.pixelInfo}`} defaultValue={0} type="text" id={'saturationValue'} disabled/>
                                     </div>
 
                                 </div>
@@ -406,7 +417,7 @@ const ColorPracticePage = () => {
                                     <div>
                                         <input onChange={onLightnessChange} id={'lightness'} type="range" name='lightness' defaultValue={0}
                                                min={-100} max={100} step={1}/>
-                                        <input className={`${css.pixelInfo}`} defaultValue={0} type="text" id={'lightnessValue'}/>
+                                        <input className={`${css.pixelInfo}`} defaultValue={0} type="text" id={'lightnessValue'} disabled/>
                                     </div>
 
                                 </div>
