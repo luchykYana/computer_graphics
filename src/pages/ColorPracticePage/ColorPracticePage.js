@@ -84,12 +84,15 @@ const ColorPracticePage = () => {
     const buttonDeleteClick = () => {
         setIsImageSet(false);
 
+        let rgbCanvas = document.getElementById("rgb_canvas");
         let cmykCanvas = document.getElementById("cmyk_canvas");
         let hslCanvas = document.getElementById("hsl_canvas");
 
+        let rgbCtx = rgbCanvas.getContext('2d');
         let cmykCtx = cmykCanvas.getContext('2d');
         let hslCtx = hslCanvas.getContext('2d');
 
+        rgbCtx.clearRect(0, 0, imageWidth, imageHeight);
         cmykCtx.clearRect(0, 0, imageWidth, imageHeight);
         hslCtx.clearRect(0, 0, imageWidth, imageHeight);
 
