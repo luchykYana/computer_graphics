@@ -421,7 +421,7 @@ const ColorPracticePage = () => {
 
                 <div>
                     <div className={`${css.flex}`}>
-                        <div>
+                        <div className={css.overflow}>
                             <canvas id={'cmyk_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
                                     height={imageHeight} onMouseMove={mouseMove} onMouseLeave={disappearPipe1}
                                     onClick={clickPipe}></canvas>
