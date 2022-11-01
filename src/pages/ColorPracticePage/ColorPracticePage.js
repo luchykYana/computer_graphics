@@ -33,7 +33,7 @@ const ColorPracticePage = () => {
         setIsImageSet(true);
 
         let imageData1 = getImageDataFromCanvas('cmyk_canvas')
-        let imageData2 = imageData1;
+        let imageData2 = getImageDataFromCanvas('cmyk_canvas')
 
         editPixelsHSL(imageData1.data);
         drawEditedImage(imageData1, 'hsl_canvas');
