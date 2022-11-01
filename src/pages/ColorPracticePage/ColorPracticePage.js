@@ -212,9 +212,15 @@ const ColorPracticePage = () => {
                         <h2>RGB</h2>
                         <div className={`${css.pixelInfo}`}></div>
                     </div>
+                    <h2>R</h2>
                     <div className={`${css.pixelInfo}`}></div>
+
+                    <h2>G</h2>
                     <div className={`${css.pixelInfo}`}></div>
+
+                    <h2>B</h2>
                     <div className={`${css.pixelInfo}`}></div>
+
                     <canvas id={'rgb_canvas'} className={`${css.colorCanvas}`} width={imageWidth} height={imageHeight}></canvas>
                     { !isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload} alt="upload"/> }
                     {isImageSet && <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash} alt="delete"/> }
@@ -224,10 +230,18 @@ const ColorPracticePage = () => {
                         <h2>CMYK</h2>
                         <div className={`${css.pixelInfo}`}></div>
                     </div>
+                    <h2>C</h2>
                     <div className={`${css.pixelInfo}`}></div>
+
+                    <h2>M</h2>
                     <div className={`${css.pixelInfo}`}></div>
+
+                    <h2>Y</h2>
                     <div className={`${css.pixelInfo}`}></div>
+
+                    <h2>K</h2>
                     <div className={`${css.pixelInfo}`}></div>
+
                     <canvas id={'cmyk_canvas'} className={`${css.colorCanvas}`} width={imageWidth} height={imageHeight}></canvas>
                     { !isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload} alt="upload"/> }
                     {isImageSet && <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash} alt="delete"/> }
@@ -237,9 +251,16 @@ const ColorPracticePage = () => {
                         <h2>HSL</h2>
                         <div className={`${css.pixelInfo}`}></div>
                     </div>
+
+                    <h2>H</h2>
                     <div className={`${css.pixelInfo}`}></div>
+
+                    <h2>S</h2>
                     <div className={`${css.pixelInfo}`}></div>
+
+                    <h2>L</h2>
                     <div className={`${css.pixelInfo}`}></div>
+
                     <canvas id={'hsl_canvas'} className={`${css.colorCanvas}`} width={imageWidth} height={imageHeight}></canvas>
                     { !isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload} alt="upload"/> }
                     {isImageSet && <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash} alt="delete"/> }
