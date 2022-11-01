@@ -4,37 +4,35 @@ import {icons} from '../../constants';
 import css from './ColorPractisePage.module.css';
 import {useState} from "react";
 
-function getCMYKFromRGB(r, g, b){
+function getCMYKFromRGB(r, g, b) {
     r = r / 255;
     g = g / 255;
     b = b / 255;
-    let  c = 1 - r, m = 1 - g, y = 1 - b, k;
+    let c = 1 - r, m = 1 - g, y = 1 - b, k;
     k = Math.min(c, m, y);
     if (k === 1) {
-        c =	0;
-        m =	0;
-        y =	0;
-    }
-    else {
+        c = 0;
+        m = 0;
+        y = 0;
+    } else {
         c = (c - k) / (1 - k);
         m = (m - k) / (1 - k);
         y = (y - k) / (1 - k);
     }
 
-    return [c, m, y, k ];
+    return [c, m, y, k];
 }
 
-function getRGBFromCMYK(c,m, y, k){
-    let	r, g, b;
-    if(k === 1) {
-        r =	0;
-        g =	0;
-        b =	0;
-    }
-    else {
-        r =	(1 - k - c * (1 - k) ) * 255;
-        g =	(1 - k - m * (1 - k) ) * 255;
-        b =	(1 - k - y * (1 - k) ) * 255;
+function getRGBFromCMYK(c, m, y, k) {
+    let r, g, b;
+    if (k === 1) {
+        r = 0;
+        g = 0;
+        b = 0;
+    } else {
+        r = (1 - k - c * (1 - k)) * 255;
+        g = (1 - k - m * (1 - k)) * 255;
+        b = (1 - k - y * (1 - k)) * 255;
     }
 
     return [r, g, b];
@@ -206,64 +204,115 @@ const ColorPracticePage = () => {
         <div className={`${css.content}`}>
             <Title icon_name={icons.brush} caption={'Перетворення моделей'}/>
 
-            <div>
-                <div className={`${css.flex}`}>
-                    <div>
-                        <h2>RGB</h2>
-                        <div className={`${css.pixelInfo}`}></div>
+            <div className={`${css.flex} ${css.height} ${css.gap}`}>
+                <div>
+                    <div className={`${css.colorLetters}`}>
+                        <div>
+                            <div className={`${css.flex} ${css.letterGap} ${css.mainLetters}`}>
+                                <h2>CMYK</h2>
+                                <div className={`${css.pixelInfo}`}></div>
+                            </div>
+                            <div className={`${css.flex} ${css.letterGroupGap}`}>
+                                <div className={`${css.flex} ${css.letterGap}`}>
+                                    <h2>C</h2>
+                                    <div className={`${css.pixelInfo}`}></div>
+                                </div>
+
+                                <div className={`${css.flex} ${css.letterGap}`}>
+                                    <h2>M</h2>
+                                    <div className={`${css.pixelInfo}`}></div>
+                                </div>
+
+                                <div className={`${css.flex} ${css.letterGap}`}>
+                                    <h2>Y</h2>
+                                    <div className={`${css.pixelInfo}`}></div>
+                                </div>
+
+                                <div className={`${css.flex} ${css.letterGap}`}>
+                                    <h2>K</h2>
+                                    <div className={`${css.pixelInfo}`}></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <h2>R</h2>
-                    <div className={`${css.pixelInfo}`}></div>
+                    <div>
+                        <canvas id={'rgb_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
+                                height={imageHeight}></canvas>
+                        {!isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload}
+                                             alt="upload"/>}
+                        {isImageSet &&
+                            <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash}
+                                 alt="delete"/>}
+                    </div>
+                    <div className={`${css.colorLetters}`}>
+                        <div>
+                            <div className={`${css.flex} ${css.letterGap} ${css.mainLetters}`}>
+                                <h2>HSL</h2>
+                                <div className={`${css.pixelInfo}`}></div>
+                            </div>
+                            <div className={`${css.flex} ${css.letterGroupGap}`}>
+                                <div className={`${css.flex} ${css.letterGap}`}>
+                                    <h2>H</h2>
+                                    <div className={`${css.pixelInfo}`}></div>
+                                </div>
 
-                    <h2>G</h2>
-                    <div className={`${css.pixelInfo}`}></div>
+                                <div className={`${css.flex} ${css.letterGap}`}>
+                                    <h2>S</h2>
+                                    <div className={`${css.pixelInfo}`}></div>
+                                </div>
 
-                    <h2>B</h2>
-                    <div className={`${css.pixelInfo}`}></div>
-
-                    <canvas id={'rgb_canvas'} className={`${css.colorCanvas}`} width={imageWidth} height={imageHeight}></canvas>
-                    { !isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload} alt="upload"/> }
-                    {isImageSet && <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash} alt="delete"/> }
+                                <div className={`${css.flex} ${css.letterGap}`}>
+                                    <h2>L</h2>
+                                    <div className={`${css.pixelInfo}`}></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className={`${css.flex}`}>
+
+                <div>
                     <div>
-                        <h2>CMYK</h2>
-                        <div className={`${css.pixelInfo}`}></div>
+                        <canvas id={'cmyk_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
+                                height={imageHeight}></canvas>
+                        {!isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload}
+                                             alt="upload"/>}
+                        {isImageSet &&
+                            <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash}
+                                 alt="delete"/>}
                     </div>
-                    <h2>C</h2>
-                    <div className={`${css.pixelInfo}`}></div>
+                    <div className={`${css.colorLetters}`}>
+                        <div>
+                            <div className={`${css.flex} ${css.letterGap} ${css.mainLetters}`}>
+                                <h2>RGB</h2>
+                                <div className={`${css.pixelInfo}`}></div>
+                            </div>
+                            <div className={`${css.flex} ${css.letterGroupGap}`}>
+                                <div className={`${css.flex} ${css.letterGap}`}>
+                                    <h2>R</h2>
+                                    <div className={`${css.pixelInfo}`}></div>
+                                </div>
 
-                    <h2>M</h2>
-                    <div className={`${css.pixelInfo}`}></div>
+                                <div className={`${css.flex} ${css.letterGap}`}>
+                                    <h2>G</h2>
+                                    <div className={`${css.pixelInfo}`}></div>
+                                </div>
 
-                    <h2>Y</h2>
-                    <div className={`${css.pixelInfo}`}></div>
-
-                    <h2>K</h2>
-                    <div className={`${css.pixelInfo}`}></div>
-
-                    <canvas id={'cmyk_canvas'} className={`${css.colorCanvas}`} width={imageWidth} height={imageHeight}></canvas>
-                    { !isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload} alt="upload"/> }
-                    {isImageSet && <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash} alt="delete"/> }
-                </div>
-                <div className={`${css.flex}`}>
+                                <div className={`${css.flex} ${css.letterGap}`}>
+                                    <h2>B</h2>
+                                    <div className={`${css.pixelInfo}`}></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div>
-                        <h2>HSL</h2>
-                        <div className={`${css.pixelInfo}`}></div>
+                        <canvas id={'hsl_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
+                                height={imageHeight}></canvas>
+                        {!isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload}
+                                             alt="upload"/>}
+                        {isImageSet &&
+                            <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash}
+                                 alt="delete"/>}
                     </div>
-
-                    <h2>H</h2>
-                    <div className={`${css.pixelInfo}`}></div>
-
-                    <h2>S</h2>
-                    <div className={`${css.pixelInfo}`}></div>
-
-                    <h2>L</h2>
-                    <div className={`${css.pixelInfo}`}></div>
-
-                    <canvas id={'hsl_canvas'} className={`${css.colorCanvas}`} width={imageWidth} height={imageHeight}></canvas>
-                    { !isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload} alt="upload"/> }
-                    {isImageSet && <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash} alt="delete"/> }
                 </div>
                 {/*<button onClick={buttonClick} className={`${css.button}`}>Upload</button>*/}
 

@@ -1,5 +1,6 @@
 .content {
     margin-left: 80px;
+    width: 80vw;
 }
 
 .colorCanvas {
@@ -32,8 +33,13 @@ input[type=file] {
     vertical-align: center;
 }
 
+.jContent {
+    column-gap: 40px;
+}
+
 .uploadButton {
     margin-left: -160px;
+    margin-bottom: 30px;
     cursor: pointer;
 }
 
@@ -46,9 +52,36 @@ input[type=file] {
 }
 
 .pixelInfo {
-    width: 75px;
+    width: 70px;
     height: 30px;
     background-color: var(--white);
     border: 1px solid black;
     border-radius: 10px;
+}
+
+.height {
+    margin-top: 10px;
+    height: 400px;
+}
+
+.gap {
+    column-gap: 50px;
+}
+
+.colorLetters {
+    border: 1px solid black;
+    height: 140px;
+    padding: 10px;
+}
+
+.letterGap {
+    column-gap: 5px;
+}
+
+.letterGroupGap {
+    column-gap: 15px;
+}
+
+.mainLetters {
+    margin-bottom: 10px;
 }
