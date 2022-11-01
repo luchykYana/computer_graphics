@@ -207,68 +207,63 @@ const ColorPracticePage = () => {
 
             <div className={`${css.flex} ${css.height} ${css.gap}`}>
                 <div>
-                    <div className={`${css.colorLetters}`}>
-                        <div>
-                            <div className={`${css.flex} ${css.letterGap} ${css.mainLetters}`}>
-                                <h2>CMYK</h2>
-                                <div className={`${css.pixelInfo}`}></div>
+                    <div className={`${css.flex} ${css.colorLetters}`}>
+
+                            <div className={`${css.mainLetters} ${css.flex}`}>
+                                <div className={`${css.mbMain}`}><h2>CMYK</h2></div>
+                                <div className={`${css.pixelInfo2}`}></div>
+                            </div>
+                            <div className={`${css.sLetters}`}>
+                                <div className={`${css.flex} ${css.letterGroupGap2}`}>
+                                    <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
+                                        <h3>(Cyan) Блакитний</h3>
+                                        <div className={`${css.pixelInfo}`}></div>
+                                    </div>
+
+                                    <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
+                                        <h3>(Magenta) Пурпуровий</h3>
+                                        <div className={`${css.pixelInfo}`}></div>
+                                    </div>
+                                </div>
+
+                                <div className={`${css.flex} ${css.letterGroupGap2}`}>
+                                    <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
+                                        <h3>(Yellow) Жовтий</h3>
+                                        <div className={`${css.pixelInfo}`}></div>
+                                    </div>
+
+                                    <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
+                                        <h3>(Key) Чорний</h3>
+                                        <div className={`${css.pixelInfo}`}></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    <div className={`${css.flex} ${css.colorLetters}`}>
+
+                            <div className={`${css.mainLetters} ${css.flex}`}>
+                                <div className={`${css.mbMain}`}><h2>HSL</h2></div>
+                                <div className={`${css.pixelInfo2}`}></div>
                             </div>
                             <div className={`${css.flex} ${css.letterGroupGap}`}>
-                                <div className={`${css.flex} ${css.letterGap}`}>
-                                    <h2>C</h2>
+
+                                <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
+                                    <h3>(Hue) Відтінок</h3>
+                                    <div className={`${css.pixelInfo}`}></div>
+                                </div>
+                                <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
+                                    <h3>(Saturation) Насиченість</h3>
+                                    <div className={`${css.pixelInfo}`}></div>
+                                </div>
+                                <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
+                                    <h3>(Lightness) Світлота</h3>
                                     <div className={`${css.pixelInfo}`}></div>
                                 </div>
 
-                                <div className={`${css.flex} ${css.letterGap}`}>
-                                    <h2>M</h2>
-                                    <div className={`${css.pixelInfo}`}></div>
-                                </div>
-
-                                <div className={`${css.flex} ${css.letterGap}`}>
-                                    <h2>Y</h2>
-                                    <div className={`${css.pixelInfo}`}></div>
-                                </div>
-
-                                <div className={`${css.flex} ${css.letterGap}`}>
-                                    <h2>K</h2>
-                                    <div className={`${css.pixelInfo}`}></div>
-                                </div>
                             </div>
+
                         </div>
-                    </div>
-                    {/*<div>*/}
-                    {/*    <canvas id={'rgb_canvas'} className={`${css.colorCanvas}`} width={imageWidth}*/}
-                    {/*            height={imageHeight}></canvas>*/}
-                    {/*    {!isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload}*/}
-                    {/*                         alt="upload"/>}*/}
-                    {/*    {isImageSet &&*/}
-                    {/*        <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash}*/}
-                    {/*             alt="delete"/>}*/}
-                    {/*</div>*/}
-                    <div className={`${css.colorLetters}`}>
-                        <div>
-                            <div className={`${css.flex} ${css.letterGap} ${css.mainLetters}`}>
-                                <h2>HSL</h2>
-                                <div className={`${css.pixelInfo}`}></div>
-                            </div>
-                            <div className={`${css.flex} ${css.letterGroupGap}`}>
-                                <div className={`${css.flex} ${css.letterGap}`}>
-                                    <h2>H</h2>
-                                    <div className={`${css.pixelInfo}`}></div>
-                                </div>
-
-                                <div className={`${css.flex} ${css.letterGap}`}>
-                                    <h2>S</h2>
-                                    <div className={`${css.pixelInfo}`}></div>
-                                </div>
-
-                                <div className={`${css.flex} ${css.letterGap}`}>
-                                    <h2>L</h2>
-                                    <div className={`${css.pixelInfo}`}></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div>
@@ -281,30 +276,6 @@ const ColorPracticePage = () => {
                             <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash}
                                  alt="delete"/>}
                     </div>
-                    {/*<div className={`${css.colorLetters}`}>*/}
-                    {/*    <div>*/}
-                    {/*        <div className={`${css.flex} ${css.letterGap} ${css.mainLetters}`}>*/}
-                    {/*            <h2>RGB</h2>*/}
-                    {/*            <div className={`${css.pixelInfo}`}></div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className={`${css.flex} ${css.letterGroupGap}`}>*/}
-                    {/*            <div className={`${css.flex} ${css.letterGap}`}>*/}
-                    {/*                <h2>R</h2>*/}
-                    {/*                <div className={`${css.pixelInfo}`}></div>*/}
-                    {/*            </div>*/}
-
-                    {/*            <div className={`${css.flex} ${css.letterGap}`}>*/}
-                    {/*                <h2>G</h2>*/}
-                    {/*                <div className={`${css.pixelInfo}`}></div>*/}
-                    {/*            </div>*/}
-
-                    {/*            <div className={`${css.flex} ${css.letterGap}`}>*/}
-                    {/*                <h2>B</h2>*/}
-                    {/*                <div className={`${css.pixelInfo}`}></div>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
                     <div>
                         <canvas id={'hsl_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
                                 height={imageHeight}></canvas>
@@ -315,8 +286,6 @@ const ColorPracticePage = () => {
                                  alt="delete"/>}
                     </div>
                 </div>
-                {/*<button onClick={buttonClick} className={`${css.button}`}>Upload</button>*/}
-
 
                 <input onClick={(event) => {
                     event.target.value = null;

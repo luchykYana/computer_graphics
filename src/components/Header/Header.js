@@ -27,7 +27,7 @@ const Header = () => {
 
     return (
         <header>
-            <div className={css.whiteLineBig}></div>
+            {/*<div className={css.whiteLineBig}></div>*/}
             <div className={css.display}>
 
                 <div className={css.logo}>

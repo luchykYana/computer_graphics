@@ -1,5 +1,6 @@
 .content {
     margin-left: 80px;
+    margin-bottom: 10px;
     width: 80vw;
 }
 
@@ -38,7 +39,7 @@ input[type=file] {
 }
 
 .uploadButton {
-    margin-left: -180px;
+    margin-left: -225px;
     margin-bottom: 70px;
     cursor: pointer;
 }
@@ -54,24 +55,35 @@ input[type=file] {
 .pixelInfo {
     width: 70px;
     height: 30px;
+}
+
+.pixelInfo2 {
+    width: 120px;
+    height: 60px;
+}
+
+.pixelInfo, .pixelInfo2 {
     background-color: var(--white);
     border: 1px solid black;
     border-radius: 10px;
 }
 
 .height {
-    margin-top: 10px;
+    margin-top: 30px;
     height: 400px;
 }
 
 .gap {
-    column-gap: 500px;
+    column-gap: 150px;
 }
 
 .colorLetters {
+    width: 800px;
     border: 1px solid black;
-    height: 100px;
-    padding: 10px;
+    height: 200px;
+    padding: 20px;
+    margin-top: 30px;
+    margin-bottom: 40px;
 }
 
 .letterGap {
@@ -80,8 +92,36 @@ input[type=file] {
 
 .letterGroupGap {
     column-gap: 15px;
+    flex-direction: column;
+    gap: 20px;
+}
+.letterGroupGap2 {
+    column-gap: 30px;
+    margin-bottom: 30px;
 }
 
 .mainLetters {
+    margin-bottom: 20px;
+    flex-direction: column;
+}
+
+.cmykWidthLetter {
+    width: 300px;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.hslWidthLetter {
+    width: 350px;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.mbMain {
+    margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.sLetters {
+    margin-top: 20px;
 }
