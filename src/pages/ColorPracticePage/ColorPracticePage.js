@@ -12,13 +12,26 @@ const ColorPracticePage = () => {
 
     const [isImageSet, setIsImageSet] = useState(false);
 
+    function drawEditedImage(newData, canvasID) {
+        let canvasEdited = document.getElementById(canvasID);
+        let ctxEdited = canvasEdited.getContext('2d');
+        canvasEdited.width = imageWidth;
+        canvasEdited.height = imageHeight;
+        ctxEdited.putImageData(newData, 0, 0);
+    }
+
+    const getImageDataFromCanvas = (canvasName) => {
+        let canvas = document.getElementById(canvasName);
+        let context = canvas.getContext('2d')
+
+        let data = context.getImageData(0, 0, canvas.width, canvas.height);
+        return data;
+    }
 
     const loadPhotos = () => {
         setIsImageSet(true);
-        let canvas_cmyk = document.getElementById('cmyk_canvas');
-        let context_cmyk = canvas_cmyk.getContext('2d')
 
-        let imageData1 = context_cmyk.getImageData(0, 0, canvas_cmyk.width, canvas_cmyk.height);
+        let imageData1 = getImageDataFromCanvas('cmyk_canvas')
         let imageData2 = imageData1;
 
         editPixelsHSL(imageData1.data);
@@ -50,14 +63,6 @@ const ColorPracticePage = () => {
                 imageData2.data[i + 2] = mas2[2];
             }
         }
-
-        function drawEditedImage(newData, canvasID) {
-            let canvasEdited = document.getElementById(canvasID);
-            let ctxEdited = canvasEdited.getContext('2d');
-            canvasEdited.width = imageWidth;
-            canvasEdited.height = imageHeight;
-            ctxEdited.putImageData(newData, 0, 0);
-        }
     }
 
     const ImageChange = (e) => {
@@ -83,158 +88,114 @@ const ColorPracticePage = () => {
 
     const buttonDeleteClick = () => {
         setIsImageSet(false);
-        // let rgbCanvas = document.getElementById("rgb_canvas");
+
         let cmykCanvas = document.getElementById("cmyk_canvas");
         let hslCanvas = document.getElementById("hsl_canvas");
 
-        // let rgbCtx = rgbCanvas.getContext('2d');
         let cmykCtx = cmykCanvas.getContext('2d');
         let hslCtx = hslCanvas.getContext('2d');
 
-        // rgbCtx.clearRect(0, 0, imageWidth, imageHeight);
         cmykCtx.clearRect(0, 0, imageWidth, imageHeight);
         hslCtx.clearRect(0, 0, imageWidth, imageHeight);
     }
 
-    const onSaturationChange = (event) => {
-        document.getElementById('saturationValue').value = event.target.value;
-        const value = event.target.value;
-        console.log(value)
-        let minRange, maxRange;
+    const getRangeOfValues = () => {
+        let min, max;
 
         if(document.getElementById('red').checked === true) {
-            minRange = 0; maxRange= 60;
+            min = 0; max= 60;
         } else if (document.getElementById('yellow').checked === true) {
-            minRange = 60; maxRange= 120;
+            min = 60; max= 120;
         } else if (document.getElementById('green').checked === true) {
-            minRange = 120; maxRange= 180;
+            min = 120; max= 180;
         } else if (document.getElementById('cyan').checked === true) {
-            minRange = 180; maxRange= 240;
+            min = 180; max= 240;
         } else if (document.getElementById('blue').checked === true) {
-            minRange = 240; maxRange= 300;
+            min = 240; max= 300;
         } else if (document.getElementById('magenta').checked === true) {
-            minRange = 300; maxRange= 360;
+            min = 300; max= 360;
         }
 
-        let canvas_cmyk = document.getElementById('cmyk_canvas');
-        let context_cmyk = canvas_cmyk.getContext('2d')
+        return [min, max]
+    }
 
-        let imageData = context_cmyk.getImageData(0, 0, canvas_cmyk.width, canvas_cmyk.height);
+    const onSaturationChange = (event) => {
+        console.log('saturation change')
+        document.getElementById('saturationValue').value = event.target.value;
+        const value = event.target.value;
+
+        let [minRange, maxRange] = getRangeOfValues();
+        let imageData = getImageDataFromCanvas('cmyk_canvas');
 
         editPixelsChangeSaturation(imageData.data);
         drawEditedImage(imageData, 'hsl_canvas');
-
 
         function editPixelsChangeSaturation(imgData) {
             let mas1 = [0, 0, 0];
             let mas2 = [0, 0, 0];
             for (let i = 0; i < imgData.length; i += 4) {
-                // get hsl values
                 mas1 = modelFunc.RGBtoHSL(imgData[i], imgData[i + 1], imgData[i + 2]);
                 const h = mas1[0];
                 if (h >= minRange && h <= maxRange) {
-                    // console.log(`${mas1[0]} ${mas1[1]} ${mas1[2]}`)
                     let s = mas1[1];
-                    // console.log(s)
+
                     s += (value / 100);
                     if (s > 1) s = 1;
                     if (s < 0) s = 0;
-
-                    // console.log(s)
 
                     mas2 = modelFunc.HSLtoRGB(mas1[0], s, mas1[2]);
                     imageData.data[i] = mas2[0];
                     imageData.data[i + 1] = mas2[1];
                     imageData.data[i + 2] = mas2[2];
-
-                    // console.log(`${mas2[0]} ${mas2[1]} ${mas2[2]}`)
-
-                    // break;
                 }
             }
-        }
-
-        function drawEditedImage(newData, canvasID) {
-            let canvasEdited = document.getElementById(canvasID);
-            let ctxEdited = canvasEdited.getContext('2d');
-            canvasEdited.width = imageWidth;
-            canvasEdited.height = imageHeight;
-            ctxEdited.putImageData(newData, 0, 0);
         }
     }
 
     const onLightnessChange = (event) => {
+        console.log('lightness change')
         document.getElementById('lightnessValue').value = event.target.value;
         const value = event.target.value;
 
-        let minRange, maxRange;
-
-        if(document.getElementById('red').checked === true) {
-            minRange = 0; maxRange= 60;
-        } else if (document.getElementById('yellow').checked === true) {
-            minRange = 60; maxRange= 120;
-        } else if (document.getElementById('green').checked === true) {
-            minRange = 120; maxRange= 180;
-        } else if (document.getElementById('cyan').checked === true) {
-            minRange = 180; maxRange= 240;
-        } else if (document.getElementById('blue').checked === true) {
-            minRange = 240; maxRange= 300;
-        } else if (document.getElementById('magenta').checked === true) {
-            minRange = 300; maxRange= 360;
-        }
-
-        let canvas_cmyk = document.getElementById('cmyk_canvas');
-        let context_cmyk = canvas_cmyk.getContext('2d')
-
-        let imageData = context_cmyk.getImageData(0, 0, canvas_cmyk.width, canvas_cmyk.height);
+        let [minRange, maxRange] = getRangeOfValues();
+        let imageData = getImageDataFromCanvas('cmyk_canvas');
 
         editPixelsChangeLightness(imageData.data);
         drawEditedImage(imageData, 'hsl_canvas');
-
 
         function editPixelsChangeLightness(imgData) {
             let mas1 = [0, 0, 0];
             let mas2 = [0, 0, 0];
             for (let i = 0; i < imgData.length; i += 4) {
-                // get hsl values
-                mas1 = ConvertRGBtoHSL(imgData[i], imgData[i + 1], imgData[i + 2]);
+                mas1 = modelFunc.RGBtoHSL(imgData[i], imgData[i + 1], imgData[i + 2]);
                 const h = mas1[0];
                 if (h >= minRange && h <= maxRange) {
-                    // console.log(`${mas1[0]} ${mas1[1]} ${mas1[2]}`)
                     let l = mas1[2];
-                    // console.log(s)
+
                     l += (value / 100);
+
                     if (l > 1) l = 1;
                     if (l < 0) l = 0;
 
-                    // console.log(s)
-
-                    mas2 = ConvertHSLtoRGB(mas1[0], mas1[1], l);
+                    mas2 = modelFunc.RGBtoHSL(mas1[0], mas1[1], l);
                     imageData.data[i] = mas2[0];
                     imageData.data[i + 1] = mas2[1];
                     imageData.data[i + 2] = mas2[2];
-
-                    // console.log(`${mas2[0]} ${mas2[1]} ${mas2[2]}`)
-
-                    // break;
                 }
             }
-        }
-
-        function drawEditedImage(newData, canvasID) {
-            let canvasEdited = document.getElementById(canvasID);
-            let ctxEdited = canvasEdited.getContext('2d');
-            canvasEdited.width = imageWidth;
-            canvasEdited.height = imageHeight;
-            ctxEdited.putImageData(newData, 0, 0);
         }
     }
 
     const resetValues = (e) => {
         document.getElementById('lightness').value = 0;
-        // document.getElementById('lightness').onchange;
         document.getElementById('saturation').value = 0;
-        // document.getElementById('saturation').onchange;
+
+        let event = new Event('change');
+        // document.getElementById('lightness').dispatchEvent(event);
+        document.getElementById('saturation').dispatchEvent(event);
+
+        document.getElementById('lightness').dispatchEvent(new window.Event('change', { bubbles: true }))
+
     }
 
     return (
