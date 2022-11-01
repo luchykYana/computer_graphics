@@ -118,18 +118,19 @@ const ColorPracticePage = () => {
 
     const loadPhotos = () => {
         setIsImageSet(true);
-        let canvas_rgb = document.getElementById('rgb_canvas');
-        let context_rgb = canvas_rgb.getContext('2d')
+        let canvas_cmyk = document.getElementById('cmyk_canvas');
+        let context_cmyk = canvas_cmyk.getContext('2d')
 
-        let imageData = context_rgb.getImageData(0, 0, canvas_rgb.width, canvas_rgb.height);
+        let imageData1 = context_cmyk.getImageData(0, 0, canvas_cmyk.width, canvas_cmyk.height);
+        let imageData2 = imageData1;
 
-        editPixelsHSL(imageData.data);
-        drawEditedImage(imageData, 'hsl_canvas');
+        editPixelsHSL(imageData1.data);
+        drawEditedImage(imageData1, 'hsl_canvas');
 
-        imageData = context_rgb.getImageData(0, 0, canvas_rgb.width, canvas_rgb.height);
+        // imageData = context_cmyk.getImageData(0, 0, canvas_cmyk.width, canvas_cmyk.height);
 
-        editPixelsCMYK(imageData.data);
-        drawEditedImage(imageData, 'cmyk_canvas');
+        editPixelsCMYK(imageData2.data);
+        drawEditedImage(imageData2, 'cmyk_canvas');
 
         function editPixelsHSL(imgData) {
             let mas1 = [0, 0, 0];
@@ -137,9 +138,9 @@ const ColorPracticePage = () => {
             for (let i = 0; i < imgData.length; i += 4) {
                 mas1 = ConvertRGBtoHSL(imgData[i], imgData[i + 1], imgData[i + 2]);
                 mas2 = ConvertHSLtoRGB(mas1[0], mas1[1], mas1[2]);
-                imageData.data[i] = mas2[0];
-                imageData.data[i + 1] = mas2[1];
-                imageData.data[i + 2] = mas2[2];
+                imageData1.data[i] = mas2[0];
+                imageData1.data[i + 1] = mas2[1];
+                imageData1.data[i + 2] = mas2[2];
             }
         }
 
@@ -149,9 +150,9 @@ const ColorPracticePage = () => {
             for (let i = 0; i < imgData.length; i += 4) {
                 mas1 = getCMYKFromRGB(imgData[i], imgData[i + 1], imgData[i + 2]);
                 mas2 = getRGBFromCMYK(mas1[0], mas1[1], mas1[2], mas1[3]);
-                imageData.data[i] = mas2[0];
-                imageData.data[i + 1] = mas2[1];
-                imageData.data[i + 2] = mas2[2];
+                imageData2.data[i] = mas2[0];
+                imageData2.data[i + 1] = mas2[1];
+                imageData2.data[i + 2] = mas2[2];
             }
         }
 
@@ -165,15 +166,15 @@ const ColorPracticePage = () => {
     }
 
     const ImageChange = (e) => {
-        let rgbCanvas = document.getElementById("rgb_canvas");
-        let rgbCtx = rgbCanvas.getContext('2d');
-        rgbCanvas.width = imageWidth;
-        rgbCanvas.height = imageHeight;
+        let cmykCanvas = document.getElementById("cmyk_canvas");
+        let cmykCtx = cmykCanvas.getContext('2d');
+        cmykCanvas.width = imageWidth;
+        cmykCanvas.height = imageHeight;
         let reader = new FileReader();
         reader.onload = function (event) {
             let image = new Image();
             image.onload = function () {
-                rgbCtx.drawImage(image, 0, 0, rgbCanvas.width, rgbCanvas.height);
+                cmykCtx.drawImage(image, 0, 0, cmykCanvas.width, cmykCanvas.height);
                 loadPhotos();
             }
             image.src = event.target.result;
@@ -187,15 +188,15 @@ const ColorPracticePage = () => {
 
     const buttonDeleteClick = () => {
         setIsImageSet(false);
-        let rgbCanvas = document.getElementById("rgb_canvas");
+        // let rgbCanvas = document.getElementById("rgb_canvas");
         let cmykCanvas = document.getElementById("cmyk_canvas");
         let hslCanvas = document.getElementById("hsl_canvas");
 
-        let rgbCtx = rgbCanvas.getContext('2d');
+        // let rgbCtx = rgbCanvas.getContext('2d');
         let cmykCtx = cmykCanvas.getContext('2d');
         let hslCtx = hslCanvas.getContext('2d');
 
-        rgbCtx.clearRect(0, 0, imageWidth, imageHeight);
+        // rgbCtx.clearRect(0, 0, imageWidth, imageHeight);
         cmykCtx.clearRect(0, 0, imageWidth, imageHeight);
         hslCtx.clearRect(0, 0, imageWidth, imageHeight);
     }
@@ -235,15 +236,15 @@ const ColorPracticePage = () => {
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <canvas id={'rgb_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
-                                height={imageHeight}></canvas>
-                        {!isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload}
-                                             alt="upload"/>}
-                        {isImageSet &&
-                            <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash}
-                                 alt="delete"/>}
-                    </div>
+                    {/*<div>*/}
+                    {/*    <canvas id={'rgb_canvas'} className={`${css.colorCanvas}`} width={imageWidth}*/}
+                    {/*            height={imageHeight}></canvas>*/}
+                    {/*    {!isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload}*/}
+                    {/*                         alt="upload"/>}*/}
+                    {/*    {isImageSet &&*/}
+                    {/*        <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash}*/}
+                    {/*             alt="delete"/>}*/}
+                    {/*</div>*/}
                     <div className={`${css.colorLetters}`}>
                         <div>
                             <div className={`${css.flex} ${css.letterGap} ${css.mainLetters}`}>
