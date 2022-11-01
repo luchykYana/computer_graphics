@@ -177,7 +177,7 @@ const ColorPracticePage = () => {
                     if (l > 1) l = 1;
                     if (l < 0) l = 0;
 
-                    mas2 = modelFunc.RGBtoHSL(mas1[0], mas1[1], l);
+                    mas2 = modelFunc.HSLtoRGB(mas1[0], mas1[1], l);
                     imageData.data[i] = mas2[0];
                     imageData.data[i + 1] = mas2[1];
                     imageData.data[i + 2] = mas2[2];
