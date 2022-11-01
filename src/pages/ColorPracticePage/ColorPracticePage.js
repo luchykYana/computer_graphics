@@ -359,97 +359,96 @@ const ColorPracticePage = () => {
                                 <div className={`${css.mbMain}`}><h2>HSL</h2></div>
                                 <div className={`${css.pixelInfo2}`} id={'HSL'}></div>
                             </div>
+
                             <div className={`${css.flex} ${css.letterGroupGap}`}>
 
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Hue) Відтінок</h3>
                                     <div className={`${css.pixelInfo}`} id={'H'}></div>
-
-                                    <div className={`${css.radioButtonContainer}`}>
-                                        <div className={`${css.flex}`}>
-                                            <div className={`${css.radioItem} ${css.red}`}>
-                                                <label htmlFor='red'>
-                                                    <input onChange={resetValues} id={'red'} type="radio"
-                                                           name={'saturationRadio'} value={'red'} defaultChecked={true}/>
-                                                    <div>red</div>
-                                                </label>
-                                            </div>
-
-                                            <div className={`${css.radioItem} ${css.yellow}`}>
-                                                <label htmlFor='yellow'>
-                                                    <input onChange={resetValues} id={'yellow'} type="radio"
-                                                           name={'saturationRadio'} value={'yellow'}/>
-                                                    <div>yellow</div>
-                                                </label>
-                                            </div>
-
-                                            <div className={`${css.radioItem} ${css.green}`}>
-                                                <label htmlFor='green'>
-                                                    <input onChange={resetValues} id={'green'} type="radio"
-                                                           name={'saturationRadio'} value={'green'}/>
-                                                    <div>green</div>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className={`${css.flex}`}>
-                                            <div className={`${css.radioItem} ${css.cyan}`}>
-                                                <label htmlFor='cyan'>
-                                                    <input onChange={resetValues} id={'cyan'} type="radio"
-                                                           name={'saturationRadio'} value={'cyan'}/>
-                                                    <div>cyan</div>
-                                                </label>
-                                            </div>
-
-                                            <div className={`${css.radioItem} ${css.blue}`}>
-                                                <label htmlFor='blue'>
-                                                    <input onChange={resetValues} id={'blue'} type="radio"
-                                                           name={'saturationRadio'} value={'blue'}/>
-                                                    <div>blue</div>
-                                                </label>
-                                            </div>
-
-                                            <div className={`${css.radioItem} ${css.magenta}`}>
-                                                <label htmlFor='magenta'>
-                                                    <input onChange={resetValues} id={'magenta'} type="radio"
-                                                           name={'saturationRadio'} value={'magenta'}/>
-                                                    <div>magenta</div>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Saturation) Насиченість</h3>
                                     <div className={`${css.pixelInfo}`} id={'S'}></div>
-
-                                    <div className={`${css.flex} ${css.radioButtonContainer}`}>
-                                        <input onChange={onSaturationChange} id={'saturation'} type="range"
-                                               name='saturation' defaultValue={0}
-                                               min={-100} max={100} step={1}/>
-                                        <input className={`${css.pixelInfo}`} defaultValue={0} type="text"
-                                               id={'saturationValue'} disabled/>
-                                    </div>
-
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Lightness) Світлота</h3>
                                     <div className={`${css.pixelInfo}`} id={'L'}></div>
-
-                                    <div className={`${css.flex} ${css.radioButtonContainer}`}>
-                                        <input onChange={onLightnessChange} id={'lightness'} type="range"
-                                               name='lightness' defaultValue={0}
-                                               min={-100} max={100} step={1}/>
-                                        <input className={`${css.pixelInfo}`} defaultValue={0} type="text"
-                                               id={'lightnessValue'} disabled/>
-                                    </div>
-
                                 </div>
 
                             </div>
 
-                        </div>
+                            <div className={css.inputContainer}>
+                                <div className={`${css.radioButtonContainer}`}>
+                                    <div className={`${css.flex}`}>
+                                        <div className={`${css.radioItem} ${css.red}`}>
+                                            <label htmlFor='red'>
+                                                <input onChange={resetValues} id={'red'} type="radio"
+                                                       name={'saturationRadio'} value={'red'} defaultChecked={true}/>
+                                                <div>red</div>
+                                            </label>
+                                        </div>
 
+                                        <div className={`${css.radioItem} ${css.yellow}`}>
+                                            <label htmlFor='yellow'>
+                                                <input onChange={resetValues} id={'yellow'} type="radio"
+                                                       name={'saturationRadio'} value={'yellow'}/>
+                                                <div>yellow</div>
+                                            </label>
+                                        </div>
+
+                                        <div className={`${css.radioItem} ${css.green}`}>
+                                            <label htmlFor='green'>
+                                                <input onChange={resetValues} id={'green'} type="radio"
+                                                       name={'saturationRadio'} value={'green'}/>
+                                                <div>green</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className={`${css.flex}`}>
+                                        <div className={`${css.radioItem} ${css.cyan}`}>
+                                            <label htmlFor='cyan'>
+                                                <input onChange={resetValues} id={'cyan'} type="radio"
+                                                       name={'saturationRadio'} value={'cyan'}/>
+                                                <div>cyan</div>
+                                            </label>
+                                        </div>
+
+                                        <div className={`${css.radioItem} ${css.blue}`}>
+                                            <label htmlFor='blue'>
+                                                <input onChange={resetValues} id={'blue'} type="radio"
+                                                       name={'saturationRadio'} value={'blue'}/>
+                                                <div>blue</div>
+                                            </label>
+                                        </div>
+
+                                        <div className={`${css.radioItem} ${css.magenta}`}>
+                                            <label htmlFor='magenta'>
+                                                <input onChange={resetValues} id={'magenta'} type="radio"
+                                                       name={'saturationRadio'} value={'magenta'}/>
+                                                <div>magenta</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className={`${css.flex} ${css.radioButtonContainer}`}>
+                                    <input onChange={onSaturationChange} id={'saturation'} type="range"
+                                           name='saturation' defaultValue={0}
+                                           min={-100} max={100} step={1}/>
+                                    <input className={`${css.pixelInfo}`} defaultValue={0} type="text"
+                                           id={'saturationValue'} disabled/>
+                                </div>
+
+                                <div className={`${css.flex} ${css.radioButtonContainer}`}>
+                                    <input onChange={onLightnessChange} id={'lightness'} type="range"
+                                           name='lightness' defaultValue={0}
+                                           min={-100} max={100} step={1}/>
+                                    <input className={`${css.pixelInfo}`} defaultValue={0} type="text"
+                                           id={'lightnessValue'} disabled/>
+                                </div>
+                            </div>
+
+                        </div>
                         <button className={`${css.button} ${css.positionRight}`} onClick={resetValues}>Скинути</button>
                     </div>
                 </div>
