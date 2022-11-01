@@ -38,8 +38,8 @@ input[type=file] {
 }
 
 .uploadButton {
-    margin-left: -160px;
-    margin-bottom: 30px;
+    margin-left: -180px;
+    margin-bottom: 70px;
     cursor: pointer;
 }
 
@@ -65,12 +65,12 @@ input[type=file] {
 }
 
 .gap {
-    column-gap: 50px;
+    column-gap: 500px;
 }
 
 .colorLetters {
     border: 1px solid black;
-    height: 140px;
+    height: 100px;
     padding: 10px;
 }
 

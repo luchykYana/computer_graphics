@@ -110,8 +110,8 @@ const ConvertHSLtoRGB = (h, s, l) => {
 }
 
 const ColorPracticePage = () => {
-    const imageHeight = 125;
-    const imageWidth = 250;
+    const imageHeight = 200;
+    const imageWidth = 400;
 
     const [isImageSet, setIsImageSet] = useState(false);
 
@@ -280,30 +280,30 @@ const ColorPracticePage = () => {
                             <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash}
                                  alt="delete"/>}
                     </div>
-                    <div className={`${css.colorLetters}`}>
-                        <div>
-                            <div className={`${css.flex} ${css.letterGap} ${css.mainLetters}`}>
-                                <h2>RGB</h2>
-                                <div className={`${css.pixelInfo}`}></div>
-                            </div>
-                            <div className={`${css.flex} ${css.letterGroupGap}`}>
-                                <div className={`${css.flex} ${css.letterGap}`}>
-                                    <h2>R</h2>
-                                    <div className={`${css.pixelInfo}`}></div>
-                                </div>
+                    {/*<div className={`${css.colorLetters}`}>*/}
+                    {/*    <div>*/}
+                    {/*        <div className={`${css.flex} ${css.letterGap} ${css.mainLetters}`}>*/}
+                    {/*            <h2>RGB</h2>*/}
+                    {/*            <div className={`${css.pixelInfo}`}></div>*/}
+                    {/*        </div>*/}
+                    {/*        <div className={`${css.flex} ${css.letterGroupGap}`}>*/}
+                    {/*            <div className={`${css.flex} ${css.letterGap}`}>*/}
+                    {/*                <h2>R</h2>*/}
+                    {/*                <div className={`${css.pixelInfo}`}></div>*/}
+                    {/*            </div>*/}
 
-                                <div className={`${css.flex} ${css.letterGap}`}>
-                                    <h2>G</h2>
-                                    <div className={`${css.pixelInfo}`}></div>
-                                </div>
+                    {/*            <div className={`${css.flex} ${css.letterGap}`}>*/}
+                    {/*                <h2>G</h2>*/}
+                    {/*                <div className={`${css.pixelInfo}`}></div>*/}
+                    {/*            </div>*/}
 
-                                <div className={`${css.flex} ${css.letterGap}`}>
-                                    <h2>B</h2>
-                                    <div className={`${css.pixelInfo}`}></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {/*            <div className={`${css.flex} ${css.letterGap}`}>*/}
+                    {/*                <h2>B</h2>*/}
+                    {/*                <div className={`${css.pixelInfo}`}></div>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                     <div>
                         <canvas id={'hsl_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
                                 height={imageHeight}></canvas>
@@ -316,7 +316,10 @@ const ColorPracticePage = () => {
                 </div>
                 {/*<button onClick={buttonClick} className={`${css.button}`}>Upload</button>*/}
 
-                <input onChange={ImageChange} id={'myInput'} name={'fileName'} type="file"/>
+
+                <input onClick={(event) => {
+                    event.target.value = null;
+                }} onChange={ImageChange} id={'myInput'} name={'fileName'} type="file"/>
             </div>
         </div>
     );
