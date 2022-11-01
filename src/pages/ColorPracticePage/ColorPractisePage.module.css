@@ -216,6 +216,7 @@ input[type=range]::-moz-range-thumb {
 .pipette {
     position: absolute;
     display: none;
+    z-index: 1;
 }
 
 .pipette_text {
@@ -239,4 +240,9 @@ input[type=range]::-moz-range-thumb {
     width: 8px;
     height: 55px;
     transform: rotate(45deg);
+}
+
+.rgb_canvas {
+    position: absolute;
+    display: none;
 }

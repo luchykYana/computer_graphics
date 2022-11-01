@@ -1,39 +1,37 @@
 import {useState} from 'react';
 
-import {Title} from '../../components';
+import {Pipette, Title} from '../../components';
 import {icons} from '../../constants';
 import {modelFunc} from '../../helper';
 
 import css from './ColorPractisePage.module.css';
 
 const ColorPracticePage = () => {
-    const imageHeight = 220;
-    const imageWidth = 400;
+    const imageHeight = 220, imageWidth = 400;
 
     const [isImageSet, setIsImageSet] = useState(false);
     const [mousePos, setMousePos] = useState({x: 0, y: 0});
 
-    function drawEditedImage(newData, canvasID) {
-        let canvasEdited = document.getElementById(canvasID);
-        let ctxEdited = canvasEdited.getContext('2d');
+    function drawEditedImage (newData, canvasID) {
+        const canvasEdited = document.getElementById(canvasID);
+        const ctxEdited = canvasEdited.getContext('2d');
         canvasEdited.width = imageWidth;
         canvasEdited.height = imageHeight;
         ctxEdited.putImageData(newData, 0, 0);
     }
 
     const getImageDataFromCanvas = (canvasName) => {
-        let canvas = document.getElementById(canvasName);
-        let context = canvas.getContext('2d')
+        const canvas = document.getElementById(canvasName);
+        const context = canvas.getContext('2d')
 
-        let data = context.getImageData(0, 0, canvas.width, canvas.height);
-        return data;
+        return context.getImageData(0, 0, canvas.width, canvas.height);
     }
 
     const loadPhotos = () => {
         setIsImageSet(true);
 
-        let imageData1 = getImageDataFromCanvas('cmyk_canvas')
-        let imageData2 = imageData1;
+        const imageData1 = getImageDataFromCanvas('rgb_canvas');
+        const imageData2 = getImageDataFromCanvas('rgb_canvas');
 
         editPixelsHSL(imageData1.data);
         drawEditedImage(imageData1, 'hsl_canvas');
@@ -41,9 +39,7 @@ const ColorPracticePage = () => {
         editPixelsCMYK(imageData2.data);
         drawEditedImage(imageData2, 'cmyk_canvas');
 
-        function editPixelsHSL(imgData) {
-            let mas1 = [0, 0, 0];
-            let mas2 = [0, 0, 0];
+        function editPixelsHSL(imgData, mas1 = [0, 0, 0], mas2 = [0, 0, 0]) {
             for (let i = 0; i < imgData.length; i += 4) {
                 mas1 = modelFunc.RGBtoHSL(imgData[i], imgData[i + 1], imgData[i + 2]);
                 mas2 = modelFunc.HSLtoRGB(mas1[0], mas1[1], mas1[2]);
@@ -53,9 +49,7 @@ const ColorPracticePage = () => {
             }
         }
 
-        function editPixelsCMYK(imgData) {
-            let mas1 = [0, 0, 0, 0];
-            let mas2 = [0, 0, 0];
+        function editPixelsCMYK(imgData, mas1 = [0, 0, 0, 0], mas2 = [0, 0, 0]) {
             for (let i = 0; i < imgData.length; i += 4) {
                 mas1 = modelFunc.RGBtoCMYK(imgData[i], imgData[i + 1], imgData[i + 2]);
                 mas2 = modelFunc.CMYKtoRGB(mas1[0], mas1[1], mas1[2], mas1[3]);
@@ -68,18 +62,17 @@ const ColorPracticePage = () => {
 
     const ImageChange = (e) => {
         resetValues();
-        let cmykCanvas = document.getElementById("cmyk_canvas");
-        let cmykCtx = cmykCanvas.getContext('2d');
-        cmykCanvas.width = imageWidth;
-        cmykCanvas.height = imageHeight;
+        let rgbCanvas = document.getElementById("rgb_canvas");
+        let rgbCtx = rgbCanvas.getContext('2d');
+
         let reader = new FileReader();
         reader.onload = function (event) {
             let image = new Image();
             image.onload = function () {
-                cmykCtx.drawImage(image, 0, 0, cmykCanvas.width, cmykCanvas.height);
+                rgbCtx.drawImage(image, 0, 0, rgbCanvas.width, rgbCanvas.height);
                 loadPhotos();
             }
-            image.src = event.target.result;
+            image.src = event.target.result + '';
         }
         reader.readAsDataURL(e.target.files[0]);
     }
@@ -134,7 +127,7 @@ const ColorPracticePage = () => {
         const value = event.target.value;
 
         let [minRange, maxRange] = getRangeOfValues();
-        let imageData = getImageDataFromCanvas('cmyk_canvas');
+        let imageData = getImageDataFromCanvas('rgb_canvas');
 
         editPixelsChangeSaturation(imageData.data);
         drawEditedImage(imageData, 'hsl_canvas');
@@ -166,7 +159,7 @@ const ColorPracticePage = () => {
         const value = event.target.value;
 
         let [minRange, maxRange] = getRangeOfValues();
-        let imageData = getImageDataFromCanvas('cmyk_canvas');
+        let imageData = getImageDataFromCanvas('rgb_canvas');
 
         editPixelsChangeLightness(imageData.data);
         drawEditedImage(imageData, 'hsl_canvas');
@@ -194,7 +187,7 @@ const ColorPracticePage = () => {
         }
     }
 
-    const resetValues = (e) => {
+    const resetValues = () => {
         let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
         nativeInputValueSetter.call(document.getElementById('lightness'), 0);
 
@@ -366,33 +359,39 @@ const ColorPracticePage = () => {
                                     <div className={`${css.radioButtonContainer}`}>
                                         <div className={`${css.flex}`}>
                                             <div className={`${css.radioItem}`}>
-                                                <input onChange={resetValues} id={'red'} type="radio" name={'saturationRadio'} value={'red'} defaultChecked={true}/>
+                                                <input onChange={resetValues} id={'red'} type="radio"
+                                                       name={'saturationRadio'} value={'red'} defaultChecked={true}/>
                                                 <label htmlFor='red'>red</label>
                                             </div>
 
                                             <div className={`${css.radioItem}`}>
-                                                <input onChange={resetValues} id={'yellow'} type="radio" name={'saturationRadio'} value={'yellow'} />
+                                                <input onChange={resetValues} id={'yellow'} type="radio"
+                                                       name={'saturationRadio'} value={'yellow'}/>
                                                 <label htmlFor='yellow'>yellow</label>
                                             </div>
 
                                             <div className={`${css.radioItem}`}>
-                                                <input onChange={resetValues} id={'green'} type="radio" name={'saturationRadio'} value={'green'} />
+                                                <input onChange={resetValues} id={'green'} type="radio"
+                                                       name={'saturationRadio'} value={'green'}/>
                                                 <label htmlFor='green'>green</label>
                                             </div>
                                         </div>
                                         <div className={`${css.flex}`}>
                                             <div className={`${css.radioItem}`}>
-                                                <input onChange={resetValues} id={'cyan'} type="radio" name={'saturationRadio'} value={'cyan'} />
+                                                <input onChange={resetValues} id={'cyan'} type="radio"
+                                                       name={'saturationRadio'} value={'cyan'}/>
                                                 <label htmlFor='cyan'>cyan</label>
                                             </div>
 
                                             <div className={`${css.radioItem}`}>
-                                                <input onChange={resetValues} id={'blue'} type="radio" name={'saturationRadio'} value={'blue'} />
+                                                <input onChange={resetValues} id={'blue'} type="radio"
+                                                       name={'saturationRadio'} value={'blue'}/>
                                                 <label htmlFor='blue'>blue</label>
                                             </div>
 
                                             <div className={`${css.radioItem}`}>
-                                                <input onChange={resetValues} id={'magenta'} type="radio" name={'saturationRadio'} value={'magenta'} />
+                                                <input onChange={resetValues} id={'magenta'} type="radio"
+                                                       name={'saturationRadio'} value={'magenta'}/>
                                                 <label htmlFor='magenta'>magenta</label>
                                             </div>
                                         </div>
@@ -404,9 +403,11 @@ const ColorPracticePage = () => {
                                     <div className={`${css.pixelInfo}`} id={'S'}></div>
 
                                     <div className={`${css.flex}`}>
-                                        <input onChange={onSaturationChange} id={'saturation'} type="range" name='saturation' defaultValue={0}
+                                        <input onChange={onSaturationChange} id={'saturation'} type="range"
+                                               name='saturation' defaultValue={0}
                                                min={-100} max={100} step={1}/>
-                                        <input className={`${css.pixelInfo}`} defaultValue={0} type="text" id={'saturationValue'} disabled/>
+                                        <input className={`${css.pixelInfo}`} defaultValue={0} type="text"
+                                               id={'saturationValue'} disabled/>
                                     </div>
 
                                 </div>
@@ -415,9 +416,11 @@ const ColorPracticePage = () => {
                                     <div className={`${css.pixelInfo}`} id={'L'}></div>
 
                                     <div>
-                                        <input onChange={onLightnessChange} id={'lightness'} type="range" name='lightness' defaultValue={0}
+                                        <input onChange={onLightnessChange} id={'lightness'} type="range"
+                                               name='lightness' defaultValue={0}
                                                min={-100} max={100} step={1}/>
-                                        <input className={`${css.pixelInfo}`} defaultValue={0} type="text" id={'lightnessValue'} disabled/>
+                                        <input className={`${css.pixelInfo}`} defaultValue={0} type="text"
+                                               id={'lightnessValue'} disabled/>
                                     </div>
 
                                 </div>
@@ -432,14 +435,16 @@ const ColorPracticePage = () => {
 
                 <div>
                     <div className={`${css.flex}`}>
-                        <div className={css.overflow}>
+                        <div>
                             <canvas id={'cmyk_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
                                     height={imageHeight} onMouseMove={mouseMove} onMouseLeave={disappearPipe1}
                                     onClick={clickPipe}></canvas>
 
                             <div>
                                 <a id={'cmyk_link'} download={'CMYK.png'}/>
-                                <button onClick={download_img_cmyk} className={`${css.button} ${css.positionLeft}`}>Зберегти</button>
+                                <button onClick={download_img_cmyk}
+                                        className={`${css.button} ${css.positionLeft}`}>Зберегти
+                                </button>
                             </div>
                         </div>
 
@@ -458,7 +463,9 @@ const ColorPracticePage = () => {
 
                             <div>
                                 <a id={'hsl_link'} download={'HSL.png'}/>
-                                <button onClick={download_img_hsl} className={`${css.button} ${css.positionLeft}`}>Зберегти</button>
+                                <button onClick={download_img_hsl}
+                                        className={`${css.button} ${css.positionLeft}`}>Зберегти
+                                </button>
                             </div>
                         </div>
                         {!isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload}
@@ -468,30 +475,18 @@ const ColorPracticePage = () => {
                                  alt="delete"/>}
                     </div>
 
-                    <div className={`${css.pipette}`} id={'pipette1'}>
-                        <div className={`${css.pipette_text}`} id={'pipette1_text'}></div>
-                        <div>
-                            <div className={`${css.pipette_img_fill}`} id={'pipette1_img_fill'}></div>
-                            <img src={icons.pipette_2} alt="pipette"/>
-                        </div>
+                    <div>
+                        <canvas id={'rgb_canvas'} className={`${css.rgb_canvas}`} width={imageWidth} height={imageHeight}></canvas>
                     </div>
 
-
-                    <div className={`${css.pipette}`} id={'pipette2'}>
-                        <div className={`${css.pipette_text}`} id={'pipette2_text'}></div>
-                        <div>
-                            <div className={`${css.pipette_img_fill}`} id={'pipette2_img_fill'}></div>
-                            <img src={icons.pipette_2} alt="pipette2"/>
-                        </div>
-                    </div>
+                    <Pipette n={1}/>
+                    <Pipette n={2}/>
                 </div>
 
                 <input onClick={(event) => {
                     event.target.value = null;
                 }} onChange={ImageChange} id={'myInput'} name={'fileName'} type="file"/>
             </div>
-
-
 
         </div>
     );

@@ -2,6 +2,7 @@ export * from './ColorModelsTheory/ColorModelsTheory';
 export * from './Content/Content';
 export * from './Header/Header';
 export * from './MoveFigureTheory/MoveFigureTheory';
+export * from './Pipette/Pipette';
 export * from './Title/Title';
 export * from './Test/Test';
 export * from './Footer/Footer';
