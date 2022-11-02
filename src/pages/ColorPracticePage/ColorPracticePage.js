@@ -291,17 +291,40 @@ const ColorPracticePage = () => {
     const disappearPipe2 = () => document.getElementById('pipette2').style.display = 'none';
 
     const changeParams1 = (cmyk, rgb) => {
-        document.getElementById('CMYK').style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-        document.getElementById('C').innerText = `${(cmyk[0] * 100).toFixed(0)}`;
-        document.getElementById('M').innerText = `${(cmyk[1] * 100).toFixed(0)}`;
-        document.getElementById('Y').innerText = `${(cmyk[2] * 100).toFixed(0)}`;
-        document.getElementById('K').innerText = `${(cmyk[3] * 100).toFixed(0)}`;
+        let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+        nativeInputValueSetter.call(document.getElementById('C'), Math.round(cmyk[0] * 100));
+        let ev1 = new Event('input', {bubbles: true});
+        document.getElementById('C').dispatchEvent(ev1);
+
+        nativeInputValueSetter.call(document.getElementById('M'), Math.round(cmyk[1] * 100));
+        let ev2 = new Event('input', {bubbles: true});
+        document.getElementById('M').dispatchEvent(ev2);
+
+        nativeInputValueSetter.call(document.getElementById('Y'), Math.round(cmyk[2] * 100));
+        let ev3 = new Event('input', {bubbles: true});
+        document.getElementById('Y').dispatchEvent(ev3);
+
+        nativeInputValueSetter.call(document.getElementById('K'), Math.round(cmyk[3] * 100));
+        let ev4 = new Event('input', {bubbles: true});
+        document.getElementById('K').dispatchEvent(ev4);
     }
     const changeParams2 = (hsl, rgb) => {
-        document.getElementById('HSL').style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
         document.getElementById('H').innerText = `${hsl[0]}`;
         document.getElementById('S').innerText = `${(hsl[1] * 100).toFixed(0)}`;
         document.getElementById('L').innerText = `${(hsl[2] * 100).toFixed(0)}`;
+
+        let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+        nativeInputValueSetter.call(document.getElementById('H'), Math.round(hsl[0]));
+        let ev1 = new Event('input', {bubbles: true});
+        document.getElementById('H').dispatchEvent(ev1);
+
+        nativeInputValueSetter.call(document.getElementById('S'), Math.round(hsl[1] * 100));
+        let ev2 = new Event('input', {bubbles: true});
+        document.getElementById('S').dispatchEvent(ev2);
+
+        nativeInputValueSetter.call(document.getElementById('L'), Math.round(hsl[2] * 100));
+        let ev3 = new Event('input', {bubbles: true});
+        document.getElementById('L').dispatchEvent(ev3);
     }
 
     const clickPipe = (e) => {
@@ -332,6 +355,25 @@ const ColorPracticePage = () => {
         a.click();
     };
 
+    const cmyk_color_change = () => {
+        let c = document.getElementById('C').value;
+        let m = document.getElementById('M').value;
+        let y = document.getElementById('Y').value;
+        let k = document.getElementById('K').value;
+
+        let [r, g, b] = modelFunc.CMYKtoRGB(c/100, m/100, y/100, k/100);
+        document.getElementById('CMYK').style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+    }
+
+    const hsl_color_change = () => {
+        let h = document.getElementById('H').value;
+        let s = document.getElementById('S').value;
+        let l = document.getElementById('L').value;
+
+        let [r, g, b] = modelFunc.HSLtoRGB(h, s/100, l/100);
+        document.getElementById('HSL').style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+    }
+
     return (
         <div className={`${css.content}`} onMouseMove={getMousePositionAll}>
             <Title icon_name={icons.brush} caption={'Перетворення моделей'}/>
@@ -347,21 +389,21 @@ const ColorPracticePage = () => {
                             <div className={`${css.flex} ${css.letterGroupGap2}`}>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Cyan) Блакитний</h3>
-                                    <div className={`${css.pixelInfo}`} id={'C'}></div>
+                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'C'} min={0} max={100} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Magenta) Пурпуровий</h3>
-                                    <div className={`${css.pixelInfo}`} id={'M'}></div>
+                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'M'} min={0} max={100} step={1}></input>
                                 </div>
                             </div>
                             <div className={`${css.flex} ${css.letterGroupGap2}`}>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Yellow) Жовтий</h3>
-                                    <div className={`${css.pixelInfo}`} id={'Y'}></div>
+                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'Y'} min={0} max={100} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Key) Чорний</h3>
-                                    <div className={`${css.pixelInfo}`} id={'K'}></div>
+                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'K'} min={0} max={100} step={1}></input>
                                 </div>
                             </div>
                         </div>
@@ -379,15 +421,15 @@ const ColorPracticePage = () => {
 
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Hue) Відтінок</h3>
-                                    <div className={`${css.pixelInfo}`} id={'H'}></div>
+                                    <input onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`} id={'H'} min={0} max={360} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Saturation) Насиченість</h3>
-                                    <div className={`${css.pixelInfo}`} id={'S'}></div>
+                                    <input onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`} id={'S'} min={0} max={100} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Lightness) Світлота</h3>
-                                    <div className={`${css.pixelInfo}`} id={'L'}></div>
+                                    <input onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`} id={'L'} min={0} max={100} step={1}></input>
                                 </div>
 
                             </div>
