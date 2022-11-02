@@ -362,25 +362,21 @@ const ColorPracticePage = () => {
                             <div className={`${css.flex} ${css.letterGroupGap2}`}>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Cyan) Блакитний</h3>
-                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`}
-                                           id={'C'} min={0} max={100} step={1}></input>
+                                    <input defaultValue={0} onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'C'} min={0} max={100} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Magenta) Пурпуровий</h3>
-                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`}
-                                           id={'M'} min={0} max={100} step={1}></input>
+                                    <input defaultValue={0} onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'M'} min={0} max={100} step={1}></input>
                                 </div>
                             </div>
                             <div className={`${css.flex} ${css.letterGroupGap2}`}>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Yellow) Жовтий</h3>
-                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`}
-                                           id={'Y'} min={0} max={100} step={1}></input>
+                                    <input defaultValue={0} onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'Y'} min={0} max={100} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Key) Чорний</h3>
-                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`}
-                                           id={'K'} min={0} max={100} step={1}></input>
+                                    <input defaultValue={0} onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'K'} min={0} max={100} step={1}></input>
                                 </div>
                             </div>
                         </div>
@@ -398,18 +394,15 @@ const ColorPracticePage = () => {
 
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Hue) Відтінок</h3>
-                                    <input onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`}
-                                           id={'H'} min={0} max={360} step={1}></input>
+                                    <input defaultValue={0} onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`} id={'H'} min={0} max={360} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Saturation) Насиченість</h3>
-                                    <input onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`}
-                                           id={'S'} min={0} max={100} step={1}></input>
+                                    <input defaultValue={0} onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`} id={'S'} min={0} max={100} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Lightness) Світлота</h3>
-                                    <input onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`}
-                                           id={'L'} min={0} max={100} step={1}></input>
+                                    <input defaultValue={100} onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`} id={'L'} min={0} max={100} step={1}></input>
                                 </div>
 
                             </div>
