@@ -27,6 +27,13 @@ const ColorPracticePage = () => {
         return context.getImageData(0, 0, canvas.width, canvas.height);
     }
 
+    const dispatchMyEvent = (value, elementID) => {
+        let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+        nativeInputValueSetter.call(document.getElementById(elementID), value);
+        let ev1 = new Event('input', {bubbles: true});
+        document.getElementById(elementID).dispatchEvent(ev1);
+    }
+
     const loadPhotos = () => {
         setIsImageSet(true);
 
@@ -212,27 +219,17 @@ const ColorPracticePage = () => {
     }
 
     const resetValues = () => {
-        let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-        nativeInputValueSetter.call(document.getElementById('lightness'), 0);
+        dispatchMyEvent(0, 'lightness');
+        dispatchMyEvent(0, 'saturation');
 
-        let ev1 = new Event('input', {bubbles: true});
-        document.getElementById('lightness').dispatchEvent(ev1);
+        dispatchMyEvent(0, 'C');
+        dispatchMyEvent(0, 'M');
+        dispatchMyEvent(0, 'Y');
+        dispatchMyEvent(0, 'K');
 
-        nativeInputValueSetter.call(document.getElementById('saturation'), 0);
-
-        let ev2 = new Event('input', {bubbles: true});
-        document.getElementById('saturation').dispatchEvent(ev2);
-
-        document.getElementById('CMYK').style.backgroundColor = `rgb(253, 253, 253)`;
-        document.getElementById('C').innerText = ``;
-        document.getElementById('M').innerText = ``;
-        document.getElementById('Y').innerText = ``;
-        document.getElementById('K').innerText = ``;
-
-        document.getElementById('HSL').style.backgroundColor = `rgb(253, 253, 253)`;
-        document.getElementById('H').innerText = ``;
-        document.getElementById('S').innerText = ``;
-        document.getElementById('L').innerText = ``;
+        dispatchMyEvent(0, 'H');
+        dispatchMyEvent(0, 'S');
+        dispatchMyEvent(100, 'L');
     }
 
     const getMousePosition = (canvas, e) => {
@@ -291,40 +288,16 @@ const ColorPracticePage = () => {
     const disappearPipe2 = () => document.getElementById('pipette2').style.display = 'none';
 
     const changeParams1 = (cmyk, rgb) => {
-        let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-        nativeInputValueSetter.call(document.getElementById('C'), Math.round(cmyk[0] * 100));
-        let ev1 = new Event('input', {bubbles: true});
-        document.getElementById('C').dispatchEvent(ev1);
-
-        nativeInputValueSetter.call(document.getElementById('M'), Math.round(cmyk[1] * 100));
-        let ev2 = new Event('input', {bubbles: true});
-        document.getElementById('M').dispatchEvent(ev2);
-
-        nativeInputValueSetter.call(document.getElementById('Y'), Math.round(cmyk[2] * 100));
-        let ev3 = new Event('input', {bubbles: true});
-        document.getElementById('Y').dispatchEvent(ev3);
-
-        nativeInputValueSetter.call(document.getElementById('K'), Math.round(cmyk[3] * 100));
-        let ev4 = new Event('input', {bubbles: true});
-        document.getElementById('K').dispatchEvent(ev4);
+        dispatchMyEvent(Math.round(cmyk[0] * 100), 'C');
+        dispatchMyEvent(Math.round(cmyk[1] * 100), 'M');
+        dispatchMyEvent(Math.round(cmyk[2] * 100), 'Y');
+        dispatchMyEvent(Math.round(cmyk[3] * 100), 'K');
     }
+
     const changeParams2 = (hsl, rgb) => {
-        document.getElementById('H').innerText = `${hsl[0]}`;
-        document.getElementById('S').innerText = `${(hsl[1] * 100).toFixed(0)}`;
-        document.getElementById('L').innerText = `${(hsl[2] * 100).toFixed(0)}`;
-
-        let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-        nativeInputValueSetter.call(document.getElementById('H'), Math.round(hsl[0]));
-        let ev1 = new Event('input', {bubbles: true});
-        document.getElementById('H').dispatchEvent(ev1);
-
-        nativeInputValueSetter.call(document.getElementById('S'), Math.round(hsl[1] * 100));
-        let ev2 = new Event('input', {bubbles: true});
-        document.getElementById('S').dispatchEvent(ev2);
-
-        nativeInputValueSetter.call(document.getElementById('L'), Math.round(hsl[2] * 100));
-        let ev3 = new Event('input', {bubbles: true});
-        document.getElementById('L').dispatchEvent(ev3);
+        dispatchMyEvent(Math.round(hsl[0]), 'H');
+        dispatchMyEvent(Math.round(hsl[1] * 100), 'S');
+        dispatchMyEvent(Math.round(hsl[2] * 100), 'L');
     }
 
     const clickPipe = (e) => {
