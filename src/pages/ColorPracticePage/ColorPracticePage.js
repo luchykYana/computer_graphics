@@ -100,35 +100,35 @@ const ColorPracticePage = () => {
     }
 
     const getRangeOfValues = () => {
-        let min, max;
+        let res = [];
 
         if (document.getElementById('red').checked === true) {
-            min = 330;
-            max = 30;
-        } else if (document.getElementById('yellow').checked === true) {
-            min = 30;
-            max = 90;
-        } else if (document.getElementById('green').checked === true) {
-            min = 90;
-            max = 150;
-        } else if (document.getElementById('cyan').checked === true) {
-            min = 150;
-            max = 210;
-        } else if (document.getElementById('blue').checked === true) {
-            min = 210;
-            max = 270;
-        } else if (document.getElementById('magenta').checked === true) {
-            min = 270;
-            max = 330;
+            res.push({min:330, max: 30});
         }
-        return [min, max]
+        if (document.getElementById('yellow').checked === true) {
+            res.push({min:30, max: 90});
+        }
+        if (document.getElementById('green').checked === true) {
+            res.push({min:90, max: 150});
+        }
+        if (document.getElementById('cyan').checked === true) {
+            res.push({min:150, max: 210});
+        }
+        if (document.getElementById('blue').checked === true) {
+            res.push({min:210, max: 270});
+        }
+        if (document.getElementById('magenta').checked === true) {
+            res.push({min:270, max: 330});
+        }
+
+        return res;
     }
 
     const onSaturationChange = (event) => {
         document.getElementById('saturationValue').value = event.target.value;
         const value = event.target.value;
 
-        let [minRange, maxRange] = getRangeOfValues();
+        let ranges = getRangeOfValues();
         let imageData = getImageDataFromCanvas('rgb_canvas');
 
         editPixelsChangeSaturation(imageData.data);
@@ -140,11 +140,15 @@ const ColorPracticePage = () => {
             for (let i = 0; i < imgData.length; i += 4) {
                 mas1 = modelFunc.RGBtoHSL(imgData[i], imgData[i + 1], imgData[i + 2]);
                 const h = mas1[0];
+
                 let isPixelNeeded = false;
-                if(minRange < maxRange) {
-                    isPixelNeeded = h >= minRange && h <= maxRange;
-                } else  {
-                    isPixelNeeded = h >= minRange || h <= maxRange;
+
+                for( let j = 0; j < ranges.length; j++) {
+                    if(ranges[j].min < ranges[j].max) {
+                        isPixelNeeded = isPixelNeeded || (h >= ranges[j].min && h <= ranges[j].max);
+                    } else  {
+                        isPixelNeeded = isPixelNeeded || (h >= ranges[j].min || h <= ranges[j].max);
+                    }
                 }
 
                 if (isPixelNeeded) {
@@ -167,7 +171,7 @@ const ColorPracticePage = () => {
         document.getElementById('lightnessValue').value = event.target.value;
         const value = event.target.value;
 
-        let [minRange, maxRange] = getRangeOfValues();
+        let ranges = getRangeOfValues();
         let imageData = getImageDataFromCanvas('rgb_canvas');
 
         editPixelsChangeLightness(imageData.data);
@@ -179,7 +183,18 @@ const ColorPracticePage = () => {
             for (let i = 0; i < imgData.length; i += 4) {
                 mas1 = modelFunc.RGBtoHSL(imgData[i], imgData[i + 1], imgData[i + 2]);
                 const h = mas1[0];
-                if (h >= minRange && h <= maxRange) {
+
+                let isPixelNeeded = false;
+
+                for( let j = 0; j < ranges.length; j++) {
+                    if(ranges[j].min < ranges[j].max) {
+                        isPixelNeeded = isPixelNeeded || (h >= ranges[j].min && h <= ranges[j].max);
+                    } else  {
+                        isPixelNeeded = isPixelNeeded || (h >= ranges[j].min || h <= ranges[j].max);
+                    }
+                }
+
+                if (isPixelNeeded) {
                     let l = mas1[2];
 
                     l += (value / 100);
@@ -382,7 +397,7 @@ const ColorPracticePage = () => {
                                     <div className={`${css.flex}`}>
                                         <div className={`${css.radioItem} ${css.red}`}>
                                             <label htmlFor='red'>
-                                                <input onChange={resetValues} id={'red'} type="radio"
+                                                <input onChange={resetValues} id={'red'} type="checkbox"
                                                        name={'saturationRadio'} value={'red'} defaultChecked={true}/>
                                                 <div>red</div>
                                             </label>
@@ -390,7 +405,7 @@ const ColorPracticePage = () => {
 
                                         <div className={`${css.radioItem} ${css.yellow}`}>
                                             <label htmlFor='yellow'>
-                                                <input onChange={resetValues} id={'yellow'} type="radio"
+                                                <input onChange={resetValues} id={'yellow'} type="checkbox"
                                                        name={'saturationRadio'} value={'yellow'}/>
                                                 <div>yellow</div>
                                             </label>
@@ -398,7 +413,7 @@ const ColorPracticePage = () => {
 
                                         <div className={`${css.radioItem} ${css.green}`}>
                                             <label htmlFor='green'>
-                                                <input onChange={resetValues} id={'green'} type="radio"
+                                                <input onChange={resetValues} id={'green'} type="checkbox"
                                                        name={'saturationRadio'} value={'green'}/>
                                                 <div>green</div>
                                             </label>
@@ -407,7 +422,7 @@ const ColorPracticePage = () => {
                                     <div className={`${css.flex}`}>
                                         <div className={`${css.radioItem} ${css.cyan}`}>
                                             <label htmlFor='cyan'>
-                                                <input onChange={resetValues} id={'cyan'} type="radio"
+                                                <input onChange={resetValues} id={'cyan'} type="checkbox"
                                                        name={'saturationRadio'} value={'cyan'}/>
                                                 <div>cyan</div>
                                             </label>
@@ -415,7 +430,7 @@ const ColorPracticePage = () => {
 
                                         <div className={`${css.radioItem} ${css.blue}`}>
                                             <label htmlFor='blue'>
-                                                <input onChange={resetValues} id={'blue'} type="radio"
+                                                <input onChange={resetValues} id={'blue'} type="checkbox"
                                                        name={'saturationRadio'} value={'blue'}/>
                                                 <div>blue</div>
                                             </label>
@@ -423,7 +438,7 @@ const ColorPracticePage = () => {
 
                                         <div className={`${css.radioItem} ${css.magenta}`}>
                                             <label htmlFor='magenta'>
-                                                <input onChange={resetValues} id={'magenta'} type="radio"
+                                                <input onChange={resetValues} id={'magenta'} type="checkbox"
                                                        name={'saturationRadio'} value={'magenta'}/>
                                                 <div>magenta</div>
                                             </label>
