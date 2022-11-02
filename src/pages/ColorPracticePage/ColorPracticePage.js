@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 import {Pipette, Title} from '../../components';
 import {icons} from '../../constants';
@@ -15,6 +15,82 @@ const ColorPracticePage = () => {
     const [mousePos2, setMousePos2] = useState({x2: 0, y2: 0});
     const [mousePosMain, setMousePosMain] = useState(false);
     const [mousePosData, setMousePosData] = useState();
+    const [isAreaChosen, setIsAreaChosen] = useState(false);
+
+
+
+    useEffect(()=>{
+        let x, y;
+        if(mousePos1.x1 < mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
+            x = mousePos1.x1;
+            y = mousePos1.y1;
+        } else if(mousePos1.x1 < mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
+            x = mousePos1.x1;
+            y = mousePos2.y2;
+        } else if(mousePos1.x1 > mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
+            x = mousePos2.x2;
+            y = mousePos1.y1;
+        } else if(mousePos1.x1 > mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
+            x = mousePos2.x2;
+            y = mousePos2.y2
+        } else if(mousePos1.x1 === mousePos2.x2 && mousePos1.y1 === mousePos2.y2){
+            x = 0;
+            y = 0;
+        }
+
+        console.log(`position x: ${x}\ty:${y} `)
+
+        let width = Math.abs(mousePos1.x1 - mousePos2.x2);
+        let height = Math.abs(mousePos1.y1 - mousePos2.y2);
+
+        console.log(`w: ${width}\t h: ${height}`)
+
+        if(width > 10 || height > 10) {
+            setIsAreaChosen(true);
+        } else setIsAreaChosen(false);
+
+    }, [mousePos2]);
+
+    useEffect(()=>{
+
+        let x, y;
+        if(mousePos1.x1 < mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
+            x = mousePos1.x1;
+            y = mousePos1.y1;
+        } else if(mousePos1.x1 < mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
+            x = mousePos1.x1;
+            y = mousePos2.y2;
+        } else if(mousePos1.x1 > mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
+            x = mousePos2.x2;
+            y = mousePos1.y1;
+        } else if(mousePos1.x1 > mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
+            x = mousePos2.x2;
+            y = mousePos2.y2
+        } else console.log('exception')
+
+        let width = Math.abs(mousePos1.x1 - mousePos2.x2);
+        let height = Math.abs(mousePos1.y1 - mousePos2.y2);
+
+        if(isAreaChosen) {
+            // let hsl_canvas = document.getElementById('hsl_canvas');
+            // let hsl_context = hsl_canvas.getContext('2d');
+            //
+            // hsl_context.clearRect(0, 0, hsl_canvas.width, hsl_canvas.height);
+            //
+            // let imageDataRGB = getImageDataFromCanvas('rgb_canvas');
+            // drawEditedImage(imageDataRGB, 'hsl_canvas')
+
+            let hsl_canvas = document.getElementById('hsl_canvas');
+            let hsl_context = hsl_canvas.getContext('2d');
+
+            hsl_context.beginPath();
+            hsl_context.rect(x, y, width, height);
+            hsl_context.strokeStyle = `rgb(255, 255, 255)`;
+            hsl_context.stroke();
+
+            setIsAreaChosen(false);
+        }
+    }, [isAreaChosen]);
 
     function drawEditedImage(newData, canvasID) {
         const canvasEdited = document.getElementById(canvasID);
@@ -357,34 +433,48 @@ const ColorPracticePage = () => {
     }
 
     const down = (e) => {
-        const {x, y} = getMousePosition(e.target, e);
-        console.log(x + '|'  + y)
-        setMousePos1({x1: x, y1: y});
+        const object = getMousePosition(e.target, e);
+        setMousePos1({x1: object.x, y1: object.y});
+        console.log(object);
+        // console.log('down: ' + mousePos1.x1 + '|'  + mousePos1.y1)
     }
 
     const up = (e) => {
-        const {x, y} = getMousePosition(e.target, e);
-        console.log(x + '|'  + y)
-        setMousePos2({x2: x, y2: y})
+        const object = getMousePosition(e.target, e);
+        console.log(object);
+        setMousePos2({x2: object.x, y2: object.y})
 
-        count();
+        let hsl_canvas = document.getElementById('hsl_canvas');
+        let hsl_context = hsl_canvas.getContext('2d');
 
-        function count() {
-            let width = Math.abs(mousePos1.x1 - mousePos2.x2);
-            let height = Math.abs(mousePos1.y1 - mousePos2.y2);
+        hsl_context.clearRect(0, 0, hsl_canvas.width, hsl_canvas.height);
 
-            const context = e.target.getContext('2d')
+        let imageDataRGB = getImageDataFromCanvas('rgb_canvas');
+        drawEditedImage(imageDataRGB, 'hsl_canvas')
 
-            let data = context.getImageData(Math.min(mousePos1.x1, mousePos2.x2), Math.min(mousePos1.y1, mousePos2.y2), width, height);
-            setMousePosData(data);
+        // console.log('up: ' + mousePos2.x2 + '|'  + mousePos2.y2)
 
-            if(width > 10 || height > 0) {
-                setMousePosMain(true);
-            } else {
-                setMousePosMain(false);
-            }
-            console.log(data);
-        }
+
+
+        // count();
+        //
+        // function count() {
+        //
+        //
+        //     const context = e.target.getContext('2d')
+        //
+        //
+        //
+        //     let data = context.getImageData(x, y,width, height);
+        //     setMousePosData(data);
+        //
+        //     if(width > 10 || height > 10) {
+        //         setMousePosMain(true);
+        //     } else {
+        //         setMousePosMain(false);
+        //     }
+        //     console.log(data);
+        // }
     }
 
     return (
@@ -402,21 +492,25 @@ const ColorPracticePage = () => {
                             <div className={`${css.flex} ${css.letterGroupGap2}`}>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Cyan) Блакитний</h3>
-                                    <input defaultValue={0} onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'C'} min={0} max={100} step={1}></input>
+                                    <input defaultValue={0} onChange={cmyk_color_change} type={'number'}
+                                           className={`${css.pixelInfo}`} id={'C'} min={0} max={100} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Magenta) Пурпуровий</h3>
-                                    <input defaultValue={0} onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'M'} min={0} max={100} step={1}></input>
+                                    <input defaultValue={0} onChange={cmyk_color_change} type={'number'}
+                                           className={`${css.pixelInfo}`} id={'M'} min={0} max={100} step={1}></input>
                                 </div>
                             </div>
                             <div className={`${css.flex} ${css.letterGroupGap2}`}>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Yellow) Жовтий</h3>
-                                    <input defaultValue={0} onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'Y'} min={0} max={100} step={1}></input>
+                                    <input defaultValue={0} onChange={cmyk_color_change} type={'number'}
+                                           className={`${css.pixelInfo}`} id={'Y'} min={0} max={100} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Key) Чорний</h3>
-                                    <input defaultValue={0} onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'K'} min={0} max={100} step={1}></input>
+                                    <input defaultValue={0} onChange={cmyk_color_change} type={'number'}
+                                           className={`${css.pixelInfo}`} id={'K'} min={0} max={100} step={1}></input>
                                 </div>
                             </div>
                         </div>
@@ -434,15 +528,18 @@ const ColorPracticePage = () => {
 
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Hue) Відтінок</h3>
-                                    <input defaultValue={0} onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`} id={'H'} min={0} max={360} step={1}></input>
+                                    <input defaultValue={0} onChange={hsl_color_change} type={'number'}
+                                           className={`${css.pixelInfo}`} id={'H'} min={0} max={360} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Saturation) Насиченість</h3>
-                                    <input defaultValue={0} onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`} id={'S'} min={0} max={100} step={1}></input>
+                                    <input defaultValue={0} onChange={hsl_color_change} type={'number'}
+                                           className={`${css.pixelInfo}`} id={'S'} min={0} max={100} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Lightness) Світлота</h3>
-                                    <input defaultValue={100} onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`} id={'L'} min={0} max={100} step={1}></input>
+                                    <input defaultValue={100} onChange={hsl_color_change} type={'number'}
+                                           className={`${css.pixelInfo}`} id={'L'} min={0} max={100} step={1}></input>
                                 </div>
 
                             </div>
