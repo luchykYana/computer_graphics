@@ -11,6 +11,10 @@ const ColorPracticePage = () => {
 
     const [isImageSet, setIsImageSet] = useState(false);
     const [mousePos, setMousePos] = useState({x: 0, y: 0});
+    const [mousePos1, setMousePos1] = useState({x1: 0, y1: 0});
+    const [mousePos2, setMousePos2] = useState({x2: 0, y2: 0});
+    const [mousePosMain, setMousePosMain] = useState(false);
+    const [mousePosData, setMousePosData] = useState();
 
     function drawEditedImage(newData, canvasID) {
         const canvasEdited = document.getElementById(canvasID);
@@ -138,7 +142,13 @@ const ColorPracticePage = () => {
         let ranges = getRangeOfValues();
         let imageData = getImageDataFromCanvas('rgb_canvas');
 
-        editPixelsChangeSaturation(imageData.data);
+        if (mousePosMain === true) {
+            editPixelsChangeSaturation(mousePosData.data);
+            //щсь тут треба далі у функції правити, якщо в нас є фрагмент, у верху є useState з даними
+        } else {
+            editPixelsChangeSaturation(imageData.data);
+        }
+
         drawEditedImage(imageData, 'hsl_canvas');
 
         function editPixelsChangeSaturation(imgData) {
@@ -313,7 +323,6 @@ const ColorPracticePage = () => {
         }
     }
 
-
     const download_img_cmyk = () => {
         const canvas = document.getElementById('cmyk_canvas');
         const a = document.getElementById('cmyk_link');
@@ -345,6 +354,37 @@ const ColorPracticePage = () => {
 
         let [r, g, b] = modelFunc.HSLtoRGB(h, s / 100, l / 100);
         document.getElementById('HSL').style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+    }
+
+    const down = (e) => {
+        const {x, y} = getMousePosition(e.target, e);
+        console.log(x + '|'  + y)
+        setMousePos1({x1: x, y1: y});
+    }
+
+    const up = (e) => {
+        const {x, y} = getMousePosition(e.target, e);
+        console.log(x + '|'  + y)
+        setMousePos2({x2: x, y2: y})
+
+        count();
+
+        function count() {
+            let width = Math.abs(mousePos1.x1 - mousePos2.x2);
+            let height = Math.abs(mousePos1.y1 - mousePos2.y2);
+
+            const context = e.target.getContext('2d')
+
+            let data = context.getImageData(Math.min(mousePos1.x1, mousePos2.x2), Math.min(mousePos1.y1, mousePos2.y2), width, height);
+            setMousePosData(data);
+
+            if(width > 10 || height > 0) {
+                setMousePosMain(true);
+            } else {
+                setMousePosMain(false);
+            }
+            console.log(data);
+        }
     }
 
     return (
@@ -413,7 +453,7 @@ const ColorPracticePage = () => {
                                         <div className={`${css.radioItem} ${css.red}`}>
                                             <label htmlFor='red'>
                                                 <input onChange={resetValues} id={'red'} type="checkbox"
-                                                       name={'saturationRadio'} value={'red'} defaultChecked={true}/>
+                                                       name={'saturationRadio'} value={'red'}/>
                                                 <div>red</div>
                                             </label>
                                         </div>
@@ -421,7 +461,7 @@ const ColorPracticePage = () => {
                                         <div className={`${css.radioItem} ${css.yellow}`}>
                                             <label htmlFor='yellow'>
                                                 <input onChange={resetValues} id={'yellow'} type="checkbox"
-                                                       name={'saturationRadio'} value={'yellow'}/>
+                                                       name={'saturationRadio'} value={'yellow'} defaultChecked={true}/>
                                                 <div>yellow</div>
                                             </label>
                                         </div>
@@ -498,7 +538,6 @@ const ColorPracticePage = () => {
                             </div>
                         </div>
 
-
                         {!isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload}
                                              alt="upload"/>}
                         {isImageSet &&
@@ -509,7 +548,7 @@ const ColorPracticePage = () => {
                         <div>
                             <canvas id={'hsl_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
                                     height={imageHeight} onMouseMove={mouseMove} onMouseLeave={disappearPipe2}
-                                    onClick={clickPipe}></canvas>
+                                    onClick={clickPipe} onMouseDown={down} onMouseUp={up}></canvas>
 
                             <div>
                                 <a id={'hsl_link'} download={'HSL.png'}/>
