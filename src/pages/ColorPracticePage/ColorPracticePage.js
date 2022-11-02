@@ -287,14 +287,14 @@ const ColorPracticePage = () => {
     const disappearPipe1 = () => document.getElementById('pipette1').style.display = 'none';
     const disappearPipe2 = () => document.getElementById('pipette2').style.display = 'none';
 
-    const changeParams1 = (cmyk, rgb) => {
+    const changeParams1 = (cmyk) => {
         dispatchMyEvent(Math.round(cmyk[0] * 100), 'C');
         dispatchMyEvent(Math.round(cmyk[1] * 100), 'M');
         dispatchMyEvent(Math.round(cmyk[2] * 100), 'Y');
         dispatchMyEvent(Math.round(cmyk[3] * 100), 'K');
     }
 
-    const changeParams2 = (hsl, rgb) => {
+    const changeParams2 = (hsl) => {
         dispatchMyEvent(Math.round(hsl[0]), 'H');
         dispatchMyEvent(Math.round(hsl[1] * 100), 'S');
         dispatchMyEvent(Math.round(hsl[2] * 100), 'L');
