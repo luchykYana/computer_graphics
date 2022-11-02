@@ -12,7 +12,7 @@ const ColorPracticePage = () => {
     const [isImageSet, setIsImageSet] = useState(false);
     const [mousePos, setMousePos] = useState({x: 0, y: 0});
 
-    function drawEditedImage (newData, canvasID) {
+    function drawEditedImage(newData, canvasID) {
         const canvasEdited = document.getElementById(canvasID);
         const ctxEdited = canvasEdited.getContext('2d');
         canvasEdited.width = imageWidth;
@@ -110,22 +110,22 @@ const ColorPracticePage = () => {
         let res = [];
 
         if (document.getElementById('red').checked === true) {
-            res.push({min:330, max: 30});
+            res.push({min: 330, max: 30});
         }
         if (document.getElementById('yellow').checked === true) {
-            res.push({min:30, max: 90});
+            res.push({min: 30, max: 90});
         }
         if (document.getElementById('green').checked === true) {
-            res.push({min:90, max: 150});
+            res.push({min: 90, max: 150});
         }
         if (document.getElementById('cyan').checked === true) {
-            res.push({min:150, max: 210});
+            res.push({min: 150, max: 210});
         }
         if (document.getElementById('blue').checked === true) {
-            res.push({min:210, max: 270});
+            res.push({min: 210, max: 270});
         }
         if (document.getElementById('magenta').checked === true) {
-            res.push({min:270, max: 330});
+            res.push({min: 270, max: 330});
         }
 
         return res;
@@ -150,10 +150,10 @@ const ColorPracticePage = () => {
 
                 let isPixelNeeded = false;
 
-                for( let j = 0; j < ranges.length; j++) {
-                    if(ranges[j].min < ranges[j].max) {
+                for (let j = 0; j < ranges.length; j++) {
+                    if (ranges[j].min < ranges[j].max) {
                         isPixelNeeded = isPixelNeeded || (h >= ranges[j].min && h <= ranges[j].max);
-                    } else  {
+                    } else {
                         isPixelNeeded = isPixelNeeded || (h >= ranges[j].min || h <= ranges[j].max);
                     }
                 }
@@ -193,10 +193,10 @@ const ColorPracticePage = () => {
 
                 let isPixelNeeded = false;
 
-                for( let j = 0; j < ranges.length; j++) {
-                    if(ranges[j].min < ranges[j].max) {
+                for (let j = 0; j < ranges.length; j++) {
+                    if (ranges[j].min < ranges[j].max) {
                         isPixelNeeded = isPixelNeeded || (h >= ranges[j].min && h <= ranges[j].max);
-                    } else  {
+                    } else {
                         isPixelNeeded = isPixelNeeded || (h >= ranges[j].min || h <= ranges[j].max);
                     }
                 }
@@ -243,24 +243,24 @@ const ColorPracticePage = () => {
         setMousePos({x: e.clientX, y: e.clientY});
     }
 
-    const changePipe1 = (cmyk, rgb) => {
+    const changePipe1 = (cmyk, rgb, {x, y}) => {
         const pipette = document.getElementById('pipette1');
         const pipette_text = document.getElementById('pipette1_text');
         const pipette_img = document.getElementById('pipette1_img_fill');
         pipette.style.top = `${mousePos.y - 90}px`;
         pipette.style.left = `${mousePos.x + 5}px`;
         pipette.style.display = 'block';
-        pipette_text.innerText = `CMYK ( ${(cmyk[0] * 100).toFixed(0)}; ${(cmyk[1] * 100).toFixed(0)}; ${(cmyk[2] * 100).toFixed(0)}; ${(cmyk[3] * 100).toFixed(0)} )`;
+        pipette_text.innerText = `CMYK ( ${(cmyk[0] * 100).toFixed(0)}; ${(cmyk[1] * 100).toFixed(0)}; ${(cmyk[2] * 100).toFixed(0)}; ${(cmyk[3] * 100).toFixed(0)})\n(X: ${x}; Y: ${y})`;
         pipette_img.style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
     }
-    const changePipe2 = (hsl, rgb) => {
+    const changePipe2 = (hsl, rgb, {x, y}) => {
         const pipette = document.getElementById('pipette2');
         const pipette_text = document.getElementById('pipette2_text');
         const pipette_img = document.getElementById('pipette2_img_fill');
         pipette.style.top = `${mousePos.y - 90}px`;
         pipette.style.left = `${mousePos.x + 5}px`;
         pipette.style.display = 'block';
-        pipette_text.innerText = `HSL ( ${(hsl[0])}; ${(hsl[1] * 100).toFixed(0)}; ${(hsl[2] * 100).toFixed(0)} )`;
+        pipette_text.innerText = `HSL ( ${(hsl[0])}; ${(hsl[1] * 100).toFixed(0)}; ${(hsl[2] * 100).toFixed(0)}\n(X: ${x}; Y: ${y}))`;
         pipette_img.style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
     }
 
@@ -274,10 +274,10 @@ const ColorPracticePage = () => {
 
         if (isImageSet === true) {
             if (e.target.id === 'cmyk_canvas') {
-                changePipe1(cmyk, rgb);
+                changePipe1(cmyk, rgb, {x, y});
             }
             if (e.target.id === 'hsl_canvas') {
-                changePipe2(hsl, rgb);
+                changePipe2(hsl, rgb, {x, y});
             }
         }
 
@@ -334,7 +334,7 @@ const ColorPracticePage = () => {
         let y = document.getElementById('Y').value;
         let k = document.getElementById('K').value;
 
-        let [r, g, b] = modelFunc.CMYKtoRGB(c/100, m/100, y/100, k/100);
+        let [r, g, b] = modelFunc.CMYKtoRGB(c / 100, m / 100, y / 100, k / 100);
         document.getElementById('CMYK').style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
     }
 
@@ -343,7 +343,7 @@ const ColorPracticePage = () => {
         let s = document.getElementById('S').value;
         let l = document.getElementById('L').value;
 
-        let [r, g, b] = modelFunc.HSLtoRGB(h, s/100, l/100);
+        let [r, g, b] = modelFunc.HSLtoRGB(h, s / 100, l / 100);
         document.getElementById('HSL').style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
     }
 
@@ -362,21 +362,25 @@ const ColorPracticePage = () => {
                             <div className={`${css.flex} ${css.letterGroupGap2}`}>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Cyan) Блакитний</h3>
-                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'C'} min={0} max={100} step={1}></input>
+                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`}
+                                           id={'C'} min={0} max={100} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Magenta) Пурпуровий</h3>
-                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'M'} min={0} max={100} step={1}></input>
+                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`}
+                                           id={'M'} min={0} max={100} step={1}></input>
                                 </div>
                             </div>
                             <div className={`${css.flex} ${css.letterGroupGap2}`}>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Yellow) Жовтий</h3>
-                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'Y'} min={0} max={100} step={1}></input>
+                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`}
+                                           id={'Y'} min={0} max={100} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.cmykWidthLetter}`}>
                                     <h3>(Key) Чорний</h3>
-                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`} id={'K'} min={0} max={100} step={1}></input>
+                                    <input onChange={cmyk_color_change} type={'number'} className={`${css.pixelInfo}`}
+                                           id={'K'} min={0} max={100} step={1}></input>
                                 </div>
                             </div>
                         </div>
@@ -394,15 +398,18 @@ const ColorPracticePage = () => {
 
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Hue) Відтінок</h3>
-                                    <input onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`} id={'H'} min={0} max={360} step={1}></input>
+                                    <input onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`}
+                                           id={'H'} min={0} max={360} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Saturation) Насиченість</h3>
-                                    <input onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`} id={'S'} min={0} max={100} step={1}></input>
+                                    <input onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`}
+                                           id={'S'} min={0} max={100} step={1}></input>
                                 </div>
                                 <div className={`${css.flex} ${css.letterGap} ${css.hslWidthLetter}`}>
                                     <h3>(Lightness) Світлота</h3>
-                                    <input onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`} id={'L'} min={0} max={100} step={1}></input>
+                                    <input onChange={hsl_color_change} type={'number'} className={`${css.pixelInfo}`}
+                                           id={'L'} min={0} max={100} step={1}></input>
                                 </div>
 
                             </div>
@@ -526,7 +533,8 @@ const ColorPracticePage = () => {
                     </div>
 
                     <div>
-                        <canvas id={'rgb_canvas'} className={`${css.rgb_canvas}`} width={imageWidth} height={imageHeight}></canvas>
+                        <canvas id={'rgb_canvas'} className={`${css.rgb_canvas}`} width={imageWidth}
+                                height={imageHeight}></canvas>
                     </div>
 
                     <Pipette n={1}/>

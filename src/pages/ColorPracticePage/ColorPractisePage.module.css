@@ -228,7 +228,7 @@ input[type=range]::-moz-range-thumb {
 .pipette_text {
     text-align: center;
     width: 180px;
-    height: 23px;
+    height: 40px;
     border: 1px solid var(--dark-yellow);
     border-radius: 10px;
     background-color: var(--white);
