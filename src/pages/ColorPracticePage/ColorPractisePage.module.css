@@ -49,7 +49,6 @@ input[type=file] {
 
 .uploadButton {
     margin-left: -235px;
-    /*margin-bottom: 80px;*/
     margin-top: -40px;
     cursor: pointer;
     position: relative;
@@ -99,11 +98,10 @@ input[type=file] {
 
 .colorLetters {
     width: 800px;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     height: 200px;
     padding: 20px;
     margin-top: 35px;
-    /*margin-bottom: 40px;*/
 }
 
 .letterGap {
