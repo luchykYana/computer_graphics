@@ -38,12 +38,12 @@ const ColorPracticePage = () => {
             y = 0;
         }
 
-        console.log(`position x: ${x}\ty:${y} `)
+        // console.log(`position x: ${x}\ty:${y} `)
 
         let width = Math.abs(mousePos1.x1 - mousePos2.x2);
         let height = Math.abs(mousePos1.y1 - mousePos2.y2);
 
-        console.log(`w: ${width}\t h: ${height}`)
+        // console.log(`w: ${width}\t h: ${height}`)
 
         if(width > 10 || height > 10) {
             setIsAreaChosen(true);
@@ -72,23 +72,14 @@ const ColorPracticePage = () => {
         let height = Math.abs(mousePos1.y1 - mousePos2.y2);
 
         if(isAreaChosen) {
-            // let hsl_canvas = document.getElementById('hsl_canvas');
-            // let hsl_context = hsl_canvas.getContext('2d');
-            //
-            // hsl_context.clearRect(0, 0, hsl_canvas.width, hsl_canvas.height);
-            //
-            // let imageDataRGB = getImageDataFromCanvas('rgb_canvas');
-            // drawEditedImage(imageDataRGB, 'hsl_canvas')
-
             let hsl_canvas = document.getElementById('hsl_canvas');
             let hsl_context = hsl_canvas.getContext('2d');
 
             hsl_context.beginPath();
+            hsl_context.lineWidth = 3;
             hsl_context.rect(x, y, width, height);
             hsl_context.strokeStyle = `rgb(255, 255, 255)`;
             hsl_context.stroke();
-
-            // setIsAreaChosen(false);
         }
     }, [isAreaChosen]);
 
@@ -217,14 +208,7 @@ const ColorPracticePage = () => {
 
         let ranges = getRangeOfValues();
         let imageData = getImageDataFromCanvas('rgb_canvas');
-
-        if (mousePosMain === true) {
-            editPixelsChangeSaturation(mousePosData.data);
-            //щсь тут треба далі у функції правити, якщо в нас є фрагмент, у верху є useState з даними
-        } else {
-            editPixelsChangeSaturation(imageData.data);
-        }
-
+        editPixelsChangeSaturation(imageData.data);
         drawEditedImage(imageData, 'hsl_canvas');
 
         function editPixelsChangeSaturation(imgData) {
@@ -256,38 +240,23 @@ const ColorPracticePage = () => {
                 mas1 = modelFunc.RGBtoHSL(imgData[i], imgData[i + 1], imgData[i + 2]);
                 const h = mas1[0];
 
-                // if (i === 460 * 4) {
-                    let pixelNumber = i / 4;
-                    // console.log(pixelNumber);
-                    let pixelX = pixelNumber % imageWidth;
-                    let pixelY = Math.floor(pixelNumber / imageWidth );
-                    // console.log(pixelX)
-                    // console.log(pixelY)
-                // }
+                let pixelNumber = i / 4;
+                let pixelX = pixelNumber % imageWidth;
+                let pixelY = Math.floor(pixelNumber / imageWidth );
 
                 let isPixelNeeded = false;
-                // if(isAreaChosen) {
-                //     isPixelNeeded = isPixelNeeded && ( pixelX >= x && pixelY >= y && pixelX <= x + width && pixelY <= y + height );
-                // }
 
-                //todo
-
-                // if(isPixelNeeded) {
-
-                    for (let j = 0; j < ranges.length; j++) {
-                        if (ranges[j].min < ranges[j].max) {
-                            isPixelNeeded = isPixelNeeded || (h >= ranges[j].min && h <= ranges[j].max);
-                        } else {
-                            isPixelNeeded = isPixelNeeded || (h >= ranges[j].min || h <= ranges[j].max);
-                        }
+                for (let j = 0; j < ranges.length; j++) {
+                    if (ranges[j].min < ranges[j].max) {
+                        isPixelNeeded = isPixelNeeded || (h >= ranges[j].min && h <= ranges[j].max);
+                    } else {
+                        isPixelNeeded = isPixelNeeded || (h >= ranges[j].min || h <= ranges[j].max);
                     }
-                    if(isAreaChosen) {
-                        isPixelNeeded = isPixelNeeded && ( pixelX >= x && pixelY >= y && pixelX <= x + width && pixelY <= y + height );
-                    }
+                }
 
-                // }
-
-
+                if(isAreaChosen) {
+                    isPixelNeeded = isPixelNeeded && ( pixelX >= x && pixelY >= y && pixelX <= x + width && pixelY <= y + height );
+                }
 
                 if (isPixelNeeded) {
                     let s = mas1[1];
@@ -345,23 +314,12 @@ const ColorPracticePage = () => {
                 mas1 = modelFunc.RGBtoHSL(imgData[i], imgData[i + 1], imgData[i + 2]);
                 const h = mas1[0];
 
-                // if (i === 460 * 4) {
                 let pixelNumber = i / 4;
-                // console.log(pixelNumber);
+
                 let pixelX = pixelNumber % imageWidth;
                 let pixelY = Math.floor(pixelNumber / imageWidth );
-                // console.log(pixelX)
-                // console.log(pixelY)
-                // }
 
                 let isPixelNeeded = false;
-                // if(isAreaChosen) {
-                //     isPixelNeeded = isPixelNeeded && ( pixelX >= x && pixelY >= y && pixelX <= x + width && pixelY <= y + height );
-                // }
-
-                //todo
-
-                // if(isPixelNeeded) {
 
                 for (let j = 0; j < ranges.length; j++) {
                     if (ranges[j].min < ranges[j].max) {
@@ -373,8 +331,6 @@ const ColorPracticePage = () => {
                 if(isAreaChosen) {
                     isPixelNeeded = isPixelNeeded && ( pixelX >= x && pixelY >= y && pixelX <= x + width && pixelY <= y + height );
                 }
-
-                // }
 
                 if (isPixelNeeded) {
                     let l = mas1[2];
@@ -545,30 +501,6 @@ const ColorPracticePage = () => {
            let imageDataRGB = getImageDataFromCanvas('rgb_canvas');
            drawEditedImage(imageDataRGB, 'hsl_canvas')
        }
-
-        // console.log('up: ' + mousePos2.x2 + '|'  + mousePos2.y2)
-
-
-
-        // count();
-        //
-        // function count() {
-        //
-        //
-        //     const context = e.target.getContext('2d')
-        //
-        //
-        //
-        //     let data = context.getImageData(x, y,width, height);
-        //     setMousePosData(data);
-        //
-        //     if(width > 10 || height > 10) {
-        //         setMousePosMain(true);
-        //     } else {
-        //         setMousePosMain(false);
-        //     }
-        //     console.log(data);
-        // }
     }
 
     return (
