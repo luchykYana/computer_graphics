@@ -13,11 +13,7 @@ const ColorPracticePage = () => {
     const [mousePos, setMousePos] = useState({x: 0, y: 0});
     const [mousePos1, setMousePos1] = useState({x1: 0, y1: 0});
     const [mousePos2, setMousePos2] = useState({x2: 0, y2: 0});
-    const [mousePosMain, setMousePosMain] = useState(false);
-    const [mousePosData, setMousePosData] = useState();
     const [isAreaChosen, setIsAreaChosen] = useState(false);
-
-
 
     useEffect(()=>{
         let x, y;
