@@ -6,6 +6,6 @@ export const images = {
     fractal_gilbert_peano: 'http://drive.google.com/uc?export=view&id=1ukgY1fUL_Nqa-KaEhduis7_EZVDg7sFy',
     cmyk: 'http://drive.google.com/uc?export=view&id=1TxkrzC9eh3YTpCpUvFIqT4AtunB9UDE4',
     hsl: 'http://drive.google.com/uc?export=view&id=1C8OoZGtQ0-fdYlkPr6ssYiRZvA8zt1_v',
-    parallelogram: 'http://drive.google.com/uc?export=view&id=1ukgY1fUL_Nqa-KaEhduis7_EZVDg7sFy',
-    linekx: 'http://drive.google.com/uc?export=view&id=1ukgY1fUL_Nqa-KaEhduis7_EZVDg7sFy'
+    parallelogram: 'http://drive.google.com/uc?export=view&id=1cADze8yFsynA32vpVIpknC8l2MGPmDv-',
+    linekx: 'http://drive.google.com/uc?export=view&id=1y-xUSVUCYM_3rCtGhLpB1Ku608GweJ1S'
 }
