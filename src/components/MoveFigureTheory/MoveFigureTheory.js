@@ -8,7 +8,7 @@ const MoveFigureTheory = () => {
         <div className={`${css.content}`}>
             <div className={`${css.margin_left}`}><Title caption={"Паралелограм та пряма: основне"} icon_name={icons.book}></Title></div>
 
-            <div className={`${css.flex} `}>
+            <div className={`${css.flex} ${css.mt10}`}>
                 <MovementTheoryItem
                     caption={"Паралелограм"}
                     img_link={images.parallelogram}
@@ -23,9 +23,9 @@ const MoveFigureTheory = () => {
                     caption={"Пряма y = aX + b"}
                     img_link={images.linekx}
                     arr_description={
-                        ["a < 0 — функція спадна",
-                            "a > 0 — функція зростаюча",
-                            "b — рух функції по прямій y"
+                        ["1. a < 0 — функція спадна",
+                            "2. a > 0 — функція зростаюча",
+                            "3. b — рух функції по прямій y"
                         ]}
                 />
 

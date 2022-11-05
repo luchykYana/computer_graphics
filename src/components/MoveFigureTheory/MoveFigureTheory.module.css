@@ -17,5 +17,8 @@
     margin-left: -10px;
     width: 80vw;
     border: 2px solid black;
+}
 
+.mt10 {
+    margin-top: 40px;
 }
