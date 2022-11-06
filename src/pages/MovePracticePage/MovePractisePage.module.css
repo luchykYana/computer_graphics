@@ -1,5 +1,121 @@
 .content {
     margin-left: 80px;
     margin-bottom: 10px;
-    width: 80vw;
+    width: 90vw;
+}
+
+.height150 {
+    height: 150px;
+}
+
+.top150 {
+    height: 75px;
+    margin-top: 0;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+
+    vertical-align: top;
+
+}
+
+.bottom150 {
+    height: 75px;
+    margin-bottom: 0;
+    border: 1px solid dodgerblue;
+    display: flex;
+    align-items: center;
+
+    vertical-align: bottom;
+}
+.flex {
+    display: flex;
+    align-items: center;
+    vertical-align: center;
+}
+
+.left {
+    height: 100%;
+    width: 900px;
+    margin: 0 80px 0 0 ;
+    border: 1px solid magenta;
+}
+
+.button {
+    color: var(--white);
+    background: var(--dark-red);
+    border: var(--dark-red) 3px solid;
+    font-size: 20px;
+    border-radius: 10px;
+    transition: background 300ms linear;
+}
+
+.button:hover {
+    background: var(--light-red);
+    color: var(--black);
+}
+
+.positionLeft {
+    float:left;
+    margin-left: -20px;
+    margin-top: -25px;
+    z-index: 1;
+    position: relative;
+}
+
+.mt {
+    margin-top: 10px;
+}
+
+.movementCanvas {
+    height: 425px;
+    width: 425px;
+    margin-top: 5px;
+    border: black 3px solid;
+    background-color: var(--white);
+    z-index: 0;
+    position: relative;
+}
+
+input[type=range].move {
+    width: 400px;
+    height: 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 10px/100%;
+    margin-right: 10px;
+}
+
+input[type=range].move::-webkit-slider-runnable-track {
+    border-radius: 10px/100%;
+    height: 10px;
+    border: 1px solid var(--dark-red);
+    background-color: var(--dark-red);
+}
+
+input[type=range].move::-moz-range-track.move {
+    border-radius: 10px/100%;
+    height: 8px;
+    border: 1px solid var(--dark-red);
+    background-color: var(--dark-red);
+}
+
+input[type=range].move::-webkit-slider-thumb {
+    background: var(--dark-red);
+    outline: 3px solid var(--light-red);
+    border-radius: 100%;
+    cursor: pointer;
+    width:25px;
+    height: 25px;
+    -webkit-appearance: none;
+    margin-top: -8px;
+}
+
+input[type=range].move::-moz-range-thumb {
+    background: var(--dark-red);
+    border: 1px solid var(--dark-red);
+    outline: 3px solid var(--light-red);
+    border-radius: 100%;
+    cursor: pointer;
 }
