@@ -315,7 +315,7 @@ const DisplayFractal = ({
             <div className={'flex grid '}>
                 <div id={'left_side'}>
                     <div><p><b>{fractal_name} — </b>{fractal_description}</p></div>
-                    <div className={'flex grid mt-60'}>
+                    <div className={'flex grid mt-60 mlMinus60'}>
                         <label htmlFor='iterations'>Кількість ітерацій:</label>
                         <select id='iterations' name='iterations' onChange={buildFractal}>
                             {selectItems}

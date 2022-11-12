@@ -22,6 +22,12 @@ button.save_button {
     width: 773px;
 }
 
+.mlMinus60 {
+    margin-left: -35px;
+    align-items: flex-start;
+    width: 400px;
+}
+
 .grid {
     grid-column-gap: 100px;
 }
