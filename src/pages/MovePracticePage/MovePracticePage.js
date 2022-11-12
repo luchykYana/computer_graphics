@@ -57,15 +57,15 @@ const MovePracticePage = () => {
         ctx.beginPath();
         ctx.lineWidth = 1;
 
-        for (let x = 0; x < 10; x++) {
-            let X = x * scale;
+        for (let x = 0; x < 20; x++) {
+            let X = -x * scale;
             let Y = (x * line.k + line.x) * scale;
 
-            let X1 = -(x + 1) * scale;
+            let X1 = (x + 1) * scale;
             let Y1 = (-(x + 1) * line.k + line.x) * scale;
 
-            ctx.moveTo(-X, Y);
-            ctx.lineTo(-X1, Y1);
+            ctx.moveTo(X, Y);
+            ctx.lineTo(X1, Y1);
         }
 
         ctx.stroke();
