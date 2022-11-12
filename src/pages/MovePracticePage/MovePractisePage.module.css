@@ -12,21 +12,19 @@
     height: 75px;
     margin-top: 0;
     /*border: 1px solid black;*/
-    display: flex;
-    align-items: center;
-
-    vertical-align: top;
-
+    /*display: flex;*/
+    /*align-items: center;*/
+    /*vertical-align: top;*/
 }
 
 .bottom150 {
     height: 75px;
     margin-bottom: 0;
     /*border: 1px solid dodgerblue;*/
-    display: flex;
-    align-items: center;
+    /*display: flex;*/
+    /*align-items: center;*/
 
-    vertical-align: bottom;
+    /*vertical-align: bottom;*/
 }
 .flex {
     display: flex;
@@ -120,20 +118,18 @@ input[type=range].move::-moz-range-thumb {
     cursor: pointer;
 }
 
-
 /*-----------------------------------------------------------------------------------*/
 .test {
     height: 45px;
-    /*width: 220px;*/
+    width: 100%;
     /*border: 1px solid black;*/
-    margin: 0 10px;
+    /*margin: 0 10px;*/
+    padding: 0 5px;
     background-color: var(--dark-red);
 }
 
-.flex {
+.flex2 {
     display: flex;
-    align-items: center;
-    vertical-align: center;
 }
 
 .input {
@@ -164,4 +160,61 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
     -moz-appearance: textfield;
+}
+
+.parallelogram {
+    width: 200px;
+    height: 100px;
+    border: 5px solid var(--black);
+    transform: skewX(-30deg);
+    margin: 5px 30px 5px 40px;
+}
+
+.coordinate {
+    height: 200px;
+    margin: 0 5px;
+    /*border: 1px solid chartreuse;*/
+}
+
+.coordinateLeft {
+    height: 200px;
+    /*border: 1px solid fuchsia;*/
+}
+
+.coordinateRight {
+    height: 200px;
+    /*border: 1px solid fuchsia;*/
+}
+
+.positionLeftCoordinate {
+    position: relative;
+    left: 50px;
+}
+
+.positionRightCoordinate {
+    position: relative;
+    right: 40px;
+}
+
+.flex3 {
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.text {
+    /*border: 1px solid dodgerblue;*/
+    margin: 15px 5px 5px 0;
+}
+
+.margin_left {
+    margin-left: 10px;
+}
+
+.movementRangeBlock {
+    margin: 10px 5px;
+    /*border: 1px solid #F3D250;*/
+}
+
+.margin_center {
+    margin: 0 auto;
 }
