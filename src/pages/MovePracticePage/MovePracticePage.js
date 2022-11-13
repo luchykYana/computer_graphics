@@ -2,10 +2,12 @@ import {Title} from '../../components';
 import {icons} from '../../constants';
 
 import css from './MovePractisePage.module.css'
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 
 const MovePracticePage = () => {
     const range = 10;
+    // let canvas;
+    // let ctx;
 
     const [line, setLine] = useState({k: 0, x: 0});
     const [point1, setPoint1] = useState({x: 0, y: 0});
@@ -13,12 +15,34 @@ const MovePracticePage = () => {
     const [point3, setPoint3] = useState({x: 0, y: 0});
     const [point4, setPoint4] = useState({x: 0, y: 0});
 
+    const [gridSize, setGridSize] = useState(25);
+
+    useEffect(() => {
+
+            const canvas = document.getElementById('movement_canvas');
+            const ctx = canvas.getContext('2d');
+            var grid_size = gridSize;
+            var canvas_width = canvas.width;
+            var canvas_height = canvas.height;
+            var num_lines_x = Math.floor(canvas_height / grid_size);
+            var num_lines_y = Math.floor(canvas_width / grid_size);
+            var x_axis_distance_grid_lines = Math.floor(num_lines_x / 2);
+            var y_axis_distance_grid_lines = Math.floor(num_lines_y / 2);
+
+            draw_xy_graph()
+            draw_line_kx()
+            draw_parallelogram();
+            ctx.translate(-1 * (y_axis_distance_grid_lines * grid_size), -1 * ( x_axis_distance_grid_lines * grid_size) );
+
+
+    }, [gridSize]);
+
+    useEffect(() => {
+        onDrawMouse();
+    }, [line]);
+
     useEffect(() => {
         console.log(line)
-        // console.log(point1);
-        // console.log(point2);
-        // console.log(point3);
-        // console.log(point4);
     }, [point1, point2, point3, point4, line]);
 
     const reset = () => {
@@ -40,35 +64,73 @@ const MovePracticePage = () => {
 
     const draw_parallelogram = () => {
         console.log('draw_parallelogram')
-        console.log(point1.x, point1.y)
-        console.log(point2.x, point2.y)
-        console.log(point3.x, point3.y)
-        console.log(point4.x, point4.y)
-    }
 
+    }
+    
+    const onDrawMouse = () => {
+        const canvas = document.getElementById('movement_canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0,  canvas.width, canvas.height);
+        draw_xy_graph();
+        draw_line_kx();
+        var grid_size = gridSize;
+        var canvas_width = canvas.width;
+        var canvas_height = canvas.height;
+        var num_lines_x = Math.floor(canvas_height / grid_size);
+        var num_lines_y = Math.floor(canvas_width / grid_size);
+        var x_axis_distance_grid_lines = Math.floor(num_lines_x / 2);
+        var y_axis_distance_grid_lines = Math.floor(num_lines_y / 2);
+
+        ctx.translate(-1 * (y_axis_distance_grid_lines * grid_size), -1 * ( x_axis_distance_grid_lines * grid_size) );
+
+    }
+    
     const draw_line_kx = () => {
-        console.log('draw line kx')
-        console.log(line.k, line.x)
         const canvas = document.getElementById('movement_canvas');
         const ctx = canvas.getContext('2d');
 
-        const scale = -25;
+        var grid_size = gridSize;
+        // canvas width
+        var canvas_width = canvas.width;
 
-        ctx.beginPath();
-        ctx.lineWidth = 1;
+        // canvas height
+        var canvas_height = canvas.height;
 
-        for (let x = 0; x < 20; x++) {
-            let X = -x * scale;
-            let Y = (x * line.k + line.x) * scale;
+        // no of vertical grid lines
+        var num_lines_x = Math.floor(canvas_height / grid_size);
 
-            let X1 = (x + 1) * scale;
-            let Y1 = (-(x + 1) * line.k + line.x) * scale;
+        // no of horizontal grid lines
+        var num_lines_y = Math.floor(canvas_width / grid_size);
 
-            ctx.moveTo(X, Y);
-            ctx.lineTo(X1, Y1);
+        var x_axis_distance_grid_lines = Math.floor(num_lines_x / 2);
+        var y_axis_distance_grid_lines = Math.floor(num_lines_y / 2);
+
+        console.log('draw line kx')
+        console.log(line.k, line.x)
+
+        if(!(line.k === 0 && line.x === 0)) {
+            // const scale = -25;
+            const scale = -gridSize;
+
+            ctx.beginPath();
+            ctx.lineWidth = 2
+            ctx.strokeStyle = `rgb(255, 20, 20)`;
+
+            for (let x = 0; x < Math.max(canvas_width, canvas_height); x++) {
+                let X = -x * scale;
+                let Y = (x * line.k + line.x) * scale;
+
+                let X1 = (x + 1) * scale;
+                let Y1 = (-(x + 1) * line.k + line.x) * scale;
+
+                ctx.moveTo(X, Y);
+                ctx.lineTo(X1, Y1);
+            }
+
+            ctx.stroke();
         }
 
-        ctx.stroke();
+        // ctx.translate(-1 * (y_axis_distance_grid_lines * grid_size), -1 * ( x_axis_distance_grid_lines * grid_size) );
     }
 
     const download_img_movement = () => {
@@ -79,13 +141,14 @@ const MovePracticePage = () => {
     }
 
     const draw_xy_graph = () => {
-        console.log('works')
-        var grid_size = 25;
+        console.log('draw_xy_graph')
+        var grid_size = gridSize;
         var x_axis_starting_point = {number: 1, suffix: ''};
         var y_axis_starting_point = {number: 1, suffix: ''};
 
         const canvas = document.getElementById('movement_canvas');
         const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0,  canvas.width, canvas.height);
 
         // canvas width
         var canvas_width = canvas.width;
@@ -103,6 +166,8 @@ const MovePracticePage = () => {
         var x_axis_distance_grid_lines = Math.floor(num_lines_x / 2);
         var y_axis_distance_grid_lines = Math.floor(num_lines_y / 2);
 
+
+        // ctx.translate(y_axis_distance_grid_lines * grid_size, x_axis_distance_grid_lines * grid_size);
 
         // Draw grid lines along X-axis
         for (let i = 0; i <= num_lines_x; i++) {
@@ -219,8 +284,39 @@ const MovePracticePage = () => {
         }
     }
 
+    const onWheelFunction = (e) => {
+        if(e.deltaY > 0 &&  gridSize > 15 ) {
+            setGridSize(gridSize/2);
+        } else if(e.deltaY < 0 && gridSize < 100) {
+            setGridSize(gridSize * 2);
+        }
+    }
+
+    const onPageLoad = () =>{
+        console.log('onload')
+        const canvas = document.getElementById('movement_canvas');
+        const ctx = canvas.getContext('2d');
+
+        var grid_size = gridSize;
+        var canvas_width = canvas.width;
+        var canvas_height = canvas.height;
+
+        // no of vertical grid lines
+        var num_lines_x = Math.floor(canvas_height / grid_size);
+
+        // no of horizontal grid lines
+        var num_lines_y = Math.floor(canvas_width / grid_size);
+
+        var x_axis_distance_grid_lines = Math.floor(num_lines_x / 2);
+        var y_axis_distance_grid_lines = Math.floor(num_lines_y / 2);
+
+        draw_xy_graph();
+
+        ctx.translate(-1 * (y_axis_distance_grid_lines * grid_size), -1 * ( x_axis_distance_grid_lines * grid_size) );
+    }
+
     return (
-        <div className={`${css.content}`}>
+        <div className={`${css.content}`} onLoad={onPageLoad}>
             <Title caption={'Рух паралелограма вздовж прямої'} icon_name={icons.ruler}></Title>
 
             <div className={`${css.flex}`}>
@@ -241,6 +337,8 @@ const MovePracticePage = () => {
                                            onChange={(e) => {
                                                if (e.target.value.length !== 0) {
                                                    setLine({k: Number(e.target.value), x: line.x});
+                                               } else {
+                                                   setLine({k: 0, x: line.x});
                                                }
                                            }
                                            }
@@ -253,6 +351,8 @@ const MovePracticePage = () => {
                                            onChange={(e) => {
                                                if (e.target.value.length !== 0) {
                                                    setLine({k: line.k, x: Number(e.target.value)});
+                                               }else {
+                                                   setLine({k: line.k, x: 0});
                                                }
                                            }
                                            }
@@ -261,7 +361,7 @@ const MovePracticePage = () => {
 
                             </div>
 
-                            <button onClick={draw_line_kx} className={`${css.button} ${css.margin_left}`}>Пряма</button>
+                            <button onClick={onDrawMouse} className={`${css.button} ${css.margin_left}`}>Пряма</button>
                         </div>
                     </div>
 
@@ -414,8 +514,11 @@ const MovePracticePage = () => {
 
                 <div>
                     <div>
-                        <canvas height={425} width={425} onClick={draw_xy_graph} id={'movement_canvas'}
-                                className={`${css.movementCanvas}`}>
+                        <canvas height={425} width={425}  id={'movement_canvas'}
+                                className={`${css.movementCanvas}`}
+                                onWheel={onWheelFunction}
+                        >
+                            {/*onClick={draw_xy_graph}*/}
                         </canvas>
 
                         <div>
