@@ -2,10 +2,10 @@ import {Title} from '../../components';
 import {icons} from '../../constants';
 
 import css from './MovePractisePage.module.css'
-import {useContext, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 
 const MovePracticePage = () => {
-    const range = 10;
+    const range = 16;
     // let canvas;
     // let ctx;
 
@@ -108,7 +108,7 @@ const MovePracticePage = () => {
         console.log('draw line kx')
         console.log(line.k, line.x)
 
-        if(!(line.k === 0 && line.x === 0)) {
+        // if(!(line.k === 0 && line.x === 0)) {
             // const scale = -25;
             const scale = -gridSize;
 
@@ -128,7 +128,7 @@ const MovePracticePage = () => {
             }
 
             ctx.stroke();
-        }
+        // }
 
         // ctx.translate(-1 * (y_axis_distance_grid_lines * grid_size), -1 * ( x_axis_distance_grid_lines * grid_size) );
     }
@@ -335,10 +335,11 @@ const MovePracticePage = () => {
                                            id={'k'}
                                            defaultValue={0}
                                            onChange={(e) => {
-                                               if (e.target.value.length !== 0) {
+                                               if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
                                                    setLine({k: Number(e.target.value), x: line.x});
                                                } else {
                                                    setLine({k: 0, x: line.x});
+                                                   e.target.value = '';
                                                }
                                            }
                                            }
@@ -349,10 +350,11 @@ const MovePracticePage = () => {
                                            id={'x'}
                                            defaultValue={0}
                                            onChange={(e) => {
-                                               if (e.target.value.length !== 0) {
+                                               if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
                                                    setLine({k: line.k, x: Number(e.target.value)});
                                                }else {
                                                    setLine({k: line.k, x: 0});
+                                                   e.target.value = '';
                                                }
                                            }
                                            }
