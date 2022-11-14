@@ -6,8 +6,6 @@ import {useEffect, useState} from 'react';
 
 const MovePracticePage = () => {
     const range = 16;
-    // let canvas;
-    // let ctx;
 
     const [line, setLine] = useState({k: 0, x: 0});
     const [point1, setPoint1] = useState({x: 0, y: 0});
@@ -17,37 +15,41 @@ const MovePracticePage = () => {
 
     const [gridSize, setGridSize] = useState(25);
 
+    const repetitiveActions = () => {
+        const canvas = document.getElementById('movement_canvas');
+        const context = canvas.getContext('2d');
+
+        // number of vertical grid lines
+        const num_lines_x = Math.floor(canvas.height / gridSize);
+        const num_lines_y = Math.floor(canvas.width / gridSize);
+
+        // distance between grid lines
+        const xAxisDistanceGridLines = Math.floor(num_lines_x / 2);
+        const yAxisDistanceGridLines = Math.floor(num_lines_y / 2);
+
+        return [context, xAxisDistanceGridLines, yAxisDistanceGridLines];
+    }
+
     useEffect(() => {
-
-            const canvas = document.getElementById('movement_canvas');
-            const ctx = canvas.getContext('2d');
-            var grid_size = gridSize;
-            var canvas_width = canvas.width;
-            var canvas_height = canvas.height;
-            var num_lines_x = Math.floor(canvas_height / grid_size);
-            var num_lines_y = Math.floor(canvas_width / grid_size);
-            var x_axis_distance_grid_lines = Math.floor(num_lines_x / 2);
-            var y_axis_distance_grid_lines = Math.floor(num_lines_y / 2);
-
-            draw_xy_graph()
-            draw_line_kx()
-            draw_parallelogram();
-            ctx.translate(-1 * (y_axis_distance_grid_lines * grid_size), -1 * ( x_axis_distance_grid_lines * grid_size) );
-
-
+        const [ctx, x_axis_distance_grid_lines, y_axis_distance_grid_lines] = repetitiveActions();
+        draw_xy_graph()
+        draw_line_kx()
+        draw_parallelogram();
+        ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * ( x_axis_distance_grid_lines * gridSize) );
     }, [gridSize]);
 
     useEffect(() => {
+        console.log(line)
         onDrawLine();
+        onDrawParallelogram();
     }, [line]);
 
     useEffect(() => {
-        console.log(line)
         console.log(point1)
         console.log(point2)
         console.log(point3)
         console.log(point4)
-    }, [point1, point2, point3, point4, line]);
+    }, [point1, point2, point3, point4]);
 
     const reset = () => {
         setPoint1({x: 0, y: 0})
@@ -66,79 +68,86 @@ const MovePracticePage = () => {
         console.log('on movement change')
     }
 
-    const onDrawParalellogram = () => {
-        console.log('onDrawParalellogram')
+    const onDrawParallelogram = () => {
+        console.log('onDrawParallelogram')
+        const canvas = document.getElementById('movement_canvas');
+        const [ctx, x_axis_distance_grid_lines, y_axis_distance_grid_lines] = repetitiveActions();
+
+        ctx.clearRect(0, 0,  canvas.width, canvas.height);
+
+        draw_xy_graph();
+        draw_line_kx();
         draw_parallelogram();
+
+        ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * ( x_axis_distance_grid_lines * gridSize) );
     }
 
     const draw_parallelogram = () => {
-        console.log('draw_parallelogram')
+        // todo
+        // here we need to implement drawing of the parallelogram ;)
+        // i'll look here later
+        const canvas = document.getElementById('movement_canvas');
+        const ctx = canvas.getContext('2d');
+        const scale = -gridSize;
+
+        ctx.beginPath();
+        ctx.lineWidth = 2
+        ctx.strokeStyle = `rgb(0, 20, 255)`;
+
+        for (let x = 0; x < Math.max(canvas.width, canvas.height); x++) {
+            ctx.moveTo(point1.x * gridSize, point1.y * scale);
+            ctx.lineTo(point2.x * gridSize, point2.y * scale);
+            ctx.lineTo(point3.x * gridSize, point3.y * scale);
+            ctx.lineTo(point4.x * gridSize, point4.y * scale);
+            ctx.lineTo(point1.x * gridSize, point1.y * scale);
+
+
+            // let X = -x * scale;
+            // let Y = (x * line.k + line.x) * scale;
+            //
+            // let X1 = (x + 1) * scale;
+            // let Y1 = (-(x + 1) * line.k + line.x) * scale;
+            //
+            // ctx.moveTo(X, Y);
+            // ctx.lineTo(X1, Y1);
+        }
+
+        ctx.stroke();
     }
     
     const onDrawLine = () => {
         const canvas = document.getElementById('movement_canvas');
-        const ctx = canvas.getContext('2d');
+        const [ctx, x_axis_distance_grid_lines, y_axis_distance_grid_lines] = repetitiveActions();
+
         ctx.clearRect(0, 0,  canvas.width, canvas.height);
+
         draw_xy_graph();
         draw_line_kx();
-        var grid_size = gridSize;
-        var canvas_width = canvas.width;
-        var canvas_height = canvas.height;
-        var num_lines_x = Math.floor(canvas_height / grid_size);
-        var num_lines_y = Math.floor(canvas_width / grid_size);
-        var x_axis_distance_grid_lines = Math.floor(num_lines_x / 2);
-        var y_axis_distance_grid_lines = Math.floor(num_lines_y / 2);
 
-        ctx.translate(-1 * (y_axis_distance_grid_lines * grid_size), -1 * ( x_axis_distance_grid_lines * grid_size) );
-
+        ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * ( x_axis_distance_grid_lines * gridSize) );
     }
     
     const draw_line_kx = () => {
         const canvas = document.getElementById('movement_canvas');
         const ctx = canvas.getContext('2d');
+        const scale = -gridSize;
 
-        var grid_size = gridSize;
-        // canvas width
-        var canvas_width = canvas.width;
+        ctx.beginPath();
+        ctx.lineWidth = 2
+        ctx.strokeStyle = `rgb(255, 20, 20)`;
 
-        // canvas height
-        var canvas_height = canvas.height;
+        for (let x = 0; x < Math.max(canvas.width, canvas.height); x++) {
+            let X = -x * scale;
+            let Y = (x * line.k + line.x) * scale;
 
-        // no of vertical grid lines
-        var num_lines_x = Math.floor(canvas_height / grid_size);
+            let X1 = (x + 1) * scale;
+            let Y1 = (-(x + 1) * line.k + line.x) * scale;
 
-        // no of horizontal grid lines
-        var num_lines_y = Math.floor(canvas_width / grid_size);
+            ctx.moveTo(X, Y);
+            ctx.lineTo(X1, Y1);
+        }
 
-        var x_axis_distance_grid_lines = Math.floor(num_lines_x / 2);
-        var y_axis_distance_grid_lines = Math.floor(num_lines_y / 2);
-
-        console.log('draw line kx')
-        console.log(line.k, line.x)
-
-        // if(!(line.k === 0 && line.x === 0)) {
-            // const scale = -25;
-            const scale = -gridSize;
-
-            ctx.beginPath();
-            ctx.lineWidth = 2
-            ctx.strokeStyle = `rgb(255, 20, 20)`;
-
-            for (let x = 0; x < Math.max(canvas_width, canvas_height); x++) {
-                let X = -x * scale;
-                let Y = (x * line.k + line.x) * scale;
-
-                let X1 = (x + 1) * scale;
-                let Y1 = (-(x + 1) * line.k + line.x) * scale;
-
-                ctx.moveTo(X, Y);
-                ctx.lineTo(X1, Y1);
-            }
-
-            ctx.stroke();
-        // }
-
-        // ctx.translate(-1 * (y_axis_distance_grid_lines * grid_size), -1 * ( x_axis_distance_grid_lines * grid_size) );
+        ctx.stroke();
     }
 
     const download_img_movement = () => {
@@ -300,27 +309,13 @@ const MovePracticePage = () => {
         }
     }
 
+
+
     const onPageLoad = () =>{
         console.log('onload')
-        const canvas = document.getElementById('movement_canvas');
-        const ctx = canvas.getContext('2d');
-
-        var grid_size = gridSize;
-        var canvas_width = canvas.width;
-        var canvas_height = canvas.height;
-
-        // no of vertical grid lines
-        var num_lines_x = Math.floor(canvas_height / grid_size);
-
-        // no of horizontal grid lines
-        var num_lines_y = Math.floor(canvas_width / grid_size);
-
-        var x_axis_distance_grid_lines = Math.floor(num_lines_x / 2);
-        var y_axis_distance_grid_lines = Math.floor(num_lines_y / 2);
-
+        const [ctx, x_axis_distance_grid_lines, y_axis_distance_grid_lines] = repetitiveActions();
         draw_xy_graph();
-
-        ctx.translate(-1 * (y_axis_distance_grid_lines * grid_size), -1 * ( x_axis_distance_grid_lines * grid_size) );
+        ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * ( x_axis_distance_grid_lines * gridSize) );
     }
 
 
@@ -444,11 +439,11 @@ const MovePracticePage = () => {
                                     <div className={`${css.flex} ${css.center}`}>
                                         <p className={`${css.margin}`}><b>X</b></p>
                                         <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x4'}
-                                               disabled onChange={(e) => {onPointXChange(point4, setPoint4, e)}}
+                                               disabled={false} onChange={(e) => {onPointXChange(point4, setPoint4, e)}}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
                                         <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y4'}
-                                               disabled onChange={(e) => {onPointYChange(point4, setPoint4, e)}}
+                                               disabled={false} onChange={(e) => {onPointYChange(point4, setPoint4, e)}}
                                         />
                                     </div>
 
@@ -457,7 +452,7 @@ const MovePracticePage = () => {
                         </div>
 
                         <div className={`${css.flex} ${css.margin_center}`}>
-                            <button onClick={onDrawParalellogram} className={`${css.button}`}>Паралелограм</button>
+                            <button onClick={onDrawParallelogram} className={`${css.button}`}>Паралелограм</button>
                         </div>
                     </div>
 
@@ -481,7 +476,6 @@ const MovePracticePage = () => {
                                 className={`${css.movementCanvas}`}
                                 onWheel={onWheelFunction}
                         >
-                            {/*onClick={draw_xy_graph}*/}
                         </canvas>
 
                         <div>
