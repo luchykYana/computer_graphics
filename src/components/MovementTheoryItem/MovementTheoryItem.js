@@ -8,7 +8,8 @@ const MovementTheoryItem = ({caption, img_link, arr_description}) => {
             <h2 className={`${css.center} ${css.mt10}`}>{caption}</h2>
 
             <div className={`${css.flex}`}>
-                <img className={`${css.image} ${css.center} ${css.mt10}`} src={img_link} alt="moving theory image"/>
+                <img width={350} height={250}
+                     className={`${css.image} ${css.center} ${css.mt10}`} src={img_link} alt="moving theory image"/>
 
                 <div className={`${css.center} ${css.mt10} ${css.forText}`}>
                     {arr_description.map(x =>
