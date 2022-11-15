@@ -16,6 +16,32 @@ const MovePracticePage = () => {
 
     const [gridSize, setGridSize] = useState(25);
 
+    const [isReset, setIsReset] = useState(false);
+    
+    const [isKSet, setIsKSet] = useState(true);
+    const [isXSet, setIsXSet] = useState(true);
+    const [isDrawParallelogram, setIsDrawParallelogram] = useState(true)
+
+    useEffect(() => {
+        if(isReset) {
+            document.getElementById('k').value = line.k;
+            document.getElementById('x').value = line.x;
+
+            document.getElementById(`x1`).value = point1.x;
+            document.getElementById(`y1`).value = point1.y;
+
+            document.getElementById(`x2`).value = point2.x;
+            document.getElementById(`y2`).value = point2.y;
+
+            document.getElementById(`x3`).value = point3.x;
+            document.getElementById(`y3`).value = point3.y;
+
+            document.getElementById(`x4`).value = point4.x;
+            document.getElementById(`y4`).value = point4.y;
+        }
+        setIsReset(false);
+    }, [isReset]);
+
     const multiply = () => {
         let matrix1 = [
             [1, 0, 0],
@@ -47,22 +73,22 @@ const MovePracticePage = () => {
     useEffect(() => {
         const [ctx, x_axis_distance_grid_lines, y_axis_distance_grid_lines] = repetitiveActions();
         draw_xy_graph()
-        draw_line_kx()
-        draw_parallelogram();
+        if(isKSet || isXSet)          { draw_line_kx(); }
+        if(isDrawParallelogram && checkParallelogramExistence()) { draw_parallelogram(); }
         ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * ( x_axis_distance_grid_lines * gridSize) );
-    }, [gridSize]);
+    }, [gridSize, point1, point2, point3, point4, isKSet, isXSet, isDrawParallelogram, line]);
 
     useEffect(() => {
-        console.log(line)
-        onDrawButtonClick();
-    }, [line]);
+        // знаходимо точку 4 при введених значеннях точок 1 2 3
+        // середина діагоналі паралелограма
+        let pointO  = {x: (point1.x + point3.x) / 2, y: (point1.y + point3.y) / 2}
+        // координати точки 4
+        setPoint4({x: 2 * pointO.x - point2.x, y: 2 * pointO.y - point2.y})
 
-    useEffect(() => {
-        console.log(point1)
-        console.log(point2)
-        console.log(point3)
-        console.log(point4)
-    }, [point1, point2, point3, point4]);
+        document.getElementById(`x4`).value = point4.x;
+        document.getElementById(`y4`).value = point4.y;
+
+    }, [point1, point2, point3]);
 
     const reset = () => {
         setPoint1({x: -4, y: -7})
@@ -71,10 +97,7 @@ const MovePracticePage = () => {
         setPoint4({x: 3, y: -7})
         setLine({k: 1, x: 1})
 
-        let arr = document.getElementsByTagName('input');
-        for (let item of arr) {
-            item.value = '';
-        }
+        setIsReset(true);
     }
 
     const onMovementChange = (e) => {
@@ -291,45 +314,93 @@ const MovePracticePage = () => {
         }
     }
 
-    const onPageLoad = () =>{
-        console.log('onload')
-        const [ctx, x_axis_distance_grid_lines, y_axis_distance_grid_lines] = repetitiveActions();
-        draw_xy_graph();
-        ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * ( x_axis_distance_grid_lines * gridSize) );
-    }
-
     const onLineKChange = (local_line, set_line_func, e) => {
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_line_func({k: Number(e.target.value), x: local_line.x});
+            setIsKSet(true);
+        } else if(Math.abs(Number(e.target.value)) > range) {
+            console.log('значення виходить за допустимі межі!!');
+            setIsReset(true);
+            setIsKSet(true);
         } else {
-            set_line_func({k: 0, x: local_line.x});
-            e.target.value = '';
+            console.log('заповніть значення в комірку');
+            setIsKSet(false);
+            setLine({k: 0, x: local_line.x})
         }
     }
 
     const onLineXChange = (local_line, set_line_func, e) => {
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_line_func({k: local_line.k, x: Number(e.target.value)});
-        }else {
-            set_line_func({k: local_line.k, x: 0});
-            e.target.value = '';
+            setIsXSet(true);
+        }else if(Math.abs(Number(e.target.value)) > range) {
+            console.log('значення виходить за допустимі межі!!');
+            setIsReset(true);
+            setIsXSet(true);
+        } else {
+            console.log('заповніть значення в комірку');
+            setIsXSet(false);
+            setLine({k: local_line.k, x: 0})
         }
     }
 
+    const checkParallelogramExistence = () => {
+
+        return true;
+    }
+
     const onPointXChange = (local_point, set_point_func, e) => {
-        if (e.target.value.length !== 0) {
+        let local_point_rollback = {x: local_point.x, y: local_point.y};
+
+        if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_point_func({x: Number(e.target.value), y: local_point.y});
+
+            let isParallelogramValid = checkParallelogramExistence();
+
+            if(!isParallelogramValid) {
+                set_point_func({x: local_point_rollback.x, y: local_point_rollback.y});
+                setIsDrawParallelogram(false);
+                console.log('such a parallelogram doesn\'t exist')
+            }
+            setIsDrawParallelogram(true);
+        } else if(Math.abs(Number(e.target.value)) > range) {
+            console.log('введене значення виходить за допустимі межі!!')
+            setIsReset(true);
+        } else {
+            console.log('заповніть значення в комірку')
+            setIsDrawParallelogram(false);
         }
     }
 
     const onPointYChange = (local_point, set_point_func, e) => {
-        if (e.target.value.length !== 0) {
+        let local_point_rollback = {x: local_point.x, y: local_point.y};
+
+        if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_point_func({x: local_point.x, y: Number(e.target.value)});
+
+            let isParallelogramValid = checkParallelogramExistence();
+
+            if(!isParallelogramValid) {
+                set_point_func({x: local_point_rollback.x, y: local_point_rollback.y});
+                e.target.value = '';
+                setIsDrawParallelogram(false);
+                console.log('such a parallelogram doesn\'t exist')
+            }
+
+            setIsDrawParallelogram(true);
+        } else if(Math.abs(Number(e.target.value)) > range) {
+            console.log('введене значення виходить за допустимі межі!!')
+            setIsReset(true);
+        } else {
+            console.log('заповніть значення в комірку')
+            setIsDrawParallelogram(false);
         }
+
+
     }
 
     return (
-        <div className={`${css.content}`} onLoad={onPageLoad}>
+        <div className={`${css.content}`} >
             <Title caption={'Рух паралелограма вздовж прямої'} icon_name={icons.ruler}></Title>
 
             <div className={`${css.flex}`}>
@@ -344,11 +415,11 @@ const MovePracticePage = () => {
                                 <div className={`${css.flex} ${css.center}`}>
                                     <p className={`${css.margin}`}><b>y = </b></p>
                                     <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'k'}
-                                           defaultValue={0} onChange={(e) => {onLineKChange(line, setLine, e)}}
+                                           defaultValue={1} onChange={(e) => {onLineKChange(line, setLine, e)}}
                                     />
                                     <p className={`${css.margin}`}><b>* X + </b></p>
                                     <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x'}
-                                           defaultValue={0} onChange={(e) => {onLineXChange(line, setLine, e)}}
+                                           defaultValue={1} onChange={(e) => {onLineXChange(line, setLine, e)}}
                                     />
                                 </div>
 
@@ -368,12 +439,14 @@ const MovePracticePage = () => {
                                 <div className={`${css.test} ${css.flex} ${css.positionLeftCoordinate}`}>
                                     <div className={`${css.flex} ${css.center}`}>
                                         <p className={`${css.margin}`}><b>X</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x2'}
-                                               onChange={(e) => {onPointXChange(point2, setPoint2, e)}}
+                                        <input defaultValue={-3}
+                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x2'}
+                                            onChange={(e) => {onPointXChange(point2, setPoint2, e)}}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y2'}
-                                               onChange={(e) => {onPointYChange(point2, setPoint2, e)}}
+                                        <input defaultValue={-3}
+                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y2'}
+                                            onChange={(e) => {onPointYChange(point2, setPoint2, e)}}
                                         />
                                     </div>
                                 </div>
@@ -381,12 +454,14 @@ const MovePracticePage = () => {
                                 <div className={`${css.test} ${css.flex}`}>
                                     <div className={`${css.flex} ${css.center}`}>
                                         <p className={`${css.margin}`}><b>X</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x1'}
-                                               onChange={(e) => {onPointXChange(point1, setPoint1, e)}}
+                                        <input defaultValue={-4}
+                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x1'}
+                                            onChange={(e) => {onPointXChange(point1, setPoint1, e)}}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y1'}
-                                               onChange={(e) => {onPointYChange(point1, setPoint1, e)}}
+                                        <input defaultValue={-7}
+                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y1'}
+                                            onChange={(e) => {onPointYChange(point1, setPoint1, e)}}
                                         />
                                     </div>
 
@@ -403,12 +478,14 @@ const MovePracticePage = () => {
                                 <div className={`${css.test} ${css.flex}`}>
                                     <div className={`${css.flex} ${css.center}`}>
                                         <p className={`${css.margin}`}><b>X</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x3'}
-                                               onChange={(e) => {onPointXChange(point3, setPoint3, e)}}
+                                        <input defaultValue={4}
+                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x3'}
+                                            onChange={(e) => {onPointXChange(point3, setPoint3, e)}}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y3'}
-                                               onChange={(e) => {onPointYChange(point3, setPoint3, e)}}
+                                        <input defaultValue={-3}
+                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y3'}
+                                            onChange={(e) => {onPointYChange(point3, setPoint3, e)}}
                                         />
                                     </div>
 
@@ -417,12 +494,14 @@ const MovePracticePage = () => {
                                 <div className={`${css.test} ${css.flex} ${css.positionRightCoordinate}`}>
                                     <div className={`${css.flex} ${css.center}`}>
                                         <p className={`${css.margin}`}><b>X</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x4'}
-                                               disabled={false} onChange={(e) => {onPointXChange(point4, setPoint4, e)}}
+                                        <input defaultValue={3}
+                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x4'}
+                                            disabled={true} onChange={(e) => {onPointXChange(point4, setPoint4, e)}}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y4'}
-                                               disabled={false} onChange={(e) => {onPointYChange(point4, setPoint4, e)}}
+                                        <input defaultValue={-7}
+                                                className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y4'}
+                                                disabled={true} onChange={(e) => {onPointYChange(point4, setPoint4, e)}}
                                         />
                                     </div>
 
