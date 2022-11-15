@@ -17,6 +17,10 @@ const MovePracticePage = () => {
     const [gridSize, setGridSize] = useState(25);
 
     const [isReset, setIsReset] = useState(false);
+    
+    const [isKSet, setIsKSet] = useState(true);
+    const [isXSet, setIsXSet] = useState(true);
+    const [isDrawParallelogram, setIsDrawParallelogram] = useState(true)
 
     useEffect(() => {
         if(isReset) {
@@ -68,15 +72,10 @@ const MovePracticePage = () => {
     useEffect(() => {
         const [ctx, x_axis_distance_grid_lines, y_axis_distance_grid_lines] = repetitiveActions();
         draw_xy_graph()
-        draw_line_kx()
-        draw_parallelogram();
+        if(isKSet || isXSet)          { draw_line_kx(); }
+        if(isDrawParallelogram && checkParallelogramExistence()) { draw_parallelogram(); }
         ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * ( x_axis_distance_grid_lines * gridSize) );
-    }, [gridSize, point1, point2, point3, point4]);
-
-    useEffect(() => {
-        console.log(line)
-        onDrawButtonClick();
-    }, [line]);
+    }, [gridSize, point1, point2, point3, point4, isKSet, isXSet, isDrawParallelogram, line]);
 
     useEffect(() => {
         // знаходимо точку 4 при введених значеннях точок 1 2 3
@@ -317,18 +316,30 @@ const MovePracticePage = () => {
     const onLineKChange = (local_line, set_line_func, e) => {
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_line_func({k: Number(e.target.value), x: local_line.x});
+            setIsKSet(true);
+        } else if(Math.abs(Number(e.target.value)) > range) {
+            console.log('значення виходить за допустимі межі!!');
+            setIsReset(true);
+            setIsKSet(true);
         } else {
-            set_line_func({k: 0, x: local_line.x});
-            e.target.value = '';
+            console.log('заповніть значення в комірку');
+            setIsKSet(false);
+            setLine({k: 0, x: local_line.x})
         }
     }
 
     const onLineXChange = (local_line, set_line_func, e) => {
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_line_func({k: local_line.k, x: Number(e.target.value)});
-        }else {
-            set_line_func({k: local_line.k, x: 0});
-            e.target.value = '';
+            setIsXSet(true);
+        }else if(Math.abs(Number(e.target.value)) > range) {
+            console.log('значення виходить за допустимі межі!!');
+            setIsReset(true);
+            setIsXSet(true);
+        } else {
+            console.log('заповніть значення в комірку');
+            setIsXSet(false);
+            setLine({k: local_line.k, x: 0})
         }
     }
 
@@ -342,14 +353,21 @@ const MovePracticePage = () => {
 
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_point_func({x: Number(e.target.value), y: local_point.y});
-        }
 
-        let isParallelogramValid = checkParallelogramExistence();
+            let isParallelogramValid = checkParallelogramExistence();
 
-        if(!isParallelogramValid) {
-            set_point_func({x: local_point_rollback.x, y: local_point_rollback.y});
-            e.target.value = '';
-            console.log('such a parallelogram doesn\'t exist')
+            if(!isParallelogramValid) {
+                set_point_func({x: local_point_rollback.x, y: local_point_rollback.y});
+                setIsDrawParallelogram(false);
+                console.log('such a parallelogram doesn\'t exist')
+            }
+            setIsDrawParallelogram(true);
+        } else if(Math.abs(Number(e.target.value)) > range) {
+            console.log('введене значення виходить за допустимі межі!!')
+            setIsReset(true);
+        } else {
+            console.log('заповніть значення в комірку')
+            setIsDrawParallelogram(false);
         }
     }
 
@@ -358,15 +376,26 @@ const MovePracticePage = () => {
 
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_point_func({x: local_point.x, y: Number(e.target.value)});
+
+            let isParallelogramValid = checkParallelogramExistence();
+
+            if(!isParallelogramValid) {
+                set_point_func({x: local_point_rollback.x, y: local_point_rollback.y});
+                e.target.value = '';
+                setIsDrawParallelogram(false);
+                console.log('such a parallelogram doesn\'t exist')
+            }
+
+            setIsDrawParallelogram(true);
+        } else if(Math.abs(Number(e.target.value)) > range) {
+            console.log('введене значення виходить за допустимі межі!!')
+            setIsReset(true);
+        } else {
+            console.log('заповніть значення в комірку')
+            setIsDrawParallelogram(false);
         }
 
-        let isParallelogramValid = checkParallelogramExistence();
 
-        if(!isParallelogramValid) {
-            set_point_func({x: local_point_rollback.x, y: local_point_rollback.y});
-            e.target.value = '';
-            console.log('such a parallelogram doesn\'t exist')
-        }
     }
 
     return (
