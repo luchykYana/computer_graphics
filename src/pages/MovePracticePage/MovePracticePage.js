@@ -3,6 +3,7 @@ import {icons} from '../../constants';
 
 import css from './MovePractisePage.module.css'
 import {useEffect, useState} from 'react';
+import {matrix} from '../../helper';
 
 const MovePracticePage = () => {
     const range = 16;
@@ -14,6 +15,18 @@ const MovePracticePage = () => {
     const [point4, setPoint4] = useState({x: 3,  y: -7});
 
     const [gridSize, setGridSize] = useState(25);
+
+    const multiply = () => {
+        let matrix1 = [
+            [11, 12, 13],
+            [21, 22, 23],
+            [31, 32, 33]
+        ];
+        let matrix2 = [1 ,2 ,3];
+        console.log(matrix.multiply({matrix1, matrix2}));
+    }
+
+    multiply();
 
     const repetitiveActions = () => {
         const canvas = document.getElementById('movement_canvas');
