@@ -71,7 +71,7 @@ const MovePracticePage = () => {
         draw_line_kx()
         draw_parallelogram();
         ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * ( x_axis_distance_grid_lines * gridSize) );
-    }, [gridSize]);
+    }, [gridSize, point1, point2, point3, point4]);
 
     useEffect(() => {
         console.log(line)
@@ -79,11 +79,16 @@ const MovePracticePage = () => {
     }, [line]);
 
     useEffect(() => {
-        console.log(point1)
-        console.log(point2)
-        console.log(point3)
-        console.log(point4)
-    }, [point1, point2, point3, point4]);
+        // знаходимо точку 4 при введених значеннях точок 1 2 3
+        // середина діагоналі паралелограма
+        let pointO  = {x: (point1.x + point3.x) / 2, y: (point1.y + point3.y) / 2}
+        // координати точки 4
+        setPoint4({x: 2 * pointO.x - point2.x, y: 2 * pointO.y - point2.y})
+
+        document.getElementById(`x4`).value = point4.x;
+        document.getElementById(`y4`).value = point4.y;
+
+    }, [point1, point2, point3]);
 
     const reset = () => {
         setPoint1({x: -4, y: -7})
@@ -328,6 +333,7 @@ const MovePracticePage = () => {
     }
 
     const checkParallelogramExistence = () => {
+
         return true;
     }
 
