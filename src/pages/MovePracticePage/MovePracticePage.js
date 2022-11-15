@@ -57,10 +57,12 @@ const MovePracticePage = () => {
         setPoint4({x: 3, y: -7})
         setLine({k: 1, x: 1})
 
-        let arr = document.getElementsByTagName('input');
-        for (let item of arr) {
-            item.value = '';
-        }
+        document.getElementById('k').value = line.k;
+
+        // let arr = document.getElementsByTagName('input');
+        // for (let item of arr) {
+        //     item.value = '';
+        // }
     }
 
     const onMovementChange = (e) => {
@@ -279,9 +281,9 @@ const MovePracticePage = () => {
 
     const onPageLoad = () =>{
         console.log('onload')
-        const [ctx, x_axis_distance_grid_lines, y_axis_distance_grid_lines] = repetitiveActions();
-        draw_xy_graph();
-        ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * ( x_axis_distance_grid_lines * gridSize) );
+        // const [ctx, x_axis_distance_grid_lines, y_axis_distance_grid_lines] = repetitiveActions();
+        // draw_xy_graph();
+        // ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * ( x_axis_distance_grid_lines * gridSize) );
     }
 
     const onLineKChange = (local_line, set_line_func, e) => {
@@ -301,16 +303,39 @@ const MovePracticePage = () => {
             e.target.value = '';
         }
     }
+    const checkParallelogramExistence = () => {
+        return true;
+    }
 
     const onPointXChange = (local_point, set_point_func, e) => {
-        if (e.target.value.length !== 0) {
+        let local_point_rollback = {x: local_point.x, y: local_point.y};
+
+        if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_point_func({x: Number(e.target.value), y: local_point.y});
+        }
+
+        let isParallelogramValid = checkParallelogramExistence();
+
+        if(!isParallelogramValid) {
+            set_point_func({x: local_point_rollback.x, y: local_point_rollback.y});
+            e.target.value = '';
+            console.log('such a parallelogram doesn\'t exist')
         }
     }
 
     const onPointYChange = (local_point, set_point_func, e) => {
-        if (e.target.value.length !== 0) {
+        let local_point_rollback = {x: local_point.x, y: local_point.y};
+
+        if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_point_func({x: local_point.x, y: Number(e.target.value)});
+        }
+
+        let isParallelogramValid = checkParallelogramExistence();
+
+        if(!isParallelogramValid) {
+            set_point_func({x: local_point_rollback.x, y: local_point_rollback.y});
+            e.target.value = '';
+            console.log('such a parallelogram doesn\'t exist')
         }
     }
 
@@ -330,11 +355,11 @@ const MovePracticePage = () => {
                                 <div className={`${css.flex} ${css.center}`}>
                                     <p className={`${css.margin}`}><b>y = </b></p>
                                     <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'k'}
-                                           defaultValue={0} onChange={(e) => {onLineKChange(line, setLine, e)}}
+                                           defaultValue={1} onChange={(e) => {onLineKChange(line, setLine, e)}}
                                     />
                                     <p className={`${css.margin}`}><b>* X + </b></p>
                                     <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x'}
-                                           defaultValue={0} onChange={(e) => {onLineXChange(line, setLine, e)}}
+                                           defaultValue={1} onChange={(e) => {onLineXChange(line, setLine, e)}}
                                     />
                                 </div>
 
@@ -354,12 +379,14 @@ const MovePracticePage = () => {
                                 <div className={`${css.test} ${css.flex} ${css.positionLeftCoordinate}`}>
                                     <div className={`${css.flex} ${css.center}`}>
                                         <p className={`${css.margin}`}><b>X</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x2'}
-                                               onChange={(e) => {onPointXChange(point2, setPoint2, e)}}
+                                        <input defaultValue={-4}
+                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x2'}
+                                            onChange={(e) => {onPointXChange(point2, setPoint2, e)}}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y2'}
-                                               onChange={(e) => {onPointYChange(point2, setPoint2, e)}}
+                                        <input defaultValue={-7}
+                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y2'}
+                                            onChange={(e) => {onPointYChange(point2, setPoint2, e)}}
                                         />
                                     </div>
                                 </div>
@@ -367,12 +394,14 @@ const MovePracticePage = () => {
                                 <div className={`${css.test} ${css.flex}`}>
                                     <div className={`${css.flex} ${css.center}`}>
                                         <p className={`${css.margin}`}><b>X</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x1'}
-                                               onChange={(e) => {onPointXChange(point1, setPoint1, e)}}
+                                        <input defaultValue={-3}
+                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x1'}
+                                            onChange={(e) => {onPointXChange(point1, setPoint1, e)}}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y1'}
-                                               onChange={(e) => {onPointYChange(point1, setPoint1, e)}}
+                                        <input defaultValue={-3}
+                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y1'}
+                                            onChange={(e) => {onPointYChange(point1, setPoint1, e)}}
                                         />
                                     </div>
 
@@ -389,12 +418,14 @@ const MovePracticePage = () => {
                                 <div className={`${css.test} ${css.flex}`}>
                                     <div className={`${css.flex} ${css.center}`}>
                                         <p className={`${css.margin}`}><b>X</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x3'}
-                                               onChange={(e) => {onPointXChange(point3, setPoint3, e)}}
+                                        <input defaultValue={4}
+                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x3'}
+                                            onChange={(e) => {onPointXChange(point3, setPoint3, e)}}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y3'}
-                                               onChange={(e) => {onPointYChange(point3, setPoint3, e)}}
+                                        <input defaultValue={-3}
+                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y3'}
+                                            onChange={(e) => {onPointYChange(point3, setPoint3, e)}}
                                         />
                                     </div>
 
@@ -403,12 +434,14 @@ const MovePracticePage = () => {
                                 <div className={`${css.test} ${css.flex} ${css.positionRightCoordinate}`}>
                                     <div className={`${css.flex} ${css.center}`}>
                                         <p className={`${css.margin}`}><b>X</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x4'}
-                                               disabled={false} onChange={(e) => {onPointXChange(point4, setPoint4, e)}}
+                                        <input defaultValue={3}
+                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x4'}
+                                            disabled={true} onChange={(e) => {onPointXChange(point4, setPoint4, e)}}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
-                                        <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y4'}
-                                               disabled={false} onChange={(e) => {onPointYChange(point4, setPoint4, e)}}
+                                        <input defaultValue={-7}
+                                                className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y4'}
+                                                disabled={true} onChange={(e) => {onPointYChange(point4, setPoint4, e)}}
                                         />
                                     </div>
 
