@@ -18,11 +18,12 @@ const MovePracticePage = () => {
 
     const multiply = () => {
         let matrix1 = [
-            [11, 12, 13],
-            [21, 22, 23],
-            [31, 32, 33]
+            [1, 0, 0],
+            [0, 1, 4*2],
+            [0, 0, 1]
         ];
-        let matrix2 = [1 ,2 ,3];
+        let matrix2 = [-3 , -3 , 1];
+        console.log("Point");
         console.log(matrix.multiply({matrix1, matrix2}));
     }
 
