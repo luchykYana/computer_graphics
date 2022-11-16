@@ -33,31 +33,12 @@ const MovePracticePage = () => {
     // false - намалювати відображення
     const [isDrawParallelogram, setIsDrawParallelogram] = useState(true);
 
-
-    // const mirrorMatrix = () => {
-    //     setPoint1(matrix.multiply(line, point1, +move));
-    //     setPoint2(matrix.multiply(line, point2, +move));
-    //     setPoint3(matrix.multiply(line, point3, +move));
-    //     setPoint4(matrix.multiply(line, point4, +move));
-    //     setMove(0);
-    //     draw_parallelogram();
-    // }
-
     const start = () => {
-        console.log('start')
-
         setInterv(setInterval(()=>{
-            let tmp = isDrawParallelogram;
-            console.log(tmp)
             setIsDrawParallelogram(current => ! current);
-                console.log('here');
             }, 1000)
         );
     }
-
-    useEffect(() => {
-        console.log(isDrawParallelogram)
-    }, [isDrawParallelogram]);
 
     useEffect(() => {
         setMirrorPoint1(matrix.multiply(line, point1, +move));
@@ -66,22 +47,6 @@ const MovePracticePage = () => {
         setMirrorPoint4(matrix.multiply(line, point4, +move));
         setMove(0);
     }, [point1, point2, point3, point4, line]);
-
-    useEffect(() => {
-        console.log('======')
-        console.log('points: ')
-        console.log(point1)
-        console.log(point2)
-        console.log(point3)
-        console.log(point4)
-        console.log('---')
-        console.log('mirror points: ')
-        console.log(mirrorPoint1)
-        console.log(mirrorPoint2)
-        console.log(mirrorPoint3)
-        console.log(mirrorPoint4)
-        console.log('======')
-    }, [mirrorPoint4]);
 
     useEffect(() => {
         if (isReset) {
@@ -126,9 +91,9 @@ const MovePracticePage = () => {
         }
         if (checkParallelogramExistence) {
             if (isDrawParallelogram ) {
-                draw_parallelogram();
+                draw_parallelogram(point1, point2, point3, point4);
             } else {
-                draw_parallelogram2();
+                draw_parallelogram(mirrorPoint1, mirrorPoint2, mirrorPoint3, mirrorPoint4, 'magenta');
             }
         }
 
@@ -170,50 +135,25 @@ const MovePracticePage = () => {
 
     }
 
-    const draw_parallelogram = () => {
+    const draw_parallelogram = (p1, p2, p3, p4, color = 'blue') => {
         const canvas = document.getElementById('movement_canvas');
         const ctx = canvas.getContext('2d');
         const scale = -gridSize;
 
         ctx.beginPath();
         ctx.lineWidth = 2
-        ctx.strokeStyle = `rgb(0, 20, 255)`;
+        ctx.strokeStyle = color;
 
         for (let x = 0; x < Math.max(canvas.width, canvas.height); x++) {
-            ctx.moveTo(point1.x * gridSize, point1.y * scale);
-            ctx.lineTo(point2.x * gridSize, point2.y * scale);
-            ctx.lineTo(point3.x * gridSize, point3.y * scale);
-            ctx.lineTo(point4.x * gridSize, point4.y * scale);
-            ctx.lineTo(point1.x * gridSize, point1.y * scale);
+            ctx.moveTo(p1.x * gridSize, p1.y * scale);
+            ctx.lineTo(p2.x * gridSize, p2.y * scale);
+            ctx.lineTo(p3.x * gridSize, p3.y * scale);
+            ctx.lineTo(p4.x * gridSize, p4.y * scale);
+            ctx.lineTo(p1.x * gridSize, p1.y * scale);
         }
 
         ctx.stroke();
     }
-
-    // -------------
-    const draw_parallelogram2 = () => {
-        console.log('draw_parallelogram2()')
-        const canvas = document.getElementById('movement_canvas');
-        const ctx = canvas.getContext('2d');
-        const scale = -gridSize;
-
-        ctx.beginPath();
-        ctx.lineWidth = 2
-        ctx.strokeStyle = `rgb(20, 255, 20)`;
-
-        for (let x = 0; x < Math.max(canvas.width, canvas.height); x++) {
-            ctx.moveTo(mirrorPoint1.x * gridSize, mirrorPoint1.y * scale);
-            ctx.lineTo(mirrorPoint2.x * gridSize, mirrorPoint2.y * scale);
-            ctx.lineTo(mirrorPoint3.x * gridSize, mirrorPoint3.y * scale);
-            ctx.lineTo(mirrorPoint4.x * gridSize, mirrorPoint4.y * scale);
-            ctx.lineTo(mirrorPoint1.x * gridSize, mirrorPoint1.y * scale);
-        }
-
-        ctx.stroke();
-    }
-
-
-    // -------------
 
     const onDrawButtonClick = () => {
         const canvas = document.getElementById('movement_canvas');
@@ -454,7 +394,6 @@ const MovePracticePage = () => {
             setIsReset(true);
         } else {
             console.log('заповніть значення в комірку')
-            // setIsDrawParallelogram(false);
         }
     }
 
@@ -479,13 +418,8 @@ const MovePracticePage = () => {
             setIsReset(true);
         } else {
             console.log('заповніть значення в комірку')
-            // setIsDrawParallelogram(false);
         }
     }
-
-
-
-
 
     return (
         <div className={`${css.content}`}>
