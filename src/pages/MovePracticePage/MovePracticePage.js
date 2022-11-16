@@ -11,19 +11,21 @@ const MovePracticePage = () => {
     const [line, setLine] = useState({k: 1, x: 1});
     const [point1, setPoint1] = useState({x: -4, y: -7});
     const [point2, setPoint2] = useState({x: -3, y: -3});
-    const [point3, setPoint3] = useState({x: 4,  y: -3});
-    const [point4, setPoint4] = useState({x: 3,  y: -7});
+    const [point3, setPoint3] = useState({x: 4, y: -3});
+    const [point4, setPoint4] = useState({x: 3, y: -7});
+
+    const [move, setMove] = useState(0);
 
     const [gridSize, setGridSize] = useState(25);
 
     const [isReset, setIsReset] = useState(false);
-    
+
     const [isKSet, setIsKSet] = useState(true);
     const [isXSet, setIsXSet] = useState(true);
     const [isDrawParallelogram, setIsDrawParallelogram] = useState(true)
 
     useEffect(() => {
-        if(isReset) {
+        if (isReset) {
             document.getElementById('k').value = line.k;
             document.getElementById('x').value = line.x;
 
@@ -41,19 +43,6 @@ const MovePracticePage = () => {
         }
         setIsReset(false);
     }, [isReset]);
-
-    const multiply = () => {
-        let matrix1 = [
-            [1, 0, 0],
-            [0, 1, 4*2],
-            [0, 0, 1]
-        ];
-        let matrix2 = [-3 , -3 , 1];
-        console.log("Point");
-        console.log(matrix.multiply({matrix1, matrix2}));
-    }
-
-    multiply();
 
     const repetitiveActions = () => {
         const canvas = document.getElementById('movement_canvas');
@@ -73,15 +62,19 @@ const MovePracticePage = () => {
     useEffect(() => {
         const [ctx, x_axis_distance_grid_lines, y_axis_distance_grid_lines] = repetitiveActions();
         draw_xy_graph()
-        if(isKSet || isXSet)          { draw_line_kx(); }
-        if(isDrawParallelogram && checkParallelogramExistence()) { draw_parallelogram(); }
-        ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * ( x_axis_distance_grid_lines * gridSize) );
+        if (isKSet || isXSet) {
+            draw_line_kx();
+        }
+        if (isDrawParallelogram && checkParallelogramExistence()) {
+            draw_parallelogram();
+        }
+        ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * (x_axis_distance_grid_lines * gridSize));
     }, [gridSize, point1, point2, point3, point4, isKSet, isXSet, isDrawParallelogram, line]);
 
     useEffect(() => {
         // знаходимо точку 4 при введених значеннях точок 1 2 3
         // середина діагоналі паралелограма
-        let pointO  = {x: (point1.x + point3.x) / 2, y: (point1.y + point3.y) / 2}
+        let pointO = {x: (point1.x + point3.x) / 2, y: (point1.y + point3.y) / 2}
         // координати точки 4
         setPoint4({x: 2 * pointO.x - point2.x, y: 2 * pointO.y - point2.y})
 
@@ -104,6 +97,7 @@ const MovePracticePage = () => {
         console.log('on movement change')
         let value = e.target.value;
         console.log(value);
+        setMove(value);
         // todo: зробити вот тут рух
 
     }
@@ -127,20 +121,20 @@ const MovePracticePage = () => {
 
         ctx.stroke();
     }
-    
+
     const onDrawButtonClick = () => {
         const canvas = document.getElementById('movement_canvas');
         const [ctx, x_axis_distance_grid_lines, y_axis_distance_grid_lines] = repetitiveActions();
 
-        ctx.clearRect(0, 0,  canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         draw_xy_graph();
         draw_line_kx();
         draw_parallelogram();
 
-        ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * ( x_axis_distance_grid_lines * gridSize) );
+        ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * (x_axis_distance_grid_lines * gridSize));
     }
-    
+
     const draw_line_kx = () => {
         const canvas = document.getElementById('movement_canvas');
         const ctx = canvas.getContext('2d');
@@ -189,7 +183,7 @@ const MovePracticePage = () => {
         const x_axis_distance_grid_lines = Math.floor(num_lines_x / 2);
         const y_axis_distance_grid_lines = Math.floor(num_lines_y / 2);
 
-        ctx.clearRect(0, 0,  canvas_width, canvas_height);
+        ctx.clearRect(0, 0, canvas_width, canvas_height);
 
         // Draw grid lines along X-axis
         for (let i = 0; i <= num_lines_x; i++) {
@@ -307,9 +301,9 @@ const MovePracticePage = () => {
     }
 
     const onWheelFunction = (e) => {
-        if(e.deltaY > 0 &&  gridSize > 15 ) {
-            setGridSize(gridSize/2);
-        } else if(e.deltaY < 0 && gridSize < 100) {
+        if (e.deltaY > 0 && gridSize > 15) {
+            setGridSize(gridSize / 2);
+        } else if (e.deltaY < 0 && gridSize < 100) {
             setGridSize(gridSize * 2);
         }
     }
@@ -318,7 +312,7 @@ const MovePracticePage = () => {
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_line_func({k: Number(e.target.value), x: local_line.x});
             setIsKSet(true);
-        } else if(Math.abs(Number(e.target.value)) > range) {
+        } else if (Math.abs(Number(e.target.value)) > range) {
             console.log('значення виходить за допустимі межі!!');
             setIsReset(true);
             setIsKSet(true);
@@ -333,7 +327,7 @@ const MovePracticePage = () => {
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_line_func({k: local_line.k, x: Number(e.target.value)});
             setIsXSet(true);
-        }else if(Math.abs(Number(e.target.value)) > range) {
+        } else if (Math.abs(Number(e.target.value)) > range) {
             console.log('значення виходить за допустимі межі!!');
             setIsReset(true);
             setIsXSet(true);
@@ -357,13 +351,13 @@ const MovePracticePage = () => {
 
             let isParallelogramValid = checkParallelogramExistence();
 
-            if(!isParallelogramValid) {
+            if (!isParallelogramValid) {
                 set_point_func({x: local_point_rollback.x, y: local_point_rollback.y});
                 setIsDrawParallelogram(false);
                 console.log('such a parallelogram doesn\'t exist')
             }
             setIsDrawParallelogram(true);
-        } else if(Math.abs(Number(e.target.value)) > range) {
+        } else if (Math.abs(Number(e.target.value)) > range) {
             console.log('введене значення виходить за допустимі межі!!')
             setIsReset(true);
         } else {
@@ -380,7 +374,7 @@ const MovePracticePage = () => {
 
             let isParallelogramValid = checkParallelogramExistence();
 
-            if(!isParallelogramValid) {
+            if (!isParallelogramValid) {
                 set_point_func({x: local_point_rollback.x, y: local_point_rollback.y});
                 e.target.value = '';
                 setIsDrawParallelogram(false);
@@ -388,19 +382,30 @@ const MovePracticePage = () => {
             }
 
             setIsDrawParallelogram(true);
-        } else if(Math.abs(Number(e.target.value)) > range) {
+        } else if (Math.abs(Number(e.target.value)) > range) {
             console.log('введене значення виходить за допустимі межі!!')
             setIsReset(true);
         } else {
             console.log('заповніть значення в комірку')
             setIsDrawParallelogram(false);
         }
+    }
 
+    const mirrorMatrix = () => {
+        setPoint1(matrix.multiply(line, point1, +move));
+        setPoint2(matrix.multiply(line, point2, +move));
+        setPoint3(matrix.multiply(line, point3, +move));
+        setPoint4(matrix.multiply(line, point4, +move));
+        setMove(0);
+        draw_parallelogram();
+    }
 
+    const start = () => {
+        mirrorMatrix();
     }
 
     return (
-        <div className={`${css.content}`} >
+        <div className={`${css.content}`}>
             <Title caption={'Рух паралелограма вздовж прямої'} icon_name={icons.ruler}></Title>
 
             <div className={`${css.flex}`}>
@@ -414,18 +419,25 @@ const MovePracticePage = () => {
                             <div className={`${css.test} ${css.flex}`}>
                                 <div className={`${css.flex} ${css.center}`}>
                                     <p className={`${css.margin}`}><b>y = </b></p>
-                                    <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'k'}
-                                           defaultValue={1} onChange={(e) => {onLineKChange(line, setLine, e)}}
+                                    <input className={`${css.margin} ${css.input}`} type='number' min={-range}
+                                           max={range} id={'k'}
+                                           defaultValue={1} onChange={(e) => {
+                                        onLineKChange(line, setLine, e)
+                                    }}
                                     />
                                     <p className={`${css.margin}`}><b>* X + </b></p>
-                                    <input className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x'}
-                                           defaultValue={1} onChange={(e) => {onLineXChange(line, setLine, e)}}
+                                    <input className={`${css.margin} ${css.input}`} type='number' min={-range}
+                                           max={range} id={'x'}
+                                           defaultValue={1} onChange={(e) => {
+                                        onLineXChange(line, setLine, e)
+                                    }}
                                     />
                                 </div>
 
                             </div>
 
-                            <button onClick={onDrawButtonClick} className={`${css.button} ${css.margin_left}`}>Пряма</button>
+                            <button onClick={onDrawButtonClick} className={`${css.button} ${css.margin_left}`}>Пряма
+                            </button>
                         </div>
                     </div>
 
@@ -440,13 +452,19 @@ const MovePracticePage = () => {
                                     <div className={`${css.flex} ${css.center}`}>
                                         <p className={`${css.margin}`}><b>X</b></p>
                                         <input defaultValue={-3}
-                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x2'}
-                                            onChange={(e) => {onPointXChange(point2, setPoint2, e)}}
+                                               className={`${css.margin} ${css.input}`} type='number' min={-range}
+                                               max={range} id={'x2'}
+                                               onChange={(e) => {
+                                                   onPointXChange(point2, setPoint2, e)
+                                               }}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
                                         <input defaultValue={-3}
-                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y2'}
-                                            onChange={(e) => {onPointYChange(point2, setPoint2, e)}}
+                                               className={`${css.margin} ${css.input}`} type='number' min={-range}
+                                               max={range} id={'y2'}
+                                               onChange={(e) => {
+                                                   onPointYChange(point2, setPoint2, e)
+                                               }}
                                         />
                                     </div>
                                 </div>
@@ -455,13 +473,19 @@ const MovePracticePage = () => {
                                     <div className={`${css.flex} ${css.center}`}>
                                         <p className={`${css.margin}`}><b>X</b></p>
                                         <input defaultValue={-4}
-                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x1'}
-                                            onChange={(e) => {onPointXChange(point1, setPoint1, e)}}
+                                               className={`${css.margin} ${css.input}`} type='number' min={-range}
+                                               max={range} id={'x1'}
+                                               onChange={(e) => {
+                                                   onPointXChange(point1, setPoint1, e)
+                                               }}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
                                         <input defaultValue={-7}
-                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y1'}
-                                            onChange={(e) => {onPointYChange(point1, setPoint1, e)}}
+                                               className={`${css.margin} ${css.input}`} type='number' min={-range}
+                                               max={range} id={'y1'}
+                                               onChange={(e) => {
+                                                   onPointYChange(point1, setPoint1, e)
+                                               }}
                                         />
                                     </div>
 
@@ -479,13 +503,19 @@ const MovePracticePage = () => {
                                     <div className={`${css.flex} ${css.center}`}>
                                         <p className={`${css.margin}`}><b>X</b></p>
                                         <input defaultValue={4}
-                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x3'}
-                                            onChange={(e) => {onPointXChange(point3, setPoint3, e)}}
+                                               className={`${css.margin} ${css.input}`} type='number' min={-range}
+                                               max={range} id={'x3'}
+                                               onChange={(e) => {
+                                                   onPointXChange(point3, setPoint3, e)
+                                               }}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
                                         <input defaultValue={-3}
-                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y3'}
-                                            onChange={(e) => {onPointYChange(point3, setPoint3, e)}}
+                                               className={`${css.margin} ${css.input}`} type='number' min={-range}
+                                               max={range} id={'y3'}
+                                               onChange={(e) => {
+                                                   onPointYChange(point3, setPoint3, e)
+                                               }}
                                         />
                                     </div>
 
@@ -495,13 +525,19 @@ const MovePracticePage = () => {
                                     <div className={`${css.flex} ${css.center}`}>
                                         <p className={`${css.margin}`}><b>X</b></p>
                                         <input defaultValue={3}
-                                            className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'x4'}
-                                            disabled={true} onChange={(e) => {onPointXChange(point4, setPoint4, e)}}
+                                               className={`${css.margin} ${css.input}`} type='number' min={-range}
+                                               max={range} id={'x4'}
+                                               disabled={true} onChange={(e) => {
+                                            onPointXChange(point4, setPoint4, e)
+                                        }}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
                                         <input defaultValue={-7}
-                                                className={`${css.margin} ${css.input}`} type='number' min={-range} max={range} id={'y4'}
-                                                disabled={true} onChange={(e) => {onPointYChange(point4, setPoint4, e)}}
+                                               className={`${css.margin} ${css.input}`} type='number' min={-range}
+                                               max={range} id={'y4'}
+                                               disabled={true} onChange={(e) => {
+                                            onPointYChange(point4, setPoint4, e)
+                                        }}
                                         />
                                     </div>
 
@@ -509,8 +545,13 @@ const MovePracticePage = () => {
                             </div>
                         </div>
 
-                        <div className={`${css.flex} ${css.margin_center}`}>
-                            <button onClick={onDrawButtonClick} className={`${css.button}`}>Паралелограм</button>
+                        <div className={`${css.margin_center} ${css.buttons}`}>
+                            <div className={`${css.flex} ${css.margin_center}`}>
+                                <button onClick={onDrawButtonClick} className={`${css.button}`}>Паралелограм</button>
+                            </div>
+                            <div className={`${css.flex} ${css.margin_center}`}>
+                                <button onClick={start} className={`${css.button}`}>Рух у часі</button>
+                            </div>
                         </div>
                     </div>
 
@@ -519,10 +560,12 @@ const MovePracticePage = () => {
                     </div>
 
                     <div className={`${css.movementRangeBlock}`}>
-                        <input className={`${css.move}`} onChange={(e)=> {onMovementChange(e)}} id={'movement_range'}
+                        <input className={`${css.move}`} onChange={(e) => {
+                            onMovementChange(e)
+                        }} id={'movement_range'}
                                type="range"
                                name='movement_range' defaultValue={0}
-                               min={-100} max={100} step={1}/>
+                               min={-5} max={5} step={1}/>
                         <button onClick={reset} className={`${css.button}`}>Скидання</button>
                     </div>
 
@@ -530,7 +573,7 @@ const MovePracticePage = () => {
 
                 <div>
                     <div>
-                        <canvas height={425} width={425}  id={'movement_canvas'}
+                        <canvas height={425} width={425} id={'movement_canvas'}
                                 className={`${css.movementCanvas}`}
                                 onWheel={onWheelFunction}
                         >

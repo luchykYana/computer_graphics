@@ -218,3 +218,10 @@ input[type=number] {
 .margin_center {
     margin: 0 auto;
 }
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    grid-row-gap: 40px;
+}
