@@ -7,6 +7,7 @@ import {matrix} from '../../helper';
 
 const MovePracticePage = () => {
     const range = 16;
+    const [interv, setInterv] = useState();
 
     const [line, setLine] = useState({k: 1, x: 1});
     const [point1, setPoint1] = useState({x: -4, y: -7});
@@ -40,6 +41,8 @@ const MovePracticePage = () => {
 
             document.getElementById(`x4`).value = point4.x;
             document.getElementById(`y4`).value = point4.y;
+
+            clearInterval(interv);
         }
         setIsReset(false);
     }, [isReset]);
@@ -397,11 +400,15 @@ const MovePracticePage = () => {
         setPoint3(matrix.multiply(line, point3, +move));
         setPoint4(matrix.multiply(line, point4, +move));
         setMove(0);
-        draw_parallelogram();
+        // draw_parallelogram();
     }
 
     const start = () => {
-        mirrorMatrix();
+        setInterv(setInterval(()=>{
+                mirrorMatrix();
+                draw_parallelogram();
+            }, 1000)
+        );
     }
 
     return (
