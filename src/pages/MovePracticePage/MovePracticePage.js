@@ -7,13 +7,18 @@ import {matrix} from '../../helper';
 
 const MovePracticePage = () => {
     const range = 16;
-    const [interv, setInterv] = useState();
+    const [interv, setInterv] = useState(0);
 
     const [line, setLine] = useState({k: 1, x: 1});
     const [point1, setPoint1] = useState({x: -4, y: -7});
     const [point2, setPoint2] = useState({x: -3, y: -3});
     const [point3, setPoint3] = useState({x: 4, y: -3});
     const [point4, setPoint4] = useState({x: 3, y: -7});
+
+    const [mirrorPoint1, setMirrorPoint1] = useState({x: 0, y: 0});
+    const [mirrorPoint2, setMirrorPoint2] = useState({x: 0, y: 0});
+    const [mirrorPoint3, setMirrorPoint3] = useState({x: 0, y: 0});
+    const [mirrorPoint4, setMirrorPoint4] = useState({x: 0, y: 0});
 
     const [move, setMove] = useState(0);
 
@@ -23,7 +28,60 @@ const MovePracticePage = () => {
 
     const [isKSet, setIsKSet] = useState(true);
     const [isXSet, setIsXSet] = useState(true);
-    const [isDrawParallelogram, setIsDrawParallelogram] = useState(true)
+
+    // true - намалювати основну фігуру
+    // false - намалювати відображення
+    const [isDrawParallelogram, setIsDrawParallelogram] = useState(true);
+
+
+    // const mirrorMatrix = () => {
+    //     setPoint1(matrix.multiply(line, point1, +move));
+    //     setPoint2(matrix.multiply(line, point2, +move));
+    //     setPoint3(matrix.multiply(line, point3, +move));
+    //     setPoint4(matrix.multiply(line, point4, +move));
+    //     setMove(0);
+    //     draw_parallelogram();
+    // }
+
+    const start = () => {
+        console.log('start')
+
+        setInterv(setInterval(()=>{
+            let tmp = isDrawParallelogram;
+            console.log(tmp)
+            setIsDrawParallelogram(current => ! current);
+                console.log('here');
+            }, 1000)
+        );
+    }
+
+    useEffect(() => {
+        console.log(isDrawParallelogram)
+    }, [isDrawParallelogram]);
+
+    useEffect(() => {
+        setMirrorPoint1(matrix.multiply(line, point1, +move));
+        setMirrorPoint2(matrix.multiply(line, point2, +move));
+        setMirrorPoint3(matrix.multiply(line, point3, +move));
+        setMirrorPoint4(matrix.multiply(line, point4, +move));
+        setMove(0);
+    }, [point1, point2, point3, point4, line]);
+
+    useEffect(() => {
+        console.log('======')
+        console.log('points: ')
+        console.log(point1)
+        console.log(point2)
+        console.log(point3)
+        console.log(point4)
+        console.log('---')
+        console.log('mirror points: ')
+        console.log(mirrorPoint1)
+        console.log(mirrorPoint2)
+        console.log(mirrorPoint3)
+        console.log(mirrorPoint4)
+        console.log('======')
+    }, [mirrorPoint4]);
 
     useEffect(() => {
         if (isReset) {
@@ -41,8 +99,6 @@ const MovePracticePage = () => {
 
             document.getElementById(`x4`).value = point4.x;
             document.getElementById(`y4`).value = point4.y;
-
-            clearInterval(interv);
         }
         setIsReset(false);
     }, [isReset]);
@@ -68,9 +124,14 @@ const MovePracticePage = () => {
         if (isKSet || isXSet) {
             draw_line_kx();
         }
-        if (isDrawParallelogram && checkParallelogramExistence()) {
-            draw_parallelogram();
+        if (checkParallelogramExistence) {
+            if (isDrawParallelogram ) {
+                draw_parallelogram();
+            } else {
+                draw_parallelogram2();
+            }
         }
+
         ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * (x_axis_distance_grid_lines * gridSize));
     }, [gridSize, point1, point2, point3, point4, isKSet, isXSet, isDrawParallelogram, line]);
 
@@ -92,6 +153,10 @@ const MovePracticePage = () => {
         setPoint3({x: 4, y: -3})
         setPoint4({x: 3, y: -7})
         setLine({k: 1, x: 1})
+
+        clearInterval(interv);
+        setInterv(0)
+        setIsDrawParallelogram(true);
 
         setIsReset(true);
     }
@@ -124,6 +189,31 @@ const MovePracticePage = () => {
 
         ctx.stroke();
     }
+
+    // -------------
+    const draw_parallelogram2 = () => {
+        console.log('draw_parallelogram2()')
+        const canvas = document.getElementById('movement_canvas');
+        const ctx = canvas.getContext('2d');
+        const scale = -gridSize;
+
+        ctx.beginPath();
+        ctx.lineWidth = 2
+        ctx.strokeStyle = `rgb(20, 255, 20)`;
+
+        for (let x = 0; x < Math.max(canvas.width, canvas.height); x++) {
+            ctx.moveTo(mirrorPoint1.x * gridSize, mirrorPoint1.y * scale);
+            ctx.lineTo(mirrorPoint2.x * gridSize, mirrorPoint2.y * scale);
+            ctx.lineTo(mirrorPoint3.x * gridSize, mirrorPoint3.y * scale);
+            ctx.lineTo(mirrorPoint4.x * gridSize, mirrorPoint4.y * scale);
+            ctx.lineTo(mirrorPoint1.x * gridSize, mirrorPoint1.y * scale);
+        }
+
+        ctx.stroke();
+    }
+
+
+    // -------------
 
     const onDrawButtonClick = () => {
         const canvas = document.getElementById('movement_canvas');
@@ -342,7 +432,6 @@ const MovePracticePage = () => {
     }
 
     const checkParallelogramExistence = () => {
-
         return true;
     }
 
@@ -365,7 +454,7 @@ const MovePracticePage = () => {
             setIsReset(true);
         } else {
             console.log('заповніть значення в комірку')
-            setIsDrawParallelogram(false);
+            // setIsDrawParallelogram(false);
         }
     }
 
@@ -390,26 +479,13 @@ const MovePracticePage = () => {
             setIsReset(true);
         } else {
             console.log('заповніть значення в комірку')
-            setIsDrawParallelogram(false);
+            // setIsDrawParallelogram(false);
         }
     }
 
-    const mirrorMatrix = () => {
-        setPoint1(matrix.multiply(line, point1, +move));
-        setPoint2(matrix.multiply(line, point2, +move));
-        setPoint3(matrix.multiply(line, point3, +move));
-        setPoint4(matrix.multiply(line, point4, +move));
-        setMove(0);
-        // draw_parallelogram();
-    }
 
-    const start = () => {
-        setInterv(setInterval(()=>{
-                mirrorMatrix();
-                draw_parallelogram();
-            }, 1000)
-        );
-    }
+
+
 
     return (
         <div className={`${css.content}`}>
