@@ -1,10 +1,11 @@
 import {images, icons, fractal_title} from '../../constants';
 
 import css from '../../pages/FractalTestPage/FractalTestPage.module.css';
+import {Message} from '../Message/Message';
 
 const Test = () => {
     const checkResults = () => {
-        const correctAnswers = [3,4,2,1];
+        const correctAnswers = [3, 4, 2, 1];
         const selects = document.getElementsByTagName('select');
         const answers = [];
         const results = [];
@@ -14,7 +15,7 @@ const Test = () => {
         }
 
         for (let i = 0; i < 4; i++) {
-            if(answers[i] == correctAnswers[i]) {
+            if (answers[i] == correctAnswers[i]) {
                 results.push(true);
             } else {
                 results.push(false);
@@ -22,38 +23,23 @@ const Test = () => {
         }
 
         for (let i = 0; i < 4; i++) {
-            if(results[i] === true) {
+            if (results[i] === true) {
                 selects[i].style.backgroundColor = '#1ed072';
             } else {
                 selects[i].style.backgroundColor = '#ea3033';
             }
         }
 
-        setTimeout(()=> {
+        setTimeout(() => {
             for (const select of selects) {
                 select.style.backgroundColor = 'white';
             }
         }, 2000);
     }
 
-    const hint = (e) => {
-        const fractal = e.target.id;
-        const elem = document.getElementById(`${fractal}_hint`);
-        console.log(e.clientX);
-        console.log(e.clientY);
-        if (e.clientY < 400) {
-            elem.style.top = '130px';
-        } else {
-            elem.style.top = '330px';
-        }
-        elem.style.display = 'block';
-    }
+    const hint = (e) => document.getElementById(`${e.target.id}_hint`).style.display = 'flex';
 
-    const hideHint = (e) => {
-        const fractal = e.target.id;
-        const elem = document.getElementById(`${fractal}_hint`);
-        elem.style.display = 'none';
-    }
+    const hideHint = (e) => document.getElementById(`${e.target.id}_hint`).style.display = 'none';
 
     return (
         <div>
@@ -61,29 +47,19 @@ const Test = () => {
                 <div className={css.flex}>
 
                     <div className={css.left_fractals}>
-                        <div className={css.left_fractals_first}>1.&nbsp;
-                            <div className={css.hint} id={'fractal_dragon_hint'}>
-                                <div className={`${css.flex} ${css.hint_grid}`}>
-                                    <div><img src={icons.light_bulb} alt="hint" className={css.hint_icon}/></div>
-                                    <div>Підказка</div>
-                                </div>
-                                <div>{fractal_title.fractal_dragon}</div>
-                            </div>
+                        <Message icon={icons.light_bulb} title={'Підказка'} text={fractal_title.fractal_dragon}
+                                 c={icons.close} id={'fractal_dragon_hint'}/>
 
+                        <div className={css.left_fractals_first}>1.&nbsp;
                             <img src={images.fractal_dragon} alt="dragon fractal" className={css.image}/>
                             <img src={icons.hint} alt="hint" className={css.image2} id={'fractal_dragon'}
                                  onMouseEnter={hint} onMouseLeave={hideHint}/>
                         </div>
 
-                        <div>3.&nbsp;
-                            <div className={css.hint} id={'fractal_cesaro_hint'}>
-                                <div className={`${css.flex} ${css.hint_grid}`}>
-                                    <div><img src={icons.light_bulb} alt="hint" className={css.hint_icon}/></div>
-                                    <div>Підказка</div>
-                                </div>
-                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{fractal_title.fractal_cesaro}</div>
-                            </div>
+                        <Message icon={icons.light_bulb} title={'Підказка'} text={fractal_title.fractal_cesaro}
+                                 c={icons.close} id={'fractal_cesaro_hint'}/>
 
+                        <div>3.&nbsp;
                             <img src={images.fractal_cesaro} alt="cesaro fractal" className={css.image}/>
                             <img src={icons.hint} alt="hint" className={css.image2} id={'fractal_cesaro'}
                                  onMouseEnter={hint} onMouseLeave={hideHint}/>
@@ -91,29 +67,19 @@ const Test = () => {
                     </div>
 
                     <div className={css.right_fractals}>
-                        <div className={css.right_fractals_first}>2.&nbsp;
-                            <div className={css.hint} id={'fractal_barnsley_hint'}>
-                                <div className={`${css.flex} ${css.hint_grid}`}>
-                                    <div><img src={icons.light_bulb} alt="hint" className={css.hint_icon}/></div>
-                                    <div>Підказка</div>
-                                </div>
-                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{fractal_title.fractal_barnsley}</div>
-                            </div>
+                        <Message icon={icons.light_bulb} title={'Підказка'} text={fractal_title.fractal_barnsley}
+                                 c={icons.close} id={'fractal_barnsley_hint'}/>
 
+                        <div className={css.right_fractals_first}>2.&nbsp;
                             <img src={images.fractal_barnsley} alt="barnsley fractal" className={css.image}/>
                             <img src={icons.hint} alt="hint" className={css.image2} id={'fractal_barnsley'}
                                  onMouseEnter={hint} onMouseLeave={hideHint}/>
                         </div>
 
-                        <div>4.&nbsp;
-                            <div className={css.hint} id={'fractal_gilbert_peano_hint'}>
-                                <div className={`${css.flex} ${css.hint_grid}`}>
-                                    <div><img src={icons.light_bulb} alt="hint" className={css.hint_icon}/></div>
-                                    <div>Підказка</div>
-                                </div>
-                                <div>&nbsp;&nbsp;&nbsp;&nbsp;{fractal_title.fractal_gilbert_peano}</div>
-                            </div>
+                        <Message icon={icons.light_bulb} title={'Підказка'} text={fractal_title.fractal_gilbert_peano}
+                                 c={icons.close} id={'fractal_gilbert_peano_hint'}/>
 
+                        <div>4.&nbsp;
                             <img src={images.fractal_gilbert_peano} alt="gilbert_peano fractal" className={css.image}/>
                             <img src={icons.hint} alt="hint" className={css.image2} id={'fractal_gilbert_peano'}
                                  onMouseEnter={hint} onMouseLeave={hideHint}/>

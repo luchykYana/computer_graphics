@@ -1,4 +1,5 @@
 import {Title} from '../Title/Title';
+import {Message} from '../Message/Message';
 import {icons} from '../../constants';
 
 import './DisplayFractal.css'
@@ -155,7 +156,7 @@ const DisplayFractal = ({
         drawTriangle(A, B, C);
         cesaro(A, B, C);
 
-        function cesaro (a, b, c, iter = 1) {
+        function cesaro(a, b, c, iter = 1) {
             if (iter < d) {
                 // знайти координати точок 4 і 5
                 let [p4, p5] = getPoints(a, b, c);
@@ -183,7 +184,7 @@ const DisplayFractal = ({
                 ctx.lineWidth = 1;
             }
 
-            function getPoints (a, b, c) {
+            function getPoints(a, b, c) {
                 let incrLeft;
                 let Xtmp = 0;
                 if (a.y === b.y || ((c.y > a.y && c.y < b.y) || (c.y < a.y && c.y > b.y)) ||
@@ -218,8 +219,10 @@ const DisplayFractal = ({
                         distance4 = getDistance(b, new Point(x2, y2));
 
                         if (Math.abs(distance2 - distance1) < 1 && Math.abs(distance3 - distance4) < 1) {
-                            x4 = x1;    y4 = y1;
-                            x5 = x2;    y5 = y2;
+                            x4 = x1;
+                            y4 = y1;
+                            x5 = x2;
+                            y5 = y2;
                             flag = false;
                             break;
                         }
@@ -230,7 +233,7 @@ const DisplayFractal = ({
             }
         }
 
-        function drawTriangle (a, b, c) {
+        function drawTriangle(a, b, c) {
             ctx.beginPath();
             ctx.moveTo(c.x, c.y);
             ctx.lineTo(a.x, a.y);
@@ -240,7 +243,7 @@ const DisplayFractal = ({
             ctx.stroke();
         }
 
-        function getDistance (a, b) {
+        function getDistance(a, b) {
             let [dx, dy] = [b.x - a.x, b.y - a.y];
             return Math.sqrt(dx * dx + dy * dy);
         }
@@ -306,7 +309,16 @@ const DisplayFractal = ({
         const a = document.getElementById("a");
         a.href = canvas.toDataURL("image/png");
         a.click();
+
+        setTimeout(() => {
+            document.getElementById("fractal_test_save").style.top = '250px';
+            document.getElementById("fractal_test_save").style.right = '180px';
+            document.getElementById("fractal_test_save").style.display = 'flex';
+        }, 2000);
     };
+
+    const enter = () => document.getElementById('fractal_test_info').style.display = 'flex';
+    const leave = () => document.getElementById('fractal_test_info').style.display = 'none';
 
     return (
         <div className={'content'}>
@@ -315,8 +327,12 @@ const DisplayFractal = ({
             <div className={'flex grid '}>
                 <div id={'left_side'}>
                     <div><p><b>{fractal_name} — </b>{fractal_description}</p></div>
+
+                    <Message icon={icons.info_1} title={'Ітерація'} text={'Ітерація це повторення одноманітної дії'}
+                             id={'fractal_test_info'} c={icons.close}/>
+
                     <div className={'flex grid mt-60 mlMinus60'}>
-                        <label htmlFor='iterations'>Кількість ітерацій:</label>
+                        <label htmlFor='iterations' onMouseEnter={enter} onMouseLeave={leave}>Кількість ітерацій:</label>
                         <select id='iterations' name='iterations' onChange={buildFractal}>
                             {selectItems}
                         </select>
@@ -327,6 +343,8 @@ const DisplayFractal = ({
                     </div>
                 </div>
                 <div>
+                    <Message icon={icons.info_1} title={'Інформація'} text={'Файл успішно збережено'}
+                             c={icons.close} id={'fractal_test_save'}/>
                     <div>
                         <canvas id="fractal_canvas" width="500" height="340"></canvas>
                     </div>

@@ -1,0 +1,41 @@
+.message {
+    width: 300px;
+    height: auto;
+    padding: 10px 5px 5px 10px;
+    position: absolute;
+    background-color: var(--gray);
+    border-radius: 5px;
+    z-index: 2;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid var(--black);
+}
+
+.d_flex {
+    display: flex;
+}
+
+.message_title {
+    margin-bottom: 10px;
+}
+
+.title_size {
+    width: 200px;
+    height: 60px;
+    text-align: center;
+    vertical-align: baseline;
+    line-height: 55px;
+    font-size: 24px;
+}
+
+.close>img {
+    width: 15px;
+    height: 15px;
+}
+
+.message_text {
+    text-align: center;
+    width: 250px;
+    margin-bottom: 10px;
+}

@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 
-import {Pipette, Title} from '../../components';
+import {Message, Pipette, Title} from '../../components';
 import {icons} from '../../constants';
 import {modelFunc} from '../../helper';
 
@@ -15,21 +15,21 @@ const ColorPracticePage = () => {
     const [mousePos2, setMousePos2] = useState({x2: 0, y2: 0});
     const [isAreaChosen, setIsAreaChosen] = useState(false);
 
-    useEffect(()=>{
+    useEffect(() => {
         let x, y;
-        if(mousePos1.x1 < mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
+        if (mousePos1.x1 < mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
             x = mousePos1.x1;
             y = mousePos1.y1;
-        } else if(mousePos1.x1 < mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
+        } else if (mousePos1.x1 < mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
             x = mousePos1.x1;
             y = mousePos2.y2;
-        } else if(mousePos1.x1 > mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
+        } else if (mousePos1.x1 > mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
             x = mousePos2.x2;
             y = mousePos1.y1;
-        } else if(mousePos1.x1 > mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
+        } else if (mousePos1.x1 > mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
             x = mousePos2.x2;
             y = mousePos2.y2
-        } else if(mousePos1.x1 === mousePos2.x2 && mousePos1.y1 === mousePos2.y2){
+        } else if (mousePos1.x1 === mousePos2.x2 && mousePos1.y1 === mousePos2.y2) {
             x = 0;
             y = 0;
         }
@@ -41,25 +41,25 @@ const ColorPracticePage = () => {
 
         // console.log(`w: ${width}\t h: ${height}`)
 
-        if(width > 10 || height > 10) {
+        if (width > 10 || height > 10) {
             setIsAreaChosen(true);
         } else setIsAreaChosen(false);
 
     }, [mousePos2]);
 
-    useEffect(()=>{
+    useEffect(() => {
 
         let x, y;
-        if(mousePos1.x1 < mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
+        if (mousePos1.x1 < mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
             x = mousePos1.x1;
             y = mousePos1.y1;
-        } else if(mousePos1.x1 < mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
+        } else if (mousePos1.x1 < mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
             x = mousePos1.x1;
             y = mousePos2.y2;
-        } else if(mousePos1.x1 > mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
+        } else if (mousePos1.x1 > mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
             x = mousePos2.x2;
             y = mousePos1.y1;
-        } else if(mousePos1.x1 > mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
+        } else if (mousePos1.x1 > mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
             x = mousePos2.x2;
             y = mousePos2.y2
         } else console.log('exception')
@@ -67,7 +67,7 @@ const ColorPracticePage = () => {
         let width = Math.abs(mousePos1.x1 - mousePos2.x2);
         let height = Math.abs(mousePos1.y1 - mousePos2.y2);
 
-        if(isAreaChosen) {
+        if (isAreaChosen) {
             let hsl_canvas = document.getElementById('hsl_canvas');
             let hsl_context = hsl_canvas.getContext('2d');
 
@@ -151,8 +151,20 @@ const ColorPracticePage = () => {
         reader.readAsDataURL(e.target.files[0]);
     }
 
-    const buttonClick = () => {
+    const buttonClick = (e) => {
         document.getElementById('myInput').click();
+
+        setTimeout(() => {
+            if (e.target.id === 'cmyk_upload') {
+                document.getElementById("color_models_cmyk_upload").style.bottom = '10px';
+                document.getElementById("color_models_cmyk_upload").style.right = '10px';
+                document.getElementById("color_models_cmyk_upload").style.display = 'flex';
+            } else {
+                document.getElementById("color_models_hsl_upload").style.bottom = '10px';
+                document.getElementById("color_models_hsl_upload").style.right = '10px';
+                document.getElementById("color_models_hsl_upload").style.display = 'flex';
+            }
+        }, 2000)
     }
 
     const buttonDeleteClick = () => {
@@ -210,19 +222,19 @@ const ColorPracticePage = () => {
         function editPixelsChangeSaturation(imgData) {
 
             let x, y;
-            if(mousePos1.x1 < mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
+            if (mousePos1.x1 < mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
                 x = mousePos1.x1;
                 y = mousePos1.y1;
-            } else if(mousePos1.x1 < mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
+            } else if (mousePos1.x1 < mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
                 x = mousePos1.x1;
                 y = mousePos2.y2;
-            } else if(mousePos1.x1 > mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
+            } else if (mousePos1.x1 > mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
                 x = mousePos2.x2;
                 y = mousePos1.y1;
-            } else if(mousePos1.x1 > mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
+            } else if (mousePos1.x1 > mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
                 x = mousePos2.x2;
                 y = mousePos2.y2
-            } else if(mousePos1.x1 === mousePos2.x2 && mousePos1.y1 === mousePos2.y2){
+            } else if (mousePos1.x1 === mousePos2.x2 && mousePos1.y1 === mousePos2.y2) {
                 x = 0;
                 y = 0;
             }
@@ -238,7 +250,7 @@ const ColorPracticePage = () => {
 
                 let pixelNumber = i / 4;
                 let pixelX = pixelNumber % imageWidth;
-                let pixelY = Math.floor(pixelNumber / imageWidth );
+                let pixelY = Math.floor(pixelNumber / imageWidth);
 
                 let isPixelNeeded = false;
 
@@ -250,8 +262,8 @@ const ColorPracticePage = () => {
                     }
                 }
 
-                if(isAreaChosen) {
-                    isPixelNeeded = isPixelNeeded && ( pixelX >= x && pixelY >= y && pixelX <= x + width && pixelY <= y + height );
+                if (isAreaChosen) {
+                    isPixelNeeded = isPixelNeeded && (pixelX >= x && pixelY >= y && pixelX <= x + width && pixelY <= y + height);
                 }
 
                 if (isPixelNeeded) {
@@ -283,19 +295,19 @@ const ColorPracticePage = () => {
         function editPixelsChangeLightness(imgData) {
 
             let x, y;
-            if(mousePos1.x1 < mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
+            if (mousePos1.x1 < mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
                 x = mousePos1.x1;
                 y = mousePos1.y1;
-            } else if(mousePos1.x1 < mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
+            } else if (mousePos1.x1 < mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
                 x = mousePos1.x1;
                 y = mousePos2.y2;
-            } else if(mousePos1.x1 > mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
+            } else if (mousePos1.x1 > mousePos2.x2 && mousePos1.y1 < mousePos2.y2) {
                 x = mousePos2.x2;
                 y = mousePos1.y1;
-            } else if(mousePos1.x1 > mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
+            } else if (mousePos1.x1 > mousePos2.x2 && mousePos1.y1 > mousePos2.y2) {
                 x = mousePos2.x2;
                 y = mousePos2.y2
-            } else if(mousePos1.x1 === mousePos2.x2 && mousePos1.y1 === mousePos2.y2){
+            } else if (mousePos1.x1 === mousePos2.x2 && mousePos1.y1 === mousePos2.y2) {
                 x = 0;
                 y = 0;
             }
@@ -313,7 +325,7 @@ const ColorPracticePage = () => {
                 let pixelNumber = i / 4;
 
                 let pixelX = pixelNumber % imageWidth;
-                let pixelY = Math.floor(pixelNumber / imageWidth );
+                let pixelY = Math.floor(pixelNumber / imageWidth);
 
                 let isPixelNeeded = false;
 
@@ -324,8 +336,8 @@ const ColorPracticePage = () => {
                         isPixelNeeded = isPixelNeeded || (h >= ranges[j].min || h <= ranges[j].max);
                     }
                 }
-                if(isAreaChosen) {
-                    isPixelNeeded = isPixelNeeded && ( pixelX >= x && pixelY >= y && pixelX <= x + width && pixelY <= y + height );
+                if (isAreaChosen) {
+                    isPixelNeeded = isPixelNeeded && (pixelX >= x && pixelY >= y && pixelX <= x + width && pixelY <= y + height);
                 }
 
                 if (isPixelNeeded) {
@@ -447,14 +459,38 @@ const ColorPracticePage = () => {
         const canvas = document.getElementById('cmyk_canvas');
         const a = document.getElementById('cmyk_link');
         a.href = canvas.toDataURL("image/png");
-        a.click();
+
+        if (isImageSet) {
+            a.click();
+            setTimeout(() => {
+                document.getElementById("color_models_cmyk_save").style.bottom = '440px';
+                document.getElementById("color_models_cmyk_save").style.right = '150px';
+                document.getElementById("color_models_cmyk_save").style.display = 'flex';
+            }, 2000);
+        } else {
+            document.getElementById("color_models_cmyk_warn").style.bottom = '440px';
+            document.getElementById("color_models_cmyk_warn").style.right = '150px';
+            document.getElementById("color_models_cmyk_warn").style.display = 'flex';
+        }
     };
 
     const download_img_hsl = () => {
         const canvas = document.getElementById('hsl_canvas');
         const a = document.getElementById('hsl_link');
         a.href = canvas.toDataURL("image/png");
-        a.click();
+
+        if (isImageSet) {
+            a.click();
+            setTimeout(() => {
+                document.getElementById("color_models_hsl_save").style.bottom = '170px';
+                document.getElementById("color_models_hsl_save").style.right = '150px';
+                document.getElementById("color_models_hsl_save").style.display = 'flex';
+            }, 2000);
+        } else {
+            document.getElementById("color_models_hsl_warn").style.bottom = '170px';
+            document.getElementById("color_models_hsl_warn").style.right = '150px';
+            document.getElementById("color_models_hsl_warn").style.display = 'flex';
+        }
     };
 
     const cmyk_color_change = () => {
@@ -488,15 +524,15 @@ const ColorPracticePage = () => {
         console.log(object);
         setMousePos2({x2: object.x, y2: object.y})
 
-       if (isAreaChosen) {
-           let hsl_canvas = document.getElementById('hsl_canvas');
-           let hsl_context = hsl_canvas.getContext('2d');
+        if (isAreaChosen) {
+            let hsl_canvas = document.getElementById('hsl_canvas');
+            let hsl_context = hsl_canvas.getContext('2d');
 
-           hsl_context.clearRect(0, 0, hsl_canvas.width, hsl_canvas.height);
+            hsl_context.clearRect(0, 0, hsl_canvas.width, hsl_canvas.height);
 
-           let imageDataRGB = getImageDataFromCanvas('rgb_canvas');
-           drawEditedImage(imageDataRGB, 'hsl_canvas')
-       }
+            let imageDataRGB = getImageDataFromCanvas('rgb_canvas');
+            drawEditedImage(imageDataRGB, 'hsl_canvas')
+        }
     }
 
     return (
@@ -645,6 +681,15 @@ const ColorPracticePage = () => {
                 <div>
                     <div className={`${css.flex}`}>
                         <div>
+                            <Message icon={icons.info_1} title={'Інформація'} text={'Файл успішно збережено'}
+                                     c={icons.close} id={'color_models_cmyk_save'}/>
+
+                            <Message icon={icons.info_1} title={'Інформація'} text={'Файл успішно завантажено'}
+                                     c={icons.close} id={'color_models_cmyk_upload'}/>
+
+                            <Message icon={icons.warning_1} title={'Попередження'} text={'Спочатку завантажте файл'}
+                                     c={icons.close} id={'color_models_cmyk_warn'}/>
+
                             <canvas id={'cmyk_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
                                     height={imageHeight} onMouseMove={mouseMove} onMouseLeave={disappearPipe1}
                                     onClick={clickPipe}></canvas>
@@ -657,7 +702,8 @@ const ColorPracticePage = () => {
                             </div>
                         </div>
 
-                        {!isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload}
+                        {!isImageSet && <img onClick={buttonClick} id={'cmyk_upload'} className={`${css.uploadButton}`}
+                                             src={icons.upload}
                                              alt="upload"/>}
                         {isImageSet &&
                             <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash}
@@ -665,6 +711,15 @@ const ColorPracticePage = () => {
                     </div>
                     <div className={`${css.flex}`}>
                         <div>
+                            <Message icon={icons.info_1} title={'Інформація'} text={'Файл успішно збережено'}
+                                     c={icons.close} id={'color_models_hsl_save'}/>
+
+                            <Message icon={icons.info_1} title={'Інформація'} text={'Файл успішно завантажено'}
+                                     c={icons.close} id={'color_models_hsl_upload'}/>
+
+                            <Message icon={icons.warning_1} title={'Попередження'} text={'Спочатку завантажте файл'}
+                                     c={icons.close} id={'color_models_hsl_warn'}/>
+
                             <canvas id={'hsl_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
                                     height={imageHeight} onMouseMove={mouseMove} onMouseLeave={disappearPipe2}
                                     onClick={clickPipe} onMouseDown={down} onMouseUp={up}></canvas>
@@ -676,7 +731,8 @@ const ColorPracticePage = () => {
                                 </button>
                             </div>
                         </div>
-                        {!isImageSet && <img onClick={buttonClick} className={`${css.uploadButton}`} src={icons.upload}
+                        {!isImageSet && <img onClick={buttonClick} id={'hsl_upload'} className={`${css.uploadButton}`}
+                                             src={icons.upload}
                                              alt="upload"/>}
                         {isImageSet &&
                             <img onClick={buttonDeleteClick} className={`${css.deleteButton}`} src={icons.trash}
@@ -696,7 +752,6 @@ const ColorPracticePage = () => {
                     event.target.value = null;
                 }} onChange={ImageChange} id={'myInput'} name={'fileName'} type="file"/>
             </div>
-
         </div>
     );
 };

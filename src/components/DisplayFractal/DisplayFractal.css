@@ -72,3 +72,7 @@ a:hover {
     border: black 3px solid;
     background-color: var(--white);
 }
+
+.message_1 {
+    top: 20px;
+}
