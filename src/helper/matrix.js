@@ -1,10 +1,7 @@
 export const matrix = {
     multiply: (line, dote, n) => {
-        console.log(line);
-        console.log(dote);
         const {dx, dy} = matrix.formula({x_0: dote.x, y_0: dote.y, k: line.k, b: line.x});
-        console.log(dx);
-        console.log(dy);
+
         let matrix1 = [
             [1, 0, (dx - dote.x)*2 + n],
             [0, 1, (dy - dote.y)*2 + n],

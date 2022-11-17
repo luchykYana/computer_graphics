@@ -20,6 +20,8 @@ const MovePracticePage = () => {
     const [mirrorPoint3, setMirrorPoint3] = useState({x: 0, y: 0});
     const [mirrorPoint4, setMirrorPoint4] = useState({x: 0, y: 0});
 
+    const [isValid, setIsValid] = useState(true);
+
     const [move, setMove] = useState(0);
 
     const [gridSize, setGridSize] = useState(25);
@@ -41,11 +43,40 @@ const MovePracticePage = () => {
     }
 
     useEffect(() => {
+        if(!isValid) {
+            console.log('such a parallelogram doesn\'t exist')
+            setTimeout(reset, 5000);
+        }
+    }, [isValid]);
+
+    useEffect(() => {
         setMirrorPoint1(matrix.multiply(line, point1, +move));
         setMirrorPoint2(matrix.multiply(line, point2, +move));
         setMirrorPoint3(matrix.multiply(line, point3, +move));
         setMirrorPoint4(matrix.multiply(line, point4, +move));
         setMove(0);
+
+        // порахуйте площу трикутника, який утворюють 3 точки.
+        // Якщо всі точки лежать на прямій, то його площа дорівнює нулю
+
+        // обчислимо площу трикутика за формулою Герона
+
+        const d = (p1, p2) => {
+            return Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
+        }
+
+        const a = d(point1, point2);
+        const b = d(point2, point3);
+        const c = d(point1, point3);
+
+        const p = (a + b + c) / 2;
+        const s = Math.sqrt(p * (p - a) * (p - b) * (p - c));
+        console.log(s)
+        if (!(s < 0.00001)) {
+            setIsValid(true);
+        } else {
+            setIsValid(false);
+        }
     }, [point1, point2, point3, point4, line]);
 
     useEffect(() => {
@@ -89,12 +120,11 @@ const MovePracticePage = () => {
         if (isKSet || isXSet) {
             draw_line_kx();
         }
-        if (checkParallelogramExistence) {
-            if (isDrawParallelogram ) {
-                draw_parallelogram(point1, point2, point3, point4);
-            } else {
-                draw_parallelogram(mirrorPoint1, mirrorPoint2, mirrorPoint3, mirrorPoint4, 'magenta');
-            }
+
+        if (isDrawParallelogram ) {
+            draw_parallelogram(point1, point2, point3, point4);
+        } else {
+            draw_parallelogram(mirrorPoint1, mirrorPoint2, mirrorPoint3, mirrorPoint4, 'magenta');
         }
 
         ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * (x_axis_distance_grid_lines * gridSize));
@@ -163,7 +193,7 @@ const MovePracticePage = () => {
 
         draw_xy_graph();
         draw_line_kx();
-        draw_parallelogram();
+        draw_parallelogram(point1, point2,  point3, point4);
 
         ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * (x_axis_distance_grid_lines * gridSize));
     }
@@ -199,7 +229,7 @@ const MovePracticePage = () => {
     }
 
     const draw_xy_graph = () => {
-        console.log('draw_xy_graph')
+        // console.log('draw_xy_graph')
         const x_axis_starting_point = {number: 1, suffix: ''};
         const y_axis_starting_point = {number: 1, suffix: ''};
 
@@ -371,24 +401,9 @@ const MovePracticePage = () => {
         }
     }
 
-    const checkParallelogramExistence = () => {
-        return true;
-    }
-
     const onPointXChange = (local_point, set_point_func, e) => {
-        let local_point_rollback = {x: local_point.x, y: local_point.y};
-
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_point_func({x: Number(e.target.value), y: local_point.y});
-
-            let isParallelogramValid = checkParallelogramExistence();
-
-            if (!isParallelogramValid) {
-                set_point_func({x: local_point_rollback.x, y: local_point_rollback.y});
-                setIsDrawParallelogram(false);
-                console.log('such a parallelogram doesn\'t exist')
-            }
-            setIsDrawParallelogram(true);
         } else if (Math.abs(Number(e.target.value)) > range) {
             console.log('введене значення виходить за допустимі межі!!')
             setIsReset(true);
@@ -398,21 +413,8 @@ const MovePracticePage = () => {
     }
 
     const onPointYChange = (local_point, set_point_func, e) => {
-        let local_point_rollback = {x: local_point.x, y: local_point.y};
-
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_point_func({x: local_point.x, y: Number(e.target.value)});
-
-            let isParallelogramValid = checkParallelogramExistence();
-
-            if (!isParallelogramValid) {
-                set_point_func({x: local_point_rollback.x, y: local_point_rollback.y});
-                e.target.value = '';
-                setIsDrawParallelogram(false);
-                console.log('such a parallelogram doesn\'t exist')
-            }
-
-            setIsDrawParallelogram(true);
         } else if (Math.abs(Number(e.target.value)) > range) {
             console.log('введене значення виходить за допустимі межі!!')
             setIsReset(true);
