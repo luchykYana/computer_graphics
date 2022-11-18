@@ -309,12 +309,6 @@ const DisplayFractal = ({
         const a = document.getElementById("a");
         a.href = canvas.toDataURL("image/png");
         a.click();
-
-        setTimeout(() => {
-            document.getElementById("fractal_test_save").style.top = '250px';
-            document.getElementById("fractal_test_save").style.right = '180px';
-            document.getElementById("fractal_test_save").style.display = 'flex';
-        }, 2000);
     };
 
     const enter = () => document.getElementById('fractal_test_info').style.display = 'flex';
@@ -328,7 +322,7 @@ const DisplayFractal = ({
                 <div id={'left_side'}>
                     <div><p><b>{fractal_name} — </b>{fractal_description}</p></div>
 
-                    <Message icon={icons.info_1} title={'Ітерація'} text={'Ітерація це повторення одноманітної дії'}
+                    <Message icon={icons.info_1} title={'Ітерація'} text={'Ітерація - це повторення одноманітної дії'}
                              id={'fractal_test_info'} c={icons.close}/>
 
                     <div className={'flex grid mt-60 mlMinus60'}>
@@ -343,8 +337,6 @@ const DisplayFractal = ({
                     </div>
                 </div>
                 <div>
-                    <Message icon={icons.info_1} title={'Інформація'} text={'Файл успішно збережено'}
-                             c={icons.close} id={'fractal_test_save'}/>
                     <div>
                         <canvas id="fractal_canvas" width="500" height="340"></canvas>
                     </div>
