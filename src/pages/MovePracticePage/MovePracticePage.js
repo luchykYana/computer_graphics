@@ -189,19 +189,19 @@ const MovePracticePage = () => {
 
         ctx.stroke();
     }
-
-    const onDrawButtonClick = () => {
-        const canvas = document.getElementById('movement_canvas');
-        const [ctx, x_axis_distance_grid_lines, y_axis_distance_grid_lines] = repetitiveActions();
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        draw_xy_graph();
-        draw_line_kx();
-        draw_parallelogram(point1, point2,  point3, point4);
-
-        ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * (x_axis_distance_grid_lines * gridSize));
-    }
+    //
+    // const onDrawButtonClick = () => {
+    //     const canvas = document.getElementById('movement_canvas');
+    //     const [ctx, x_axis_distance_grid_lines, y_axis_distance_grid_lines] = repetitiveActions();
+    //
+    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //
+    //     draw_xy_graph();
+    //     draw_line_kx();
+    //     draw_parallelogram(point1, point2,  point3, point4);
+    //
+    //     ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * (x_axis_distance_grid_lines * gridSize));
+    // }
 
     const draw_line_kx = () => {
         const canvas = document.getElementById('movement_canvas');
@@ -497,8 +497,8 @@ const MovePracticePage = () => {
 
                             </div>
 
-                            <button onClick={onDrawButtonClick} className={`${css.button} ${css.margin_left}`}>Пряма
-                            </button>
+                            {/*<button onClick={onDrawButtonClick} className={`${css.button} ${css.margin_left}`}>Пряма*/}
+                            {/*</button>*/}
                         </div>
                     </div>
 
@@ -607,28 +607,36 @@ const MovePracticePage = () => {
                         </div>
 
                         <div className={`${css.margin_center} ${css.buttons}`}>
+
                             <div className={`${css.flex} ${css.margin_center}`}>
-                                <button onClick={onDrawButtonClick} className={`${css.button}`}>Паралелограм</button>
+                                <button onClick={start} className={`${css.button} ${css.margin_left} ${css.shadow}`}>Рух у часі</button>
                             </div>
                             <div className={`${css.flex} ${css.margin_center}`}>
-                                <button onClick={start} className={`${css.button}`}>Рух у часі</button>
+                                <button onClick={reset} className={`${css.button}`}>Скидання</button>
                             </div>
+                            {/*<div className={`${css.flex} ${css.margin_center}`}>*/}
+                            {/*    <button onClick={onDrawButtonClick} className={`${css.button}`}>Паралелограм</button>*/}
+                            {/*</div>*/}
+                            {/*<div className={`${css.flex} ${css.margin_center}`}>*/}
+                            {/*    <button onClick={start} className={`${css.button}`}>Рух у часі</button>*/}
+                            {/*</div>*/}
                         </div>
                     </div>
 
-                    <div className={`${css.text}`}>
-                        <p>Рух дзеркального відображення паралелограма:</p>
-                    </div>
+                    {/*<div className={`${css.text}`}>*/}
+                    {/*    <p>Рух дзеркального відображення паралелограма:</p>*/}
+                    {/*</div>*/}
 
-                    <div className={`${css.movementRangeBlock}`}>
-                        <input className={`${css.move}`} onChange={(e) => {
-                            onMovementChange(e)
-                        }} id={'movement_range'}
-                               type="range"
-                               name='movement_range' defaultValue={0}
-                               min={-5} max={5} step={1}/>
-                        <button onClick={reset} className={`${css.button}`}>Скидання</button>
-                    </div>
+                    {/*<div className={`${css.movementRangeBlock}`}>*/}
+                    {/*    /!*<input className={`${css.move}`} onChange={(e) => {*!/*/}
+                    {/*    /!*    onMovementChange(e)*!/*/}
+                    {/*    /!*}} id={'movement_range'}*!/*/}
+                    {/*    /!*       type="range"*!/*/}
+                    {/*    /!*       name='movement_range' defaultValue={0}*!/*/}
+                    {/*    /!*       min={-5} max={5} step={1}/>*!/*/}
+                    {/*    */}
+                    {/*    <button onClick={reset} className={`${css.button}`}>Скидання</button>*/}
+                    {/*</div>*/}
 
                 </div>
 
