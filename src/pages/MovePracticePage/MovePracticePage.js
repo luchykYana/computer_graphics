@@ -9,7 +9,7 @@ const MovePracticePage = () => {
     const range = 16;
     const [interv, setInterv] = useState(0);
 
-    const [line, setLine] = useState({k: 1, x: 1});
+    const [line, setLine] = useState({k: 1, b: 1});
     const [point1, setPoint1] = useState({x: -4, y: -7});
     const [point2, setPoint2] = useState({x: -3, y: -3});
     const [point3, setPoint3] = useState({x: 4, y: -3});
@@ -29,7 +29,14 @@ const MovePracticePage = () => {
     const [isReset, setIsReset] = useState(false);
 
     const [isKSet, setIsKSet] = useState(true);
-    const [isXSet, setIsXSet] = useState(true);
+    const [isBSet, setIsBSet] = useState(true);
+
+    useEffect(()=>{
+        console.log(mirrorPoint1)
+        console.log(mirrorPoint2)
+        console.log(mirrorPoint3)
+        console.log(mirrorPoint4)
+    }, [mirrorPoint4])
 
     // true - намалювати основну фігуру
     // false - намалювати відображення
@@ -43,10 +50,10 @@ const MovePracticePage = () => {
     }
 
     useEffect(()=>{
-        if(!isKSet && !isXSet) {
+        if(!isKSet && !isBSet) {
             displayInfoFillValues();
         }
-    }, [isKSet, isXSet]);
+    }, [isKSet, isBSet]);
 
     useEffect(() => {
         if(!isValid) {
@@ -57,11 +64,15 @@ const MovePracticePage = () => {
     }, [isValid]);
 
     useEffect(() => {
-        setMirrorPoint1(matrix.multiply(line, point1, +move));
-        setMirrorPoint2(matrix.multiply(line, point2, +move));
-        setMirrorPoint3(matrix.multiply(line, point3, +move));
-        setMirrorPoint4(matrix.multiply(line, point4, +move));
         setMove(0);
+
+        let mirror = matrix.getMirrorValues(point1, point2, point3, point4, line);
+        console.log(mirror);
+
+        setMirrorPoint1({x: mirror[0][0], y: mirror[0][1]});
+        setMirrorPoint2({x: mirror[1][0], y: mirror[1][1]});
+        setMirrorPoint3({x: mirror[2][0], y: mirror[2][1]});
+        setMirrorPoint4({x: mirror[3][0], y: mirror[3][1]});
 
         // порахуйте площу трикутника, який утворюють 3 точки.
         // Якщо всі точки лежать на прямій, то його площа дорівнює нулю
@@ -89,7 +100,7 @@ const MovePracticePage = () => {
     useEffect(() => {
         if (isReset) {
             document.getElementById('k').value = line.k;
-            document.getElementById('x').value = line.x;
+            document.getElementById('b').value = line.b;
 
             document.getElementById(`x1`).value = point1.x;
             document.getElementById(`y1`).value = point1.y;
@@ -124,7 +135,7 @@ const MovePracticePage = () => {
     useEffect(() => {
         const [ctx, x_axis_distance_grid_lines, y_axis_distance_grid_lines] = repetitiveActions();
         draw_xy_graph()
-        if (isKSet || isXSet) {
+        if (isKSet || isBSet) {
             draw_line_kx();
         }
 
@@ -135,7 +146,7 @@ const MovePracticePage = () => {
         }
 
         ctx.translate(-1 * (y_axis_distance_grid_lines * gridSize), -1 * (x_axis_distance_grid_lines * gridSize));
-    }, [gridSize, point1, point2, point3, point4, isKSet, isXSet, isDrawParallelogram, line]);
+    }, [gridSize, point1, point2, point3, point4, isKSet, isBSet, isDrawParallelogram, line]);
 
     useEffect(() => {
         // знаходимо точку 4 при введених значеннях точок 1 2 3
@@ -154,12 +165,11 @@ const MovePracticePage = () => {
         setPoint2({x: -3, y: -3})
         setPoint3({x: 4, y: -3})
         setPoint4({x: 3, y: -7})
-        setLine({k: 1, x: 1})
+        setLine({k: 1, b: 1})
 
         clearInterval(interv);
         setInterv(0)
         setIsDrawParallelogram(true);
-
         setIsReset(true);
     }
 
@@ -201,10 +211,10 @@ const MovePracticePage = () => {
 
         for (let x = 0; x < Math.max(canvas.width, canvas.height); x++) {
             let X = -x * scale;
-            let Y = (x * line.k + line.x) * scale;
+            let Y = (x * line.k + line.b) * scale;
 
             let X1 = (x + 1) * scale;
-            let Y1 = (-(x + 1) * line.k + line.x) * scale;
+            let Y1 = (-(x + 1) * line.k + line.b) * scale;
 
             ctx.moveTo(X, Y);
             ctx.lineTo(X1, Y1);
@@ -364,7 +374,7 @@ const MovePracticePage = () => {
 
     const onLineKChange = (local_line, set_line_func, e) => {
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
-            set_line_func({k: Number(e.target.value), x: local_line.x});
+            set_line_func({k: Number(e.target.value), b: local_line.b});
             setIsKSet(true);
         } else if (Math.abs(Number(e.target.value)) > range) {
             displayWarningOutOfBound();
@@ -372,21 +382,21 @@ const MovePracticePage = () => {
             setIsKSet(true);
         } else {
             setIsKSet(false);
-            setLine({k: 0, x: local_line.x})
+            setLine({k: 0, b: local_line.b})
         }
     }
 
-    const onLineXChange = (local_line, set_line_func, e) => {
+    const onLineBChange = (local_line, set_line_func, e) => {
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
-            set_line_func({k: local_line.k, x: Number(e.target.value)});
-            setIsXSet(true);
+            set_line_func({k: local_line.k, b: Number(e.target.value)});
+            setIsBSet(true);
         } else if (Math.abs(Number(e.target.value)) > range) {
             displayWarningOutOfBound();
             setIsReset(true);
-            setIsXSet(true);
+            setIsBSet(true);
         } else {
-            setIsXSet(false);
-            setLine({k: local_line.k, x: 0})
+            setIsBSet(false);
+            setLine({k: local_line.k, b: 0})
         }
     }
 
@@ -475,9 +485,9 @@ const MovePracticePage = () => {
                                     />
                                     <p className={`${css.margin}`}><b>* X + </b></p>
                                     <input className={`${css.margin} ${css.input}`} type='number' min={-range}
-                                           max={range} id={'x'}
+                                           max={range} id={'b'}
                                            defaultValue={1} onChange={(e) => {
-                                        onLineXChange(line, setLine, e)
+                                        onLineBChange(line, setLine, e)
                                     }}
                                     />
                                 </div>
