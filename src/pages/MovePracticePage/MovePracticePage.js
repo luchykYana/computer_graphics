@@ -610,6 +610,19 @@ const MovePracticePage = () => {
                             </div>
 
                         </div>
+
+                    </div>
+                    <div className={`${css.text}`}>
+                        <p>Рух дзеркального відображення паралелограма:</p>
+                    </div>
+
+                    <div className={`${css.movementRangeBlock}`}>
+                        <input className={`${css.move}`} onChange={(e) => {
+                            onMovementChange(e)
+                        }} id={'movement_range'}
+                               type="range"
+                               name='movement_range' defaultValue={0}
+                               min={-5} max={5} step={1}/>
                     </div>
                 </div>
 
@@ -639,6 +652,7 @@ const MovePracticePage = () => {
                                     className={`${css.button} ${css.positionLeft}`}>Зберегти
                             </button>
                         </div>
+
                     </div>
                 </div>
 
