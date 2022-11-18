@@ -593,7 +593,7 @@ const MovePracticePage = () => {
                         <div className={`${css.margin_center} ${css.buttons}`}>
 
                             <div className={`${css.flex} ${css.margin_center}`}>
-                                <button onClick={start} className={`${css.button} ${css.margin_left} ${css.shadow}`}>Рух у часі</button>
+                                <button onClick={start} className={`${css.button}`}>Рух у часі</button>
                             </div>
                             <div className={`${css.flex} ${css.margin_center}`}>
                                 <button onClick={reset} className={`${css.button}`}>Скидання</button>
