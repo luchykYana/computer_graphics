@@ -1,4 +1,4 @@
-import {Title} from '../../components';
+import {Message, Title} from '../../components';
 import {icons} from '../../constants';
 
 import css from './MovePractisePage.module.css'
@@ -42,9 +42,16 @@ const MovePracticePage = () => {
         );
     }
 
+    useEffect(()=>{
+        if(!isKSet && !isXSet) {
+            displayInfoFillValues();
+        }
+    }, [isKSet, isXSet]);
+
     useEffect(() => {
         if(!isValid) {
-            console.log('such a parallelogram doesn\'t exist')
+            displayWarningNotExist();
+            setTimeout(displayInfoReset, 3500);
             setTimeout(reset, 5000);
         }
     }, [isValid]);
@@ -161,8 +168,6 @@ const MovePracticePage = () => {
         let value = e.target.value;
         console.log(value);
         setMove(value);
-        // todo: зробити вот тут рух
-
     }
 
     const draw_parallelogram = (p1, p2, p3, p4, color = 'blue') => {
@@ -229,7 +234,6 @@ const MovePracticePage = () => {
     }
 
     const draw_xy_graph = () => {
-        // console.log('draw_xy_graph')
         const x_axis_starting_point = {number: 1, suffix: ''};
         const y_axis_starting_point = {number: 1, suffix: ''};
 
@@ -376,11 +380,10 @@ const MovePracticePage = () => {
             set_line_func({k: Number(e.target.value), x: local_line.x});
             setIsKSet(true);
         } else if (Math.abs(Number(e.target.value)) > range) {
-            console.log('значення виходить за допустимі межі!!');
+            displayWarningOutOfBound();
             setIsReset(true);
             setIsKSet(true);
         } else {
-            console.log('заповніть значення в комірку');
             setIsKSet(false);
             setLine({k: 0, x: local_line.x})
         }
@@ -391,11 +394,10 @@ const MovePracticePage = () => {
             set_line_func({k: local_line.k, x: Number(e.target.value)});
             setIsXSet(true);
         } else if (Math.abs(Number(e.target.value)) > range) {
-            console.log('значення виходить за допустимі межі!!');
+            displayWarningOutOfBound();
             setIsReset(true);
             setIsXSet(true);
         } else {
-            console.log('заповніть значення в комірку');
             setIsXSet(false);
             setLine({k: local_line.k, x: 0})
         }
@@ -405,10 +407,10 @@ const MovePracticePage = () => {
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_point_func({x: Number(e.target.value), y: local_point.y});
         } else if (Math.abs(Number(e.target.value)) > range) {
-            console.log('введене значення виходить за допустимі межі!!')
+            displayWarningOutOfBound();
             setIsReset(true);
         } else {
-            console.log('заповніть значення в комірку')
+            displayInfoFillValues();
         }
     }
 
@@ -416,11 +418,51 @@ const MovePracticePage = () => {
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_point_func({x: local_point.x, y: Number(e.target.value)});
         } else if (Math.abs(Number(e.target.value)) > range) {
-            console.log('введене значення виходить за допустимі межі!!')
+            displayWarningOutOfBound();
             setIsReset(true);
         } else {
-            console.log('заповніть значення в комірку')
+            displayInfoFillValues();
         }
+    }
+
+    const displayInfoFillValues = () => {
+        document.getElementById("fill_info").style.bottom = '10px';
+        document.getElementById("fill_info").style.right = '10px';
+        document.getElementById("fill_info").style.display = 'flex';
+
+        setTimeout(() => {
+            document.getElementById("fill_info").style.display = 'none';
+        }, 3000);
+    }
+
+    const displayInfoReset = () => {
+        document.getElementById("not_exist_info_reset").style.bottom = '10px';
+        document.getElementById("not_exist_info_reset").style.right = '10px';
+        document.getElementById("not_exist_info_reset").style.display = 'flex';
+
+        setTimeout(() => {
+            document.getElementById("not_exist_info_reset").style.display = 'none';
+        }, 3000);
+    }
+
+    const displayWarningNotExist = () => {
+        document.getElementById("not_exist_warning").style.bottom = '10px';
+        document.getElementById("not_exist_warning").style.right = '10px';
+        document.getElementById("not_exist_warning").style.display = 'flex';
+
+        setTimeout(() => {
+            document.getElementById("not_exist_warning").style.display = 'none';
+        }, 3000);
+    }
+
+    const displayWarningOutOfBound = () => {
+        document.getElementById("out_of_bound_warning").style.bottom = '10px';
+        document.getElementById("out_of_bound_warning").style.right = '10px';
+        document.getElementById("out_of_bound_warning").style.display = 'flex';
+
+        setTimeout(() => {
+            document.getElementById("out_of_bound_warning").style.display = 'none';
+        }, 3000);
     }
 
     return (
@@ -592,6 +634,18 @@ const MovePracticePage = () => {
 
                 <div>
                     <div>
+                        <Message icon={icons.warning_1} title={'Попередження'} text={'Парелелограм, побудований на вказаних вершинах, не може існувати.'}
+                                 c={icons.close} id={'not_exist_warning'}/>
+
+                        <Message icon={icons.warning_1} title={'Попередження'} text={'Введене значення виходить за допустимі межі.'}
+                                 c={icons.close} id={'out_of_bound_warning'}/>
+
+                        <Message icon={icons.info_1} title={'Інформація'} text={'Буде встановлено початкові значення.'}
+                                 c={icons.close} id={'not_exist_info_reset'}/>
+
+                        <Message icon={icons.info_1} title={'Інформація'} text={'Заповніть значення в комірку.'}
+                                 c={icons.close} id={'fill_info'}/>
+
                         <canvas height={425} width={425} id={'movement_canvas'}
                                 className={`${css.movementCanvas}`}
                                 onWheel={onWheelFunction}
