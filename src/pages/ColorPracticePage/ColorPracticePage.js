@@ -5,6 +5,7 @@ import {icons} from '../../constants';
 import {modelFunc} from '../../helper';
 
 import css from './ColorPractisePage.module.css';
+import {logDOM} from "@testing-library/react";
 
 const ColorPracticePage = () => {
     const imageHeight = 220, imageWidth = 400;
@@ -146,25 +147,28 @@ const ColorPracticePage = () => {
                 rgbCtx.drawImage(image, 0, 0, rgbCanvas.width, rgbCanvas.height);
                 loadPhotos();
             }
+
             image.src = event.target.result + '';
         }
         reader.readAsDataURL(e.target.files[0]);
+
+        const filename = e.target.files[0].name;
+
+        if (!((filename.endsWith('.jpg') || (filename.endsWith('.png')
+            || (filename.endsWith('.webp') || (filename.endsWith('.jtif') )))))) {
+            document.getElementById("color_models_hsl_error").style.bottom = '10px';
+            document.getElementById("color_models_hsl_error").style.right = '10px';
+            document.getElementById("color_models_hsl_error").style.display = 'flex';
+        }
+        else {
+            document.getElementById("color_models_hsl_upload").style.bottom = '10px';
+            document.getElementById("color_models_hsl_upload").style.right = '10px';
+            document.getElementById("color_models_hsl_upload").style.display = 'flex';
+        }
     }
 
     const buttonClick = (e) => {
         document.getElementById('myInput').click();
-
-        setTimeout(() => {
-            if (e.target.id === 'cmyk_upload') {
-                document.getElementById("color_models_cmyk_upload").style.bottom = '10px';
-                document.getElementById("color_models_cmyk_upload").style.right = '10px';
-                document.getElementById("color_models_cmyk_upload").style.display = 'flex';
-            } else {
-                document.getElementById("color_models_hsl_upload").style.bottom = '10px';
-                document.getElementById("color_models_hsl_upload").style.right = '10px';
-                document.getElementById("color_models_hsl_upload").style.display = 'flex';
-            }
-        }, 2000)
     }
 
     const buttonDeleteClick = () => {
@@ -462,15 +466,10 @@ const ColorPracticePage = () => {
 
         if (isImageSet) {
             a.click();
-            setTimeout(() => {
-                document.getElementById("color_models_cmyk_save").style.bottom = '440px';
-                document.getElementById("color_models_cmyk_save").style.right = '150px';
-                document.getElementById("color_models_cmyk_save").style.display = 'flex';
-            }, 2000);
         } else {
-            document.getElementById("color_models_cmyk_warn").style.bottom = '440px';
-            document.getElementById("color_models_cmyk_warn").style.right = '150px';
-            document.getElementById("color_models_cmyk_warn").style.display = 'flex';
+            document.getElementById("color_models_hsl_warn").style.bottom = '10px';
+            document.getElementById("color_models_hsl_warn").style.right = '10px';
+            document.getElementById("color_models_hsl_warn").style.display = 'flex';
         }
     };
 
@@ -481,14 +480,9 @@ const ColorPracticePage = () => {
 
         if (isImageSet) {
             a.click();
-            setTimeout(() => {
-                document.getElementById("color_models_hsl_save").style.bottom = '170px';
-                document.getElementById("color_models_hsl_save").style.right = '150px';
-                document.getElementById("color_models_hsl_save").style.display = 'flex';
-            }, 2000);
         } else {
-            document.getElementById("color_models_hsl_warn").style.bottom = '170px';
-            document.getElementById("color_models_hsl_warn").style.right = '150px';
+            document.getElementById("color_models_hsl_warn").style.bottom = '10px';
+            document.getElementById("color_models_hsl_warn").style.right = '10px';
             document.getElementById("color_models_hsl_warn").style.display = 'flex';
         }
     };
@@ -516,7 +510,6 @@ const ColorPracticePage = () => {
         const object = getMousePosition(e.target, e);
         setMousePos1({x1: object.x, y1: object.y});
         console.log(object);
-        // console.log('down: ' + mousePos1.x1 + '|'  + mousePos1.y1)
     }
 
     const up = (e) => {
@@ -681,15 +674,6 @@ const ColorPracticePage = () => {
                 <div>
                     <div className={`${css.flex}`}>
                         <div>
-                            <Message icon={icons.info_1} title={'Інформація'} text={'Файл успішно збережено'}
-                                     c={icons.close} id={'color_models_cmyk_save'}/>
-
-                            <Message icon={icons.info_1} title={'Інформація'} text={'Файл успішно завантажено'}
-                                     c={icons.close} id={'color_models_cmyk_upload'}/>
-
-                            <Message icon={icons.warning_1} title={'Попередження'} text={'Спочатку завантажте файл'}
-                                     c={icons.close} id={'color_models_cmyk_warn'}/>
-
                             <canvas id={'cmyk_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
                                     height={imageHeight} onMouseMove={mouseMove} onMouseLeave={disappearPipe1}
                                     onClick={clickPipe}></canvas>
@@ -711,14 +695,14 @@ const ColorPracticePage = () => {
                     </div>
                     <div className={`${css.flex}`}>
                         <div>
-                            <Message icon={icons.info_1} title={'Інформація'} text={'Файл успішно збережено'}
-                                     c={icons.close} id={'color_models_hsl_save'}/>
-
-                            <Message icon={icons.info_1} title={'Інформація'} text={'Файл успішно завантажено'}
+                            <Message icon={icons.info_1} title={'Інформація'} text={'Файл успішно завантажено.'}
                                      c={icons.close} id={'color_models_hsl_upload'}/>
 
-                            <Message icon={icons.warning_1} title={'Попередження'} text={'Спочатку завантажте файл'}
+                            <Message icon={icons.warning_1} title={'Попередження'} text={'Спочатку завантажте файл.'}
                                      c={icons.close} id={'color_models_hsl_warn'}/>
+
+                            <Message icon={icons.error} title={'Помилка'} text={'Виберіть файл у форматі jpg, png, webp або jtif.'}
+                                     c={icons.close} id={'color_models_hsl_error'}/>
 
                             <canvas id={'hsl_canvas'} className={`${css.colorCanvas}`} width={imageWidth}
                                     height={imageHeight} onMouseMove={mouseMove} onMouseLeave={disappearPipe2}
