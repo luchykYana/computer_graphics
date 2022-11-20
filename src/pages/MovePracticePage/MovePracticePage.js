@@ -10,15 +10,25 @@ const MovePracticePage = () => {
     const [interv, setInterv] = useState(0);
 
     const [line, setLine] = useState({k: 1, b: 1});
+
     const [point1, setPoint1] = useState({x: -4, y: -7});
     const [point2, setPoint2] = useState({x: -3, y: -3});
     const [point3, setPoint3] = useState({x: 4, y: -3});
     const [point4, setPoint4] = useState({x: 3, y: -7});
 
+    const [backup_point1, setBackupPoint1] = useState({x: -4, y: -7});
+    const [backup_point2, setBackupPoint2] = useState({x: -3, y: -3});
+    const [backup_point3, setBackupPoint3] = useState({x: 4, y: -3});
+    const [backup_point4, setBackupPoint4] = useState({x: 3, y: -7});
+
     const [mirrorPoint1, setMirrorPoint1] = useState({x: 0, y: 0});
     const [mirrorPoint2, setMirrorPoint2] = useState({x: 0, y: 0});
     const [mirrorPoint3, setMirrorPoint3] = useState({x: 0, y: 0});
     const [mirrorPoint4, setMirrorPoint4] = useState({x: 0, y: 0});
+
+    const [coordinatIncrement, setCoordinatIncrement] = useState(0)
+
+    const [isMovable, setIsMovable] = useState(true);
 
     const [isValid, setIsValid] = useState(true);
 
@@ -31,12 +41,12 @@ const MovePracticePage = () => {
     const [isKSet, setIsKSet] = useState(true);
     const [isBSet, setIsBSet] = useState(true);
 
-    useEffect(()=>{
-        console.log(mirrorPoint1)
-        console.log(mirrorPoint2)
-        console.log(mirrorPoint3)
-        console.log(mirrorPoint4)
-    }, [mirrorPoint4])
+    // useEffect(()=>{
+    //     console.log(mirrorPoint1)
+    //     console.log(mirrorPoint2)
+    //     console.log(mirrorPoint3)
+    //     console.log(mirrorPoint4)
+    // }, [mirrorPoint4])
 
     // true - намалювати основну фігуру
     // false - намалювати відображення
@@ -67,7 +77,7 @@ const MovePracticePage = () => {
         setMove(0);
 
         let mirror = matrix.getMirrorValues(point1, point2, point3, point4, line);
-        console.log(mirror);
+        // console.log(mirror);
 
         setMirrorPoint1({x: mirror[0][0], y: mirror[0][1]});
         setMirrorPoint2({x: mirror[1][0], y: mirror[1][1]});
@@ -89,7 +99,7 @@ const MovePracticePage = () => {
 
         const p = (a + b + c) / 2;
         const s = Math.sqrt(p * (p - a) * (p - b) * (p - c));
-        console.log(s)
+        // console.log(s)
         if (!(s < 0.00001)) {
             setIsValid(true);
         } else {
@@ -113,6 +123,9 @@ const MovePracticePage = () => {
 
             document.getElementById(`x4`).value = point4.x;
             document.getElementById(`y4`).value = point4.y;
+
+            document.getElementById(`movement_range`).value = 0;
+            setCoordinatIncrement(0);
         }
         setIsReset(false);
     }, [isReset]);
@@ -155,10 +168,48 @@ const MovePracticePage = () => {
         // координати точки 4
         setPoint4({x: 2 * pointO.x - point2.x, y: 2 * pointO.y - point2.y})
 
+        document.getElementById(`x1`).value = point1.x;
+        document.getElementById(`y1`).value = point1.y;
+
+        document.getElementById(`x2`).value = point2.x;
+        document.getElementById(`y2`).value = point2.y;
+
+        document.getElementById(`x3`).value = point3.x;
+        document.getElementById(`y3`).value = point3.y;
+
         document.getElementById(`x4`).value = point4.x;
         document.getElementById(`y4`).value = point4.y;
 
     }, [point1, point2, point3]);
+
+    useEffect(() => {
+        let dx, dy;
+        if(line.k > 0) {
+            dx =   coordinatIncrement;
+            dy =   coordinatIncrement;
+        } else if (line.k < 0) {
+            dx =   coordinatIncrement;
+            dy = - coordinatIncrement;
+        } else if(line.k === 0) {
+            dx =   coordinatIncrement;
+            dy =   0;
+        } else {
+            console.log('exception');
+        }
+
+
+        if(!( ( (Math.abs(backup_point1.x + dx * (5/gridSize)) >= range || Math.abs(backup_point1.y + dy * (5/gridSize)) >= range ||
+               Math.abs(backup_point2.x + dx * (5/gridSize)) >= range || Math.abs(backup_point2.y + dy * (5/gridSize)) >= range))
+            ||
+              (Math.abs(backup_point3.x + dx * (5/gridSize)) >= range || Math.abs( backup_point3.y + dy * (5/gridSize)) >= range ||
+               Math.abs(backup_point4.x + dx * (5/gridSize)) >= range || Math.abs(backup_point4.y + dy * (5/gridSize)) >= range) ) ) {
+            setPoint1({x: backup_point1.x + dx * (5/gridSize), y: backup_point1.y + dy * (5/gridSize)});
+            setPoint2({x: backup_point2.x + dx * (5/gridSize), y: backup_point2.y + dy * (5/gridSize)});
+            setPoint3({x: backup_point3.x + dx * (5/gridSize), y: backup_point3.y + dy * (5/gridSize)});
+            setPoint4({x: backup_point4.x + dx * (5/gridSize), y: backup_point4.y + dy * (5/gridSize)});
+        }
+    }, [coordinatIncrement]);
+
 
     const reset = () => {
         setPoint1({x: -4, y: -7})
@@ -174,10 +225,8 @@ const MovePracticePage = () => {
     }
 
     const onMovementChange = (e) => {
-        console.log('on movement change')
         let value = e.target.value;
-        console.log(value);
-        setMove(value);
+        setCoordinatIncrement(value)
     }
 
     const draw_parallelogram = (p1, p2, p3, p4, color = 'blue') => {
@@ -400,9 +449,10 @@ const MovePracticePage = () => {
         }
     }
 
-    const onPointXChange = (local_point, set_point_func, e) => {
+    const onPointXChange = (local_point, set_point_func, set_backup_point, e) => {
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_point_func({x: Number(e.target.value), y: local_point.y});
+            set_backup_point({x: Number(e.target.value), y: local_point.y});
         } else if (Math.abs(Number(e.target.value)) > range) {
             displayWarningOutOfBound();
             setIsReset(true);
@@ -411,9 +461,10 @@ const MovePracticePage = () => {
         }
     }
 
-    const onPointYChange = (local_point, set_point_func, e) => {
+    const onPointYChange = (local_point, set_point_func, set_backup_point, e) => {
         if (e.target.value.length !== 0 && Math.abs(Number(e.target.value)) <= range) {
             set_point_func({x: local_point.x, y: Number(e.target.value)});
+            set_backup_point({x: local_point.x, y: Number(e.target.value)});
         } else if (Math.abs(Number(e.target.value)) > range) {
             displayWarningOutOfBound();
             setIsReset(true);
@@ -510,7 +561,7 @@ const MovePracticePage = () => {
                                                className={`${css.margin} ${css.input}`} type='number' min={-range}
                                                max={range} id={'x2'}
                                                onChange={(e) => {
-                                                   onPointXChange(point2, setPoint2, e)
+                                                   onPointXChange(point2, setPoint2, setBackupPoint2, e)
                                                }}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
@@ -518,7 +569,7 @@ const MovePracticePage = () => {
                                                className={`${css.margin} ${css.input}`} type='number' min={-range}
                                                max={range} id={'y2'}
                                                onChange={(e) => {
-                                                   onPointYChange(point2, setPoint2, e)
+                                                   onPointYChange(point2, setPoint2, setBackupPoint2, e)
                                                }}
                                         />
                                     </div>
@@ -531,7 +582,7 @@ const MovePracticePage = () => {
                                                className={`${css.margin} ${css.input}`} type='number' min={-range}
                                                max={range} id={'x1'}
                                                onChange={(e) => {
-                                                   onPointXChange(point1, setPoint1, e)
+                                                   onPointXChange(point1, setPoint1, setBackupPoint1, e)
                                                }}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
@@ -539,7 +590,7 @@ const MovePracticePage = () => {
                                                className={`${css.margin} ${css.input}`} type='number' min={-range}
                                                max={range} id={'y1'}
                                                onChange={(e) => {
-                                                   onPointYChange(point1, setPoint1, e)
+                                                   onPointYChange(point1, setPoint1, setBackupPoint1, e)
                                                }}
                                         />
                                     </div>
@@ -561,7 +612,7 @@ const MovePracticePage = () => {
                                                className={`${css.margin} ${css.input}`} type='number' min={-range}
                                                max={range} id={'x3'}
                                                onChange={(e) => {
-                                                   onPointXChange(point3, setPoint3, e)
+                                                   onPointXChange(point3, setPoint3, setBackupPoint3, e)
                                                }}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
@@ -569,7 +620,7 @@ const MovePracticePage = () => {
                                                className={`${css.margin} ${css.input}`} type='number' min={-range}
                                                max={range} id={'y3'}
                                                onChange={(e) => {
-                                                   onPointYChange(point3, setPoint3, e)
+                                                   onPointYChange(point3, setPoint3, setBackupPoint3, e)
                                                }}
                                         />
                                     </div>
@@ -583,7 +634,7 @@ const MovePracticePage = () => {
                                                className={`${css.margin} ${css.input}`} type='number' min={-range}
                                                max={range} id={'x4'}
                                                disabled={true} onChange={(e) => {
-                                            onPointXChange(point4, setPoint4, e)
+                                            onPointXChange(point4, setPoint4, setBackupPoint4, e)
                                         }}
                                         />
                                         <p className={`${css.margin}`}><b>Y</b></p>
@@ -591,7 +642,7 @@ const MovePracticePage = () => {
                                                className={`${css.margin} ${css.input}`} type='number' min={-range}
                                                max={range} id={'y4'}
                                                disabled={true} onChange={(e) => {
-                                            onPointYChange(point4, setPoint4, e)
+                                            onPointYChange(point4, setPoint4, setBackupPoint4, e)
                                         }}
                                         />
                                     </div>
@@ -612,6 +663,7 @@ const MovePracticePage = () => {
                         </div>
 
                     </div>
+
                     <div className={`${css.text}`}>
                         <p>Рух дзеркального відображення паралелограма:</p>
                     </div>
@@ -622,7 +674,7 @@ const MovePracticePage = () => {
                         }} id={'movement_range'}
                                type="range"
                                name='movement_range' defaultValue={0}
-                               min={-5} max={5} step={1}/>
+                               min={-50} max={50} step={1}/>
                     </div>
                 </div>
 
