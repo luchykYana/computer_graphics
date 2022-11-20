@@ -41,13 +41,6 @@ const MovePracticePage = () => {
     const [isKSet, setIsKSet] = useState(true);
     const [isBSet, setIsBSet] = useState(true);
 
-    // useEffect(()=>{
-    //     console.log(mirrorPoint1)
-    //     console.log(mirrorPoint2)
-    //     console.log(mirrorPoint3)
-    //     console.log(mirrorPoint4)
-    // }, [mirrorPoint4])
-
     // true - намалювати основну фігуру
     // false - намалювати відображення
     const [isDrawParallelogram, setIsDrawParallelogram] = useState(true);
@@ -77,7 +70,6 @@ const MovePracticePage = () => {
         setMove(0);
 
         let mirror = matrix.getMirrorValues(point1, point2, point3, point4, line);
-        // console.log(mirror);
 
         setMirrorPoint1({x: mirror[0][0], y: mirror[0][1]});
         setMirrorPoint2({x: mirror[1][0], y: mirror[1][1]});
@@ -99,7 +91,7 @@ const MovePracticePage = () => {
 
         const p = (a + b + c) / 2;
         const s = Math.sqrt(p * (p - a) * (p - b) * (p - c));
-        // console.log(s)
+
         if (!(s < 0.00001)) {
             setIsValid(true);
         } else {
